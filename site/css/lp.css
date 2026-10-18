@@ -415,7 +415,7 @@
 
 /* C2 v2 */
 .fn2{display:flex;align-items:center;gap:20px;max-width:860px;padding:22px 0 0;border-top:1px solid var(--line)}
-.fn2 img{width:76px;height:76px;border-radius:50%;object-fit:cover;flex:none}
+.fn2 img{width:88px;height:88px;border-radius:50%;object-fit:cover;flex:none}
 .fn2-q{font-family:var(--serif);font-size:clamp(24px,2.4vw,30px);line-height:1.1;margin:0 0 6px}
 .fn2 .small b{color:var(--text);font-weight:600;white-space:nowrap}
 .in2{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(32px,5vw,72px);align-items:center}
@@ -426,8 +426,10 @@
 .in2-feats .wb-ico{background:rgba(95,224,185,.14)}
 .in2-feats .wb-ico svg *[stroke="#14201E"]{stroke:#EAF1EE}
 .wk2{display:grid;grid-template-columns:1.25fr 1fr;gap:20px;align-items:stretch}
-.wk2-photos{display:grid;grid-template-columns:1.5fr 1fr;grid-template-rows:1fr 1fr;gap:12px;min-height:420px}
-.wk2-photos .wkp.big{grid-row:1 / span 2}
+.wk2-photos{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start}
+.wk2-photos .wkp{aspect-ratio:4/3}
+.wk2-photos .wkp.big{grid-column:1 / span 2;grid-row:2;aspect-ratio:2/1}
+.wk2-photos .wkp.big img{object-position:50% 60%}
 .wk2-flow{display:flex;flex-direction:column;gap:10px;background:var(--raised);border:1px solid var(--line);border-radius:20px;padding:20px}
 .wk2-flow .wb-card{background:var(--surface);padding:10px 14px}
 .wk2-in,.wk2-two{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center}
@@ -452,7 +454,7 @@
 .bn .edm{background:rgba(255,255,255,.04);border-color:var(--nline)}
 .bn .edm .h4{color:var(--ntext)}.bn .edm .readout{color:var(--nmute)}
 @media (max-width:980px){.in2,.wk2,.bn{grid-template-columns:1fr}.wk2-chips{grid-template-columns:repeat(3,minmax(0,1fr))}.ex-grid{grid-template-columns:1fr 1fr}}
-@media (max-width:560px){.wk2-chips,.ex-grid{grid-template-columns:1fr}.wk2-photos{min-height:320px}.fn2{align-items:flex-start}}
+@media (max-width:560px){.wk2-chips,.ex-grid{grid-template-columns:1fr}.wk2-photos .wkp.big{aspect-ratio:16/10}.fn2{align-items:flex-start}}
 .uni-row img[alt="Esade"]{height:28px}
 .in2-feats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .in2-feats>div{flex-direction:column;align-items:flex-start;gap:10px}
