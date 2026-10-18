@@ -453,6 +453,10 @@
 .bn .edm-wrap{margin:0}.bn .edm-wrap>.readout{display:none}
 .bn .edm{background:rgba(255,255,255,.04);border-color:var(--nline)}
 .bn .edm .h4{color:var(--ntext)}.bn .edm .readout{color:var(--nmute)}
+.edm-x{list-style:none;margin:10px 4px 0;padding:10px 0 0;border-top:1px solid var(--line);display:grid;gap:6px;font-size:13px;line-height:1.35;color:var(--body)}
+.edm-x li{display:flex;gap:8px;align-items:baseline}
+.edm-x li::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--water);transform:translateY(-1px)}
+.bn .edm-x{border-top-color:var(--nline);color:var(--ntext)}.bn .edm-x li::before{background:var(--signal)}
 @media (max-width:980px){.in2,.wk2,.bn{grid-template-columns:1fr}.wk2-chips{grid-template-columns:repeat(3,minmax(0,1fr))}.ex-grid{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.wk2-chips,.ex-grid{grid-template-columns:1fr}.wk2-photos .wkp.big{aspect-ratio:16/10}.fn2{align-items:flex-start}}
 .uni-row img[alt="Esade"]{height:28px}
