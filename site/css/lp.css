@@ -472,8 +472,11 @@
 .app-bar{display:flex;align-items:center;gap:7px;background:#1C2D28;border:1px solid var(--nline);border-bottom:0;border-radius:18px 18px 0 0;padding:11px 14px}
 .app-bar i{width:9px;height:9px;border-radius:50%;background:#3A4F49}
 .app-bar span{margin-left:8px;font:400 11.5px/1 var(--mono);color:var(--nmute)}
-.app-alert{display:flex;align-items:center;gap:10px;background:rgba(227,144,108,.12);border:1px solid rgba(227,144,108,.4);border-radius:10px;padding:9px 12px;font-size:13.5px;color:var(--ntext)}
-.app-alert b{font-weight:600;color:var(--sun)}.app-alert span:last-child{color:var(--nmute)}
+.app-alert{display:flex;align-items:flex-start;gap:10px;background:rgba(227,144,108,.12);border:1px solid rgba(227,144,108,.4);border-radius:10px;padding:9px 12px;font-size:13.5px;color:var(--ntext)}
+.app-alert b{font-weight:600;color:var(--sun);margin-right:6px}
+.app-alert-txt{min-width:0}.app-alert-txt p{margin:0;line-height:1.4}
+.app-alert-sub{margin-top:3px!important;font-size:12.5px;color:var(--nmute)}
+.app-alert .app-dot{flex:none;margin-top:5.5px}
 .app-dot{width:8px;height:8px;border-radius:50%;background:var(--sun);box-shadow:0 0 0 4px rgba(227,144,108,.2);animation:app-p 2s ease-in-out infinite}
 @keyframes app-p{50%{box-shadow:0 0 0 7px rgba(227,144,108,.05)}}
 @media (prefers-reduced-motion:reduce){.app-dot{animation:none}}
