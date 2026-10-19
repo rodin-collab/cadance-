@@ -547,3 +547,28 @@
   .wk2-flow .wb-card .h4{font-size:15px}.wk2-flow .wb-card .small{font-size:13px}
   .wk2-in,.wk2-two{gap:6px}
 }
+
+/* ── Scroll reveals: edition cards and Intelligence bars (only with [data-anim], set by weekend-flow.js) ── */
+.edm-grid[data-anim] .edm{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.edm-grid[data-anim] .edm:nth-child(2){transition-delay:.12s}
+.edm-grid[data-anim] .edm:nth-child(3){transition-delay:.24s}
+.edm-grid[data-anim] .edm-x li{opacity:0;transform:translateX(-6px);transition:opacity .4s ease,transform .4s ease}
+.edm-grid[data-anim] .edm:nth-child(1) .edm-x li:nth-child(1){transition-delay:.45s}
+.edm-grid[data-anim] .edm:nth-child(1) .edm-x li:nth-child(2){transition-delay:.55s}
+.edm-grid[data-anim] .edm:nth-child(1) .edm-x li:nth-child(3){transition-delay:.65s}
+.edm-grid[data-anim] .edm:nth-child(2) .edm-x li:nth-child(1){transition-delay:.57s}
+.edm-grid[data-anim] .edm:nth-child(2) .edm-x li:nth-child(2){transition-delay:.67s}
+.edm-grid[data-anim] .edm:nth-child(2) .edm-x li:nth-child(3){transition-delay:.77s}
+.edm-grid[data-anim] .edm:nth-child(3) .edm-x li:nth-child(1){transition-delay:.69s}
+.edm-grid[data-anim] .edm:nth-child(3) .edm-x li:nth-child(2){transition-delay:.79s}
+.edm-grid[data-anim] .edm:nth-child(3) .edm-x li:nth-child(3){transition-delay:.89s}
+.edm-grid.is-in .edm,.edm-grid.is-in .edm-x li{opacity:1;transform:none}
+
+.app[data-anim] .bar i{transform:scaleX(0);transform-origin:left center;transition:transform 1s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--i,0) * 110ms + 200ms)}
+.app.is-in .bar i{transform:none}
+.app[data-anim] .app-alert{opacity:0;transform:translateY(6px);transition:opacity .5s ease,transform .5s ease;transition-delay:1.1s}
+.app.is-in .app-alert{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  .edm-grid[data-anim] .edm,.edm-grid[data-anim] .edm-x li,.app[data-anim] .bar i,.app[data-anim] .app-alert{transition:none;opacity:1;transform:none}
+}

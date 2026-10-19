@@ -1,6 +1,44 @@
-/* Weekend flow: plays the build-up once when the card scrolls into view.
+/* Scroll animations: the weekend flow build-up, the edition cards and the Intelligence bars.
+   Weekend flow: plays the build-up once when the card scrolls into view.
    Save as site/js/weekend-flow.js and load it with <script src="js/weekend-flow.js" defer></script>. */
 (function () {
+  var reduceAll = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceAll && 'IntersectionObserver' in window) {
+    // edition cards and Intelligence bars: reveal once when they scroll into view
+    var reveal = function (el, onIn) {
+      el.setAttribute('data-anim', '');
+      var o = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { el.classList.add('is-in'); if (onIn) onIn(); o.disconnect(); } });
+      }, { threshold: 0.3 });
+      o.observe(el);
+    };
+    var grid = document.querySelector('.edm-grid');
+    if (grid) reveal(grid);
+    var app = document.querySelector('.app');
+    if (app) {
+      var bars = app.querySelectorAll('.bar i');
+      bars.forEach(function (b, i) { b.style.setProperty('--i', i); });
+      var nums = [];
+      bars.forEach(function (b) {
+        var n = b.parentNode.nextElementSibling;
+        if (n && /^\d+$/.test(n.textContent.trim())) { nums.push(n); n.setAttribute('data-to', n.textContent.trim()); n.textContent = '0'; }
+      });
+      reveal(app, function () {
+        nums.forEach(function (n, i) {
+          var to = Number(n.getAttribute('data-to')), start = null, wait = 200 + i * 110;
+          setTimeout(function () {
+            requestAnimationFrame(function tick(t) {
+              if (start === null) start = t;
+              var p = Math.min(1, (t - start) / 1000);
+              n.textContent = String(Math.round(to * (1 - Math.pow(1 - p, 3))));
+              if (p < 1) requestAnimationFrame(tick);
+            });
+          }, wait);
+        });
+      });
+    }
+  }
+
   var flow = document.querySelector('[data-wkf]');
   if (!flow) return;
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
