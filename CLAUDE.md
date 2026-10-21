@@ -22,7 +22,8 @@ Funds' entry offer: **a free Portfolio Pulse** (at least 8 teams; readout presen
 - Tone: product and system, scientific and calm. Not dreamy, not retreat-y. Short sentences, no hype.
 
 ## Site structure (plain static HTML, no build step yet)
-- `site/index.html`: funds landing page (version C2). This is the only page live at launch.
+- Live pages (Rodin, 21 Oct 2026: only these three): `site/index.html` (funds, at /), `site/founders.html` (/founders), `site/pulse.html` (/pulse). Plus `privacy.html` and `aviso-legal.html`, which are legally required. Don't add or link other pages without Rodin.
+- All three pages share one header: logo, page links, the For funds / For founders switch, one clay button.
 - `drafts/`: earlier versions (founders-C.html, funds-C-long.html) to reuse sections from. Not deployed.
 - Planned pages, in order: founders.html, a two-door home page (the funds page then moves to /funds), intelligence.html (platform + trust & data), method.html (method & team).
 - Header at full build: Cadence · For funds · For founders · Intelligence · Method · [Free Portfolio Pulse]. Footer: product links, Method & team, contact, LinkedIn, Privacy policy, Aviso legal.
@@ -39,5 +40,5 @@ Funds' entry offer: **a free Portfolio Pulse** (at least 8 teams; readout presen
 - Every button (Free Portfolio Pulse, Talk to us, Book a pilot, Contact) opens https://cal.com/founderscadence/30min-cadence in a new tab. There are no forms on the site.
 
 ## Hosting
-- Cloudflare (the domain registrar is also Cloudflare). The static `site/` folder is deployed through the GitHub integration, so each push to `main` goes live.
+- Cloudflare (the domain registrar is also Cloudflare). The static `site/` folder is deployed through the GitHub integration, so each push to `main` goes live (production branch set to `main` on 21 Oct 2026; before that it built from a claude/* branch). Check the live site with curl after a push.
 - Keep it static until the platform starts. The platform (survey, reports, fund dashboard) comes later as a separate app on Supabase (already set up; choose an EU region).
