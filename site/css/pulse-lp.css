@@ -32,6 +32,14 @@ svg.clay{color:var(--clay);flex:none}
 .switch{display:inline-flex;padding:4px;border-radius:999px;border:1px solid var(--line);font-size:14px;font-weight:500}
 .switch a{padding:7px 14px;border-radius:999px;text-decoration:none;color:var(--text)}
 .switch a[aria-current="page"]{background:var(--text);color:var(--surface)}
+/* sliding pill (js/switch.js adds .js and the .switch-pill; without JS the current link keeps its own background) */
+.switch{position:relative;isolation:isolate}
+.switch a{position:relative;z-index:1;transition:color .3s ease}
+.switch-pill{position:absolute;z-index:0;top:4px;bottom:4px;left:0;width:var(--w,0);transform:translateX(var(--x,0));border-radius:999px;background:var(--text);transition:transform .32s cubic-bezier(.4,0,.2,1),width .32s cubic-bezier(.4,0,.2,1)}
+.switch.js a[aria-current="page"]{background:none;color:inherit}
+.switch.js a.on{color:var(--surface)}
+.switch.no-anim .switch-pill,.switch.no-anim a{transition:none}
+@media (prefers-reduced-motion:reduce){.switch-pill,.switch a{transition:none}}
 @media (max-width:860px){.ln-links{display:none}}
 @media (max-width:560px){.ln-nav{column-gap:12px}.ln-nav .btn-sm{display:none}.ln-nav .switch{font-size:13px}.ln-nav .switch a{padding:7px 11px}}
 

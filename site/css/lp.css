@@ -70,6 +70,16 @@
 .switch a[aria-current="page"]{background:var(--text);color:var(--surface)}
 .night .switch{border-color:var(--nline)}
 .night .switch a[aria-current="page"]{background:var(--ntext);color:var(--night)}
+/* sliding pill (js/switch.js adds .js and the .switch-pill; without JS the current link keeps its own background) */
+.switch{position:relative;isolation:isolate}
+.switch a{position:relative;z-index:1;transition:color .3s ease}
+.switch-pill{position:absolute;z-index:0;top:4px;bottom:4px;left:0;width:var(--w,0);transform:translateX(var(--x,0));border-radius:999px;background:var(--text);transition:transform .32s cubic-bezier(.4,0,.2,1),width .32s cubic-bezier(.4,0,.2,1)}
+.switch.js a[aria-current="page"]{background:none;color:inherit}
+.switch.js a.on{color:var(--surface)}
+.switch.no-anim .switch-pill,.switch.no-anim a{transition:none}
+@media (prefers-reduced-motion:reduce){.switch-pill,.switch a{transition:none}}
+.night .switch-pill{background:var(--ntext)}
+.night .switch.js a.on{color:var(--night)}
 
 /* buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 26px;border-radius:999px;font:600 16px/1 var(--sans);text-decoration:none;border:0;cursor:pointer;white-space:nowrap}
