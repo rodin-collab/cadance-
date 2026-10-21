@@ -1,0 +1,118 @@
+/* One Pulse, two winners · tabbed section (Founders / Your fund / Together).
+   Shared by index.html (inside .lp) and pulse.html (inside .pa). Everything is scoped to .sides
+   so it does not clash with lp.css. Tokens come from :root in lp.css / pulse.css. */
+.sides{display:flex;flex-direction:column;gap:28px;font-size:15px;line-height:1.5;color:var(--text);--panel-2:#1C2F2A}
+.sides *{box-sizing:border-box}
+.sides p,.sides h2,.sides h3{margin:0;font-weight:400}
+.sides ul,.sides ol{margin:0;padding:0;list-style:none}
+.sides .lab{font:500 11px/1.2 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--clay)}
+.sides .pnl .lab{color:var(--signal)}
+.sides .t-1{font-family:var(--serif);font-size:44px;line-height:1.02}
+.sides .t-3{font-family:var(--serif);font-size:24px;line-height:1.15}
+.sides .t-h{font-size:16px;font-weight:600;line-height:1.3}
+.sides .t-s{font-size:13px;line-height:1.45;color:var(--body)}
+.sides .ro{font:400 12px/1.4 var(--mono);color:var(--mute)}
+.sides .pnl .ro{color:var(--nmute)}
+.sides .row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.sides .nw{flex-wrap:nowrap}
+.sides .sb{justify-content:space-between}
+.sides .col{display:flex;flex-direction:column;gap:12px}
+.sides .gap6{gap:6px}
+.sides .card{background:var(--raised);border:1px solid var(--line);border-radius:18px;padding:22px}
+.sides .pnl{background:var(--panel);border:1px solid var(--nline);border-radius:18px;padding:20px;color:var(--ntext)}
+
+.sides-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px}
+.sides-head .t-1{max-width:720px}
+.sides-tabs{position:relative;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);padding:6px;background:var(--raised);border:1px solid var(--line);border-radius:999px}
+.sides-tabs button{position:relative;z-index:1;min-height:44px;padding:0 22px;border:0;border-radius:999px;background:none;font:600 15px/1 var(--sans);color:var(--body);cursor:pointer;white-space:nowrap;transition:color .35s}
+.sides-tabs button[aria-selected="true"]{color:var(--raised)}
+.sides-tabs button:focus-visible{outline:2px solid var(--signal-ink);outline-offset:2px}
+.sides-pill{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 12px) / 3);border-radius:999px;background:var(--text);transform:translateX(calc(var(--i,0) * 100%));transition:transform .45s cubic-bezier(.3,.7,.2,1);overflow:hidden}
+.sides-timer{position:absolute;left:14px;right:14px;bottom:5px;height:2px;border-radius:2px;background:var(--signal);transform-origin:0 50%;animation:sideTimer var(--t,7s) linear both}
+
+.sides-panel{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,480px);gap:48px;align-items:center}
+.sides-panel[hidden]{display:none}
+.side-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.side-card,.side-node,.side-pic,.side-note{animation:sideUp .5s both;animation-delay:var(--d,0s)}
+.side-card{transition:transform .25s,box-shadow .25s}
+.side-card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(20,32,30,.1)}
+.side-card:hover .side-ic svg{animation:sideWiggle .5s}
+.side-ic{display:grid;place-items:center;width:52px;height:52px;border-radius:16px;background:#F6E3DA;color:var(--clay);animation:sidePop .55s cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(var(--d,0s) + .15s)}
+.side-fund .side-ic{background:var(--tint);color:var(--signal-ink)}
+
+/* Founders picture: Team Report */
+.side-pic{gap:18px;padding:28px;border-radius:28px;box-shadow:0 24px 48px rgba(20,32,30,.1);animation-delay:.12s}
+.side-when{position:relative;width:130px;height:26px}
+.side-when span{position:absolute;top:0;right:0;padding:5px 12px;border-radius:999px;font:600 12px/1.3 var(--sans);white-space:nowrap}
+.side-when .t1{background:#F6E3DA;color:var(--clay-hover);animation:sideT1 6s ease-in-out infinite}
+.side-when .t2{background:#E2EFE8;color:var(--good);opacity:0;animation:sideT2 6s ease-in-out infinite}
+.side-trk{position:relative;display:block;height:28px;border-radius:999px;background:var(--surface)}
+.side-trk i{position:absolute;top:4px;width:20px;height:20px;border-radius:50%}
+.side-trk .me,.side-key .me{background:var(--text)}
+.side-trk .co{left:var(--b);background:var(--clay);animation:sideMeet 6s ease-in-out infinite}
+.side-key{gap:8px}
+.side-key i{display:inline-block;width:12px;height:12px;border-radius:50%}
+.side-key .co{background:var(--clay)}
+.side-ex{margin-left:auto}
+
+/* Your fund picture: Portfolio readout */
+.side-exd{color:var(--sun)}
+.side-bar{display:grid;grid-template-columns:112px minmax(0,1fr) 30px;gap:12px;align-items:center;font-size:14px}
+.side-bar-t{height:12px;border-radius:6px;background:var(--panel-2);overflow:hidden}
+.side-bar-t i{display:block;height:100%;width:var(--w);border-radius:6px;background:var(--signal);animation:sideGrow 1s .2s both}
+.side-bar-t i.look{background:var(--sun)}
+.side-alert{gap:12px;padding:12px 14px;border-radius:14px;background:var(--panel-2);font-size:14px}
+.side-glow{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--sun);color:var(--night);animation:sideGlow 2.4s infinite}
+
+/* Together: the loop */
+.sides-panel.side-both{display:flex;flex-direction:column;align-items:center;gap:32px}
+.sides-panel.side-both[hidden]{display:none}
+.side-loop-wrap{position:relative;width:100%}
+.side-loop{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;width:100%}
+.side-line{position:absolute;z-index:0;top:43px;left:12%;right:12%;height:2px;background:repeating-linear-gradient(90deg,var(--line-strong) 0 6px,transparent 6px 12px)}
+.side-line i{position:absolute;top:-6px;left:0;width:14px;height:14px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 4px rgba(95,224,185,.25);animation:sideTravel 4s linear infinite}
+.side-node{position:relative;z-index:1;align-items:center;gap:12px;text-align:center}
+.side-ic.big{width:88px;height:88px;border-radius:50%;border:4px solid var(--surface);background:var(--night);color:var(--signal);animation:sidePop .55s cubic-bezier(.3,1.6,.5,1) both calc(var(--d,0s) + .15s),sideLit 4s ease-in-out infinite calc(var(--n,0) * 1s + .7s)}
+.side-node.f .side-ic.big{background:#F6E3DA;color:var(--clay)}
+.side-note{gap:10px;padding:10px 18px;border-radius:999px;border:1px solid var(--line);background:var(--raised);color:var(--body);font-size:14px;animation-delay:.36s}
+.side-note svg{color:var(--signal-ink)}
+
+/* pause everything while the section is off-screen */
+.sides:not(.in) .sides-panel,.sides:not(.in) .sides-panel *,.sides:not(.in) .sides-timer{animation-play-state:paused}
+
+@keyframes sideTimer{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes sideUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes sidePop{from{opacity:0;transform:scale(.4) rotate(-12deg)}to{opacity:1;transform:none}}
+@keyframes sideWiggle{30%{transform:rotate(-10deg) scale(1.1)}60%{transform:rotate(8deg) scale(1.1)}}
+@keyframes sideT1{0%,15%{opacity:1}30%,85%{opacity:0}100%{opacity:1}}
+@keyframes sideT2{0%,25%{opacity:0}45%,70%{opacity:1}85%,100%{opacity:0}}
+@keyframes sideMeet{0%,15%{left:var(--b)}45%,70%{left:var(--c)}100%{left:var(--b)}}
+@keyframes sideGrow{from{width:0}}
+@keyframes sideGlow{0%,100%{box-shadow:0 0 0 0 rgba(227,144,108,.5)}50%{box-shadow:0 0 0 12px rgba(227,144,108,0)}}
+@keyframes sideTravel{to{left:calc(100% - 14px)}}
+@keyframes sideLit{0%,30%,100%{box-shadow:0 0 0 0 rgba(95,224,185,0)}12%{transform:scale(1.08);box-shadow:0 0 0 10px rgba(95,224,185,.35)}}
+
+@media (max-width:1000px){
+  .sides-panel{grid-template-columns:1fr}
+  .side-loop{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:32px}
+  .side-line{display:none}
+}
+@media (max-width:600px){
+  .sides .t-1{font-size:36px}
+  .sides-tabs{width:100%}
+  .sides-tabs button{padding:0 8px}
+  .side-cards{grid-template-columns:1fr;gap:10px}
+  .side-card{display:grid;grid-template-columns:52px minmax(0,1fr);gap:2px 14px;padding:16px}
+  .side-card .side-ic{grid-row:span 2}
+  .side-pic{padding:20px}
+  .side-bar{grid-template-columns:96px minmax(0,1fr) 26px}
+  .side-loop{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  .side-card,.side-node,.side-pic,.side-note,.side-bar-t i,.side-glow,.side-line i,.side-when span,.side-ic,.side-ic.big,.sides-timer,.side-trk .co,.side-card:hover .side-ic svg{animation:none}
+  .sides-pill,.side-card{transition:none}
+  .side-card:hover{transform:none}
+  .side-when .t1{opacity:0}.side-when .t2{opacity:1}
+  .side-trk .co{left:var(--c)}
+  .side-line i{display:none}
+}

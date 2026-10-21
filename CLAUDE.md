@@ -36,7 +36,7 @@ Funds' entry offer: **a free Portfolio Pulse** (at least 8 teams; readout presen
 - Light pages; data and Intelligence sections are dark (`.night .dots`).
 
 ## Calls to action
-- Every button (Free Portfolio Pulse, Talk to us, Book a pilot, Contact) opens https://cal.com/rodin-affourtit-pfsc88/30min-cadence in a new tab. There are no forms on the site.
+- Every button (Free Portfolio Pulse, Talk to us, Book a pilot, Contact) opens https://cal.com/founderscadence/30min-cadence in a new tab. There are no forms on the site.
 
 ## Hosting
 - Cloudflare (the domain registrar is also Cloudflare). The static `site/` folder is deployed through the GitHub integration, so each push to `main` goes live.
