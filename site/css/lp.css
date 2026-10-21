@@ -208,6 +208,8 @@
 @media (max-width:820px){.facts{grid-template-columns:1fr 1fr}.facts>div:nth-child(3){padding-left:0;border-left:0}}
 .tbl td.nw{white-space:nowrap}
 @media (max-width:860px){.nav-links{display:none}}
+/* phones: logo and audience switch on one row; the hero carries the main button */
+@media (max-width:560px){.nav{column-gap:12px}.nav>.row>.btn-sm{display:none}.nav .switch{font-size:13px}.nav .switch a{padding:7px 11px}}
 .gap-b{padding:28px 0 28px 40px;border-left:1px solid var(--line)}
 .gap-a{padding:28px 40px 28px 0}
 @media (max-width:900px){.gap-a{padding:24px 0}.gap-b{padding:24px 0;border-left:0;border-top:1px solid var(--line)}}
