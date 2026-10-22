@@ -869,7 +869,7 @@
 .pt-card h3{font:600 24px/1.2 var(--sans);margin:0}
 .pt-card .readout{letter-spacing:2px;text-transform:uppercase}
 .pt-ico{width:56px;height:56px;border-radius:14px;display:grid;place-items:center;background:var(--tint);color:var(--text);flex:none}
-.pt-price{font:400 38px/1 var(--serif);margin:4px 0 0}
+.pt-price{font:400 38px/1 var(--serif);margin:auto 0 0;padding-top:4px}
 .pt-bar{height:10px;border-radius:999px;background:var(--line);overflow:hidden}
 .pt-bar i{display:block;height:100%;width:var(--w);border-radius:inherit;background:var(--clay)}
 .pt-earn{font-weight:600;font-size:15px;color:var(--clay);margin:0}
