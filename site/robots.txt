@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /partner.html
+Disallow: /partner
