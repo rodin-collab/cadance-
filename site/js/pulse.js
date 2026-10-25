@@ -4,7 +4,7 @@
 var PULSE_LINKS = {
   start: 'https://app.founderscadence.com/fund/start',
   call: 'https://cal.com/founderscadence/30min-cadence',
-  sample: 'https://app.founderscadence.com/demo/fund',
+  sample: 'https://app.founderscadence.com/demo/fund#VC4', // the readout dashboard, not the demo's landing screen
   demo: 'https://app.founderscadence.com/demo' // + /fund#VC2, /founder#F4 ...
 };
 
