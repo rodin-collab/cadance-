@@ -44,8 +44,8 @@ svg.clay{color:var(--clay);flex:none}
 @media (max-width:560px){.ln-nav{column-gap:12px}.ln-nav .btn-sm{display:none}.ln-nav .switch{font-size:13px}.ln-nav .switch a{padding:7px 11px}}
 
 /* Cadence Intelligence top: the Pulse site's own header (brand book 10, 03).
-   A rounded night block on the dotted ground; the nav floats in it as a rounded ci-panel bar with one signal action. */
-.ci-top{position:relative;margin:12px;border-radius:18px;overflow:hidden;padding-top:20px}
+   A full-width night band on the dotted ground; the nav floats in it as a rounded ci-panel bar with one signal action. */
+.ci-top{position:relative;overflow:hidden;padding-top:20px}
 .ci-nav{position:relative;z-index:1;max-width:1240px;margin:0 auto;padding:10px 12px 10px 24px;border-radius:999px;background:var(--panel);border:1px solid var(--nline);width:calc(100% - 32px)}
 .ci-nav .brand{color:var(--ntext)}
 .ci-badge{display:inline-flex;align-items:center;margin-left:4px;padding-left:12px;border-left:1px solid var(--nline);height:22px;font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--nmute)}
@@ -76,7 +76,7 @@ svg.clay{color:var(--clay);flex:none}
 @keyframes ci-breathe{0%,80%,100%{transform:scale(1)}92%{transform:scale(1.6)}}
 @media (prefers-reduced-motion:reduce){.ci-trace,.ci-blip,.ci-glow{animation:none}.ci-blip{display:none}}
 @media (max-width:1100px){.ci-badge{display:none}}
-@media (max-width:560px){.ci-top{margin:8px;padding-top:12px}.ci-nav{width:calc(100% - 16px);padding-left:16px}.ci-top .ln-hero{padding-bottom:100px}.ci-nav .btn-sm{display:inline-flex;padding:0 14px;font-size:14px}}
+@media (max-width:560px){.ci-top{padding-top:12px}.ci-nav{width:calc(100% - 16px);padding-left:16px}.ci-top .ln-hero{padding-bottom:100px}.ci-nav .btn-sm{display:inline-flex;padding:0 14px;font-size:14px}}
 
 /* hero */
 .ln-wrap{max-width:1184px;margin:0 auto;padding:0 48px;box-sizing:content-box}
