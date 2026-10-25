@@ -2,10 +2,10 @@
    The page's outside links live here, in one place. Each link in pulse.html carries data-link
    and an href fallback with the same URL, so the page still works without JavaScript. */
 var PULSE_LINKS = {
-  start: 'https://pulse-demo.rodin.workers.dev/fund/start', // later: https://app.founderscadence.com/fund/start
+  start: 'https://app.founderscadence.com/fund/start',
   call: 'https://cal.com/founderscadence/30min-cadence',
-  sample: 'https://pulse-demo.rodin.workers.dev/demo/fund',
-  demo: 'https://pulse-demo.rodin.workers.dev/demo' // + /fund#VC2, /founder#F4 ...
+  sample: 'https://app.founderscadence.com/demo/fund',
+  demo: 'https://app.founderscadence.com/demo' // + /fund#VC2, /founder#F4 ...
 };
 
 (function () {
