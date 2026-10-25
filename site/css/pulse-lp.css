@@ -43,6 +43,41 @@ svg.clay{color:var(--clay);flex:none}
 @media (max-width:860px){.ln-links{display:none}}
 @media (max-width:560px){.ln-nav{column-gap:12px}.ln-nav .btn-sm{display:none}.ln-nav .switch{font-size:13px}.ln-nav .switch a{padding:7px 11px}}
 
+/* Cadence Intelligence top: the Pulse site's own header (brand book 10, 03).
+   A rounded night block on the dotted ground; the nav floats in it as a rounded ci-panel bar with one signal action. */
+.ci-top{position:relative;margin:12px;border-radius:18px;overflow:hidden;padding-top:20px}
+.ci-nav{position:relative;z-index:1;max-width:1240px;margin:0 auto;padding:10px 12px 10px 24px;border-radius:999px;background:var(--panel);border:1px solid var(--nline);width:calc(100% - 32px)}
+.ci-nav .brand{color:var(--ntext)}
+.ci-badge{display:inline-flex;align-items:center;margin-left:4px;padding-left:12px;border-left:1px solid var(--nline);height:22px;font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--nmute)}
+.ci-nav .ln-link{color:var(--nmute);opacity:1}
+.ci-nav .ln-link:hover{color:var(--ntext)}
+.ci-nav .switch{border-color:var(--nline)}
+.ci-nav .switch a{color:var(--nmute)}
+.ci-nav .switch a[aria-current="page"]{background:var(--ntext);color:var(--night)}
+.ci-top .btn-signal:hover{background:#86EBCC}
+.ci-top :focus-visible{outline-color:var(--signal)}
+.ci-top .ln-hero{position:relative;z-index:1;padding-bottom:96px}
+.ci-top .t-d{color:var(--ntext)}
+.ci-top .ln-readout{background:#12201C;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+/* the Team Report card stays a light founder card inside the night block */
+.ci-top .ln-team{color:var(--text)}
+.ci-top .ln-team .lab{color:var(--clay)}
+.ci-top .ln-team .t-s{color:var(--text)}
+.ci-top .ln-team .ro,.ci-top .ln-team .private{color:var(--mute)}
+.ci-top .ln-team .tag.ok{background:#DCEBE4;color:var(--good)}
+.ci-top .ln-team .tag.warn{background:#F2E3C6;color:var(--watch)}
+.ci-beat{position:absolute;left:64%;bottom:18px;margin-left:-1434px}
+/* heartbeat motion (brand book 08 rule 05): the teal line draws in once, then a bright blip runs along it every 3.2 s and the end dot breathes */
+.ci-trace{stroke-dasharray:100;stroke-dashoffset:0;animation:ci-draw 1.6s ease-out both}
+.ci-blip{stroke-dasharray:4 200;stroke-dashoffset:4;opacity:0;animation:ci-blip 3.2s linear 1.6s infinite}
+.ci-glow{transform-box:fill-box;transform-origin:center;animation:ci-breathe 3.2s ease-in-out 1.6s infinite}
+@keyframes ci-draw{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+@keyframes ci-blip{0%{stroke-dashoffset:4;opacity:1}100%{stroke-dashoffset:-100;opacity:1}}
+@keyframes ci-breathe{0%,80%,100%{transform:scale(1)}92%{transform:scale(1.6)}}
+@media (prefers-reduced-motion:reduce){.ci-trace,.ci-blip,.ci-glow{animation:none}.ci-blip{display:none}}
+@media (max-width:1100px){.ci-badge{display:none}}
+@media (max-width:560px){.ci-top{margin:8px;padding-top:12px}.ci-nav{width:calc(100% - 16px);padding-left:16px}.ci-top .ln-hero{padding-bottom:100px}.ci-nav .btn-sm{display:inline-flex;padding:0 14px;font-size:14px}}
+
 /* hero */
 .ln-wrap{max-width:1184px;margin:0 auto;padding:0 48px;box-sizing:content-box}
 .ln-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,520px);gap:48px;align-items:center;max-width:1184px;margin:0 auto;padding:40px 48px 72px;box-sizing:content-box}
