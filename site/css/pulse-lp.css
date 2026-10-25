@@ -66,7 +66,15 @@ svg.clay{color:var(--clay);flex:none}
 .ci-top .ln-team .ro,.ci-top .ln-team .private{color:var(--mute)}
 .ci-top .ln-team .tag.ok{background:#DCEBE4;color:var(--good)}
 .ci-top .ln-team .tag.warn{background:#F2E3C6;color:var(--watch)}
-.ci-beat{position:absolute;left:0;bottom:18px;width:100%;height:60px}
+.ci-beat{position:absolute;left:64%;bottom:18px;margin-left:-1434px}
+/* heartbeat motion (brand book 08 rule 05): the teal line draws in once, then a bright blip runs along it every 3.2 s and the end dot breathes */
+.ci-trace{stroke-dasharray:100;stroke-dashoffset:0;animation:ci-draw 1.6s ease-out both}
+.ci-blip{stroke-dasharray:4 200;stroke-dashoffset:4;opacity:0;animation:ci-blip 3.2s linear 1.6s infinite}
+.ci-glow{transform-box:fill-box;transform-origin:center;animation:ci-breathe 3.2s ease-in-out 1.6s infinite}
+@keyframes ci-draw{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+@keyframes ci-blip{0%{stroke-dashoffset:4;opacity:1}100%{stroke-dashoffset:-100;opacity:1}}
+@keyframes ci-breathe{0%,80%,100%{transform:scale(1)}92%{transform:scale(1.6)}}
+@media (prefers-reduced-motion:reduce){.ci-trace,.ci-blip,.ci-glow{animation:none}.ci-blip{display:none}}
 @media (max-width:1100px){.ci-badge{display:none}}
 @media (max-width:560px){.ci-top{margin:8px;padding-top:12px}.ci-nav{width:calc(100% - 16px);padding-left:16px}.ci-top .ln-hero{padding-bottom:100px}.ci-nav .btn-sm{display:inline-flex;padding:0 14px;font-size:14px}}
 
