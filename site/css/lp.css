@@ -20,8 +20,8 @@
 
 /* layout */
 .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
-.sec{padding:clamp(72px,8vw,112px) 0}
-.sec-tight{padding:clamp(48px,6vw,80px) 0}
+.sec{padding-block:clamp(72px,8vw,112px)}
+.sec-tight{padding-block:clamp(48px,6vw,80px)}
 .grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:clamp(32px,5vw,72px);align-items:start}
 .grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px}
 .grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:20px}
@@ -286,6 +286,7 @@
 .wkp img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.88) contrast(1.02)}
 .wkp figcaption{position:absolute;left:14px;bottom:14px;background:rgba(250,248,243,.92);border-radius:999px;padding:7px 14px}
 .wkp figcaption .readout{color:var(--text)}
+@media (max-width:560px){.wkp figcaption{left:10px;right:10px;bottom:10px;width:fit-content;border-radius:12px;padding:6px 10px}.wkp figcaption .readout{display:block;line-height:1.35}}
 @media (max-width:820px){.wk-photos{grid-template-columns:1fr 1fr;grid-template-rows:auto auto;height:auto}.wkp.big{grid-column:1 / span 2;grid-row:auto;aspect-ratio:4/3}.wkp{aspect-ratio:1}}
 
 /* horizon v2: each station acts when its step's progress line comes by (10s cycle, 2s per step) */
@@ -491,6 +492,7 @@
 @keyframes app-p{50%{box-shadow:0 0 0 7px rgba(227,144,108,.05)}}
 @media (prefers-reduced-motion:reduce){.app-dot{animation:none}}
 .in2-badge{display:block;width:fit-content;margin:10px 0 0}
+@media (max-width:560px){.in2-badge{line-height:1.35;border-radius:12px}}
 
 /* ── Weekend flow: build-up animation + payback card ─────────────────────
    Add to the end of site/css/lp.css. Uses the existing brand tokens.
@@ -612,6 +614,7 @@
 .wsw-row{display:grid;grid-template-columns:48px 1fr auto;gap:18px;align-items:center;padding:20px 24px}
 .wsw-row+.wsw-row{border-top:1px solid var(--line)}
 .wsw-row.fund{background:#E7EEEB}
+@media (max-width:560px){.wsw-row{grid-template-columns:40px minmax(0,1fr);gap:8px 14px;padding:18px}.wsw-tag{grid-column:2;justify-self:start}}
 .wsw-tag{font:500 13px/1 var(--mono);padding:8px 12px;border-radius:999px;border:1px solid var(--line);white-space:nowrap}
 .wsw-row.fund .wsw-tag{background:var(--text);color:var(--surface);border-color:var(--text)}
 .night .wsw{background:var(--panel);border-color:var(--nline)}
@@ -795,6 +798,7 @@
 .i-plat{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(28px,4vw,56px);align-items:start}
 .i-plat .f-stage{min-height:880px}
 .i-plat .f-float{top:430px;width:min(340px,72%)}
+@media (max-width:900px){.i-plat .f-float{top:auto;width:100%}.f-phone{width:calc(100% - 20px);margin-left:10px}}
 .i-pgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .i-pcard{display:flex;flex-direction:column;gap:10px;background:var(--panel);border:1px solid var(--nline);border-radius:18px;padding:20px}
 .i-pcard .h4{color:var(--ntext);font-size:18px}
