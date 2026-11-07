@@ -37,3 +37,23 @@
     });
   });
 })();
+
+/* Phone menu: the Menu button opens the panel with the page links; a link, Close or Escape shuts it. */
+(function () {
+  var btn = document.querySelector('.nav-toggle');
+  var panel = document.getElementById('nav-panel');
+  if (!btn || !panel) return;
+  function set(open) {
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    panel.hidden = !open;
+    document.documentElement.classList.toggle('menu-open', open);
+  }
+  btn.addEventListener('click', function () { set(panel.hidden); });
+  panel.addEventListener('click', function (e) { if (e.target.closest('a')) set(false); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !panel.hidden) { set(false); btn.focus(); }
+  });
+  window.addEventListener('resize', function () {
+    if (!panel.hidden && getComputedStyle(btn).display === 'none') set(false); // wide again: links are back in the bar
+  });
+})();
