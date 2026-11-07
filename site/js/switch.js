@@ -43,10 +43,17 @@
   var btn = document.querySelector('.nav-toggle');
   var panel = document.getElementById('nav-panel');
   if (!btn || !panel) return;
+  var header = btn.closest('header');
   function set(open) {
     btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     panel.hidden = !open;
     document.documentElement.classList.toggle('menu-open', open);
+    // keep focus inside the open menu: everything beside the header is inert
+    for (var el = header; el && el !== document.body; el = el.parentElement) {
+      Array.prototype.forEach.call(el.parentElement.children, function (sib) {
+        if (sib !== el && sib.tagName !== 'SCRIPT') sib.inert = open;
+      });
+    }
   }
   btn.addEventListener('click', function () { set(panel.hidden); });
   panel.addEventListener('click', function (e) { if (e.target.closest('a')) set(false); });
