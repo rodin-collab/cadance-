@@ -1,0 +1,1353 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The method · Cadence</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+<script>try{if(sessionStorage.getItem('tide'))document.documentElement.classList.add('arrive')}catch(e){}</script><link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+/* Layout concept: a system schematic. One signal line runs down the left; every stage is
+   a row of "starts from -> live panel -> you get"; the team record at the bottom collects the outputs. */
+:root{
+  --surface:#f3efe7; --raised:#fbf9f4; --tint:#eaf1ef;
+  --line:#dcd4c4; --line-strong:#8c8373;
+  --text:#14201e; --body:#46524f; --mute:#5e6a67; --text-hover:#2a3a37;
+  --clay:#a8472a; --clay-hover:#8f3b22; --on-clay:#ffffff;
+  --sig:#0b6b55; --focus:#0b6b55; --watch:#7a5600; --water:#5d8c87; --water-soft:#a9c7c1;
+  --ci-ground:#0e1a18; --ci-panel:#15241f; --ci-line:#2a3d38; --ci-text:#eaf1ee; --ci-mute:#bfd0cb;
+  --ci-sun:#e3906c; --ci-water:#8fb1ac; --signal:#5fe0b9; --signal-hover:#86ebcc; --on-signal:#0e1a18;
+  --water-top:#3f6e66; --water-deep:#11231f; --spring:#fbf7ee; --sunw:clamp(120px,18vw,200px);
+  --signal-glow:rgba(95,224,185,.24); --ci-dot:rgba(191,208,203,.22); --ci-watch:#e7b85c;
+  --display:"Instrument Serif",Georgia,serif;
+  --sans:"Inter Tight",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r-sm:6px; --r-md:12px; --r-lg:18px; --r-pill:999px; --ctl:48px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --surface:#121e1c; --raised:#182724; --tint:#13221e; --line:#2c3e3a; --line-strong:#5e7570;
+  --text:#eaf1ee; --body:#bfd0cb; --mute:#93a6a1; --text-hover:#ffffff;
+  --clay:#e3906c; --clay-hover:#eaa384; --on-clay:#14201e;
+  --sig:#5fe0b9; --focus:#5fe0b9; --watch:#e7b85c; --water:#8fb1ac; --water-soft:#2f4a45;
+  --ci-ground:#091311; --ci-panel:#132320; --water-top:#24443f; --water-deep:#0a1613; --spring:#2c4f48; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --surface:#121e1c; --raised:#182724; --tint:#13221e; --line:#2c3e3a; --line-strong:#5e7570;
+  --text:#eaf1ee; --body:#bfd0cb; --mute:#93a6a1; --text-hover:#ffffff;
+  --clay:#e3906c; --clay-hover:#eaa384; --on-clay:#14201e;
+  --sig:#5fe0b9; --focus:#5fe0b9; --watch:#e7b85c; --water:#8fb1ac; --water-soft:#2f4a45;
+  --ci-ground:#091311; --ci-panel:#132320; --water-top:#24443f; --water-deep:#0a1613; --spring:#2c4f48; color-scheme:dark }
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:calc(64px + env(safe-area-inset-top,0px))}
+body{background:var(--surface); color:var(--body); font:400 16px/24px var(--sans); -webkit-font-smoothing:antialiased}
+body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:10; background:var(--surface)}
+h1,h2,h3,p,ul,ol,figure{margin:0} ul,ol{padding:0; list-style:none}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--focus); outline-offset:2px; border-radius:4px}
+.wrap{max-width:1160px; margin-inline:auto; padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px))}
+@media (min-width:700px){ .wrap{padding-left:max(32px,env(safe-area-inset-left,0px)); padding-right:max(32px,env(safe-area-inset-right,0px))} }
+
+/* type */
+.mono{font:500 12px/16px var(--mono); letter-spacing:.14em; text-transform:uppercase}
+.eyebrow{color:var(--clay)} .ci .eyebrow{color:var(--signal)}
+.serif{font-family:var(--display); font-weight:400; color:var(--text)}
+h1,h2{font-family:var(--display); font-weight:400; color:var(--text); text-wrap:balance}
+.h-l{font-size:clamp(34px,5vw,56px); line-height:1.02}
+.h-m{font-size:clamp(28px,3.6vw,40px); line-height:1.08}
+.lead{font-size:clamp(17px,1.6vw,20px); line-height:1.5}
+.small{font-size:14px; line-height:20px; color:var(--mute)}
+.readout{font:400 13px/20px var(--mono); color:var(--mute)}
+strong{color:var(--text); font-weight:600}
+.prose{display:flex; flex-direction:column; gap:16px; max-width:60ch}
+
+/* the night register: remap the same tokens */
+.ci{--surface:var(--ci-ground); --raised:var(--ci-panel); --line:var(--ci-line); --line-strong:#5e7570;
+  --text:var(--ci-text); --body:var(--ci-mute); --mute:var(--ci-mute); --sig:var(--signal); --focus:var(--signal); --watch:var(--ci-watch); --water:var(--ci-water);
+  color:var(--body); background-color:var(--surface);
+  background-image:radial-gradient(circle at 1px 1px,var(--ci-dot) 1px,transparent 1.3px); background-size:18px 18px}
+
+/* controls */
+.btn{display:inline-flex; align-items:center; justify-content:center; min-height:var(--ctl); padding:0 24px; border-radius:var(--r-pill);
+  font:600 15px/20px var(--sans); text-decoration:none; border:1px solid transparent; cursor:pointer; transition:background-color .12s, border-color .12s}
+.btn-clay{background:var(--clay); color:var(--on-clay)} .btn-clay:hover{background:var(--clay-hover)}
+.btn-line{border-color:var(--line-strong); color:var(--text); background:transparent} .btn-line:hover{border-color:var(--text)}
+.btn-signal{background:var(--signal); color:var(--on-signal)} .btn-signal:hover{background:var(--signal-hover)}
+.btn-row{display:flex; flex-wrap:wrap; gap:12px}
+.chip{display:inline-flex; align-items:center; gap:8px; min-height:40px; padding:0 14px; border-radius:var(--r-pill); border:1px solid var(--line-strong);
+  background:transparent; color:var(--text); font:500 14px/20px var(--sans); cursor:pointer; transition:background-color .12s,border-color .12s,color .12s}
+.chip::before{content:"+"; font-family:var(--mono); color:var(--sig)}
+.chip.plain::before{content:none}
+.chip[aria-pressed="true"]{background:var(--signal); border-color:var(--signal); color:var(--on-signal)}
+.chip[aria-pressed="true"]::before{content:"\2713"; color:var(--on-signal)}
+.link{color:var(--clay); font-weight:600; text-decoration:none; border-bottom:1px solid currentColor}
+.link:hover{color:var(--clay-hover)}
+.ph{display:inline; font:400 13px/20px var(--mono); color:var(--watch); border:1px dashed var(--watch); border-radius:var(--r-sm); padding:1px 6px; background:transparent}
+.ph-block{display:block; padding:12px 14px}
+.tag{font:500 11px/14px var(--mono); letter-spacing:.12em; text-transform:uppercase; color:var(--mute); border:1px solid var(--line); border-radius:var(--r-pill); padding:4px 10px; white-space:nowrap}
+
+/* header + depth gauge */
+.site{display:flex; align-items:center; justify-content:space-between; gap:16px; padding-block:16px}
+.brand{display:flex; align-items:center; gap:10px; text-decoration:none; font:400 26px/1 var(--display); color:var(--text)}
+.site nav{display:flex; gap:20px; font:600 15px/20px var(--sans)} .site nav a{text-decoration:none; color:var(--body); padding-block:10px}
+.site nav a:hover{color:var(--text)}
+.gauge{position:sticky; top:env(safe-area-inset-top,0px); z-index:9; background:var(--surface); border-block:1px solid var(--line)}
+.gauge ol{display:flex; gap:4px; overflow-x:auto; scrollbar-width:none; padding-block:6px} .gauge ol::-webkit-scrollbar{display:none}
+.gauge a{display:flex; align-items:center; gap:8px; min-height:40px; padding:0 12px; border-radius:var(--r-pill); text-decoration:none; white-space:nowrap;
+  font:500 12px/16px var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--mute)}
+.gauge a b{font-weight:500; color:var(--sig)}
+.gauge a:hover{color:var(--text)}
+.gauge a[aria-current="true"]{background:var(--ci-ground); color:var(--ci-text)} .gauge a[aria-current="true"] b{color:var(--signal)}
+
+/* hero */
+.hero{display:grid; gap:40px; padding-block:48px 56px; align-items:center}
+.hero-copy{display:flex; flex-direction:column; gap:20px; min-width:0}
+.hero h1 span{display:block}
+.loop{border-radius:var(--r-lg); padding:16px; border:1px solid var(--ci-line)}
+.loop svg{display:block; width:100%; height:auto; max-width:460px; margin-inline:auto}
+.loop .ring{fill:none; stroke:var(--ci-line); stroke-width:2}
+.loop .spoke{stroke:var(--ci-line); stroke-width:1.5; stroke-dasharray:3 5}
+.loop .nd{fill:var(--ci-panel); stroke:var(--signal); stroke-width:2}
+.loop .num{font:500 15px var(--mono); fill:var(--signal); text-anchor:middle}
+.loop .lbl{font:400 22px var(--display); fill:var(--ci-text)}
+.loop .sub{font:400 11px var(--mono); fill:var(--ci-mute); letter-spacing:.08em}
+.loop .rec{fill:var(--ci-panel); stroke:var(--ci-line)}
+.loop .arr{fill:var(--ci-mute)}
+.loop .blip{transform-origin:220px 200px; animation:orbit 14s linear infinite}
+@keyframes orbit{to{transform:rotate(360deg)}}
+@media (min-width:920px){ .hero{grid-template-columns:minmax(0,7fr) minmax(0,5fr); gap:56px; padding-block:64px 72px} }
+
+/* system overview */
+.band{background:var(--tint); border-block:1px solid var(--line)}
+.sec{padding-block:56px; display:flex; flex-direction:column; gap:32px}
+@media (min-width:920px){ .sec{padding-block:72px} }
+.sec-head{display:flex; flex-direction:column; gap:12px; max-width:760px}
+.flow{display:grid; gap:12px}
+.flow li{background:var(--raised); border:1px solid var(--line); border-radius:var(--r-lg); padding:20px; display:flex; flex-direction:column; gap:14px; position:relative; min-width:0}
+.flow .q{font:400 24px/1.1 var(--display); color:var(--text)}
+.flow dl{margin:0; display:grid; gap:10px; margin-top:auto}
+.flow dt{font:500 11px/14px var(--mono); letter-spacing:.12em; text-transform:uppercase; color:var(--mute)}
+.flow dd{margin:2px 0 0; font-size:15px; line-height:20px; color:var(--text)}
+.flow dd.get{font-weight:600}
+.flow a.go{position:absolute; inset:0; border-radius:var(--r-lg)} .flow a.go:hover{box-shadow:0 0 0 1px var(--line-strong)}
+@media (min-width:640px){ .flow{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (min-width:1000px){ .flow{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .flow li:not(:last-child)::after{content:""; position:absolute; right:-13px; top:30px; width:13px; height:2px; background:var(--sig)} }
+.rhythm{display:grid; gap:0; border-top:1px solid var(--line)}
+.rhythm div{padding:14px 0; border-bottom:1px solid var(--line); display:flex; flex-direction:column; gap:4px}
+.rhythm span{color:var(--text)}
+@media (min-width:760px){ .rhythm{grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); border-top:0; row-gap:20px}
+  .rhythm div{border-bottom:0; border-top:2px solid var(--line-strong); padding:14px 16px 0 0} }
+
+/* stages + the line */
+.stages{position:relative}
+.rail{position:absolute; left:11px; top:0; bottom:0; width:2px; background:var(--line)}
+.rail i{display:block; height:100%; background:var(--sig); transform-origin:top; transform:scaleY(var(--p,1))}
+.stage{position:relative; padding:48px 0 48px 40px; display:flex; flex-direction:column; gap:28px}
+.node{position:absolute; left:0; top:48px; width:24px; height:24px; border-radius:50%; background:var(--surface); border:2px solid var(--sig);
+  display:grid; place-items:center; font:500 12px/1 var(--mono); color:var(--sig)}
+.stage-head{display:flex; flex-direction:column; gap:12px}
+.stage-meta{display:flex; flex-wrap:wrap; align-items:center; gap:10px}
+.from{font:400 13px/20px var(--mono); color:var(--sig); border:1px solid var(--line); border-radius:var(--r-pill); padding:3px 12px; background:var(--raised)}
+.stage-body{display:grid; gap:28px; align-items:start}
+.stage-body > *{min-width:0}
+@media (min-width:920px){ .rail{left:23px} .stage{padding:36px 0 36px 88px; gap:28px} .node{top:36px; width:48px; height:48px; font-size:16px}
+  .stage-body{grid-template-columns:minmax(0,5fr) minmax(0,6fr); gap:48px} }
+.out{border:1px solid var(--line); background:var(--raised); border-radius:var(--r-lg); padding:20px 24px; display:grid; gap:8px}
+.out p{font-size:17px; line-height:26px} .out strong{font:400 26px/1.15 var(--display)}
+.out .next{font:400 13px/20px var(--mono); color:var(--sig); text-decoration:none} .out a.next:hover{text-decoration:underline}
+
+/* demo panels */
+.panel{border-radius:var(--r-lg); border:1px solid var(--ci-line); padding:20px; display:flex; flex-direction:column; gap:20px}
+@media (min-width:640px){ .panel{padding:24px} }
+.panel-head{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
+.panel h3{font:500 12px/16px var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--ci-text)}
+.rule{height:1px; background:var(--ci-line)}
+.els{display:flex; gap:16px; align-items:center}
+.blob{flex:none; width:56px; height:56px; background:var(--signal); border-radius:46% 54% 58% 42% / 52% 44% 56% 48%; box-shadow:0 0 0 8px var(--signal-glow); animation:blob 6s ease-in-out infinite}
+@keyframes blob{50%{border-radius:56% 44% 42% 58% / 44% 56% 46% 54%; transform:scale(1.05)}}
+.els q{quotes:none; font:400 clamp(20px,2.4vw,26px)/1.2 var(--display); color:var(--ci-text); min-height:2.4em; display:block}
+.caret::after{content:""; display:inline-block; width:2px; height:1em; background:var(--signal); margin-left:3px; vertical-align:-.12em}
+.chips{display:flex; flex-wrap:wrap; gap:8px}
+.map{display:grid; gap:6px; counter-reset:r}
+.map li{counter-increment:r; display:grid; grid-template-columns:28px minmax(0,1fr); gap:4px 10px; align-items:start; padding:10px 12px; background:var(--ci-panel); border:1px solid var(--ci-line); border-radius:var(--r-md); color:var(--ci-text); font-size:15px; line-height:20px}
+.map li::before{content:counter(r); font:500 13px/20px var(--mono); color:var(--signal)}
+.map li small{grid-column:2; font:400 11px/14px var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--ci-mute)}
+.map li.new{animation:flash .9s ease-out}
+@keyframes flash{from{border-color:var(--signal); background:#1d3a32}}
+
+.pair{position:relative; display:grid; gap:16px}
+.axis{display:grid; gap:6px}
+.axis-top{display:flex; justify-content:space-between; gap:8px; font:400 12px/16px var(--mono); color:var(--ci-mute)}
+.axis-top b{font-weight:500; color:var(--ci-text)}
+.track{position:relative; height:24px}
+.track::before{content:""; position:absolute; left:0; right:0; top:11px; height:2px; background:var(--ci-line)}
+.gap{position:absolute; top:11px; height:2px; background:var(--ci-mute); left:calc(var(--lo)*1%); width:calc((var(--hi) - var(--lo))*1%); transition:left .4s ease-out,width .4s ease-out}
+.mk{position:absolute; top:5px; width:14px; height:14px; margin-left:-7px; transition:left .4s ease-out}
+.mk.a{left:calc(var(--a)*1%); background:var(--ci-water); border-radius:50%}
+.mk.b{left:calc(var(--b)*1%); background:var(--ci-sun); transform:rotate(45deg); border-radius:2px}
+.pair[data-open="false"] .mk{left:50%} .pair[data-open="false"] .gap{left:50%; width:0}
+.pair[data-open="false"] .axes{filter:blur(7px); opacity:.55} .pair[data-open="false"] .verdict{visibility:hidden}
+.axes{display:grid; gap:16px; transition:filter .3s ease-out,opacity .3s ease-out}
+.veil{position:absolute; inset:0; display:grid; place-items:center; text-align:center; padding:16px; font:400 20px/1.2 var(--display); color:var(--ci-text)}
+.pair[data-open="true"] .veil{display:none}
+.legend{display:flex; flex-wrap:wrap; gap:6px 18px; font:400 12px/16px var(--mono); color:var(--ci-mute)}
+.legend span{display:inline-flex; align-items:center; gap:8px}
+.legend i{width:12px; height:12px; display:inline-block} .legend .a{background:var(--ci-water); border-radius:50%} .legend .b{background:var(--ci-sun); transform:rotate(45deg); border-radius:2px}
+
+.two{display:grid; gap:20px}
+.seats{display:block; width:100%; max-width:240px; height:auto; margin-inline:auto}
+.seats .ring{fill:none; stroke:var(--ci-line); stroke-width:1.5; stroke-dasharray:3 5}
+.seats .peer{fill:var(--ci-water)} .seats .op{fill:var(--signal)} .seats .free{fill:var(--ci-panel); stroke:var(--ci-mute); stroke-width:1.5; stroke-dasharray:3 3}
+.seats text{font:400 11px var(--mono); fill:var(--ci-mute); text-anchor:middle} .seats .mid{font:400 18px var(--display); fill:var(--ci-text)}
+.field{display:flex; flex-wrap:wrap; gap:8px}
+.field output, .field .say{flex:1 1 220px; min-width:0; min-height:var(--ctl); display:flex; align-items:center; padding:10px 14px; border:1px solid #5e7570; border-radius:var(--r-md); background:var(--ci-panel); color:var(--ci-text); font-size:15px; line-height:20px}
+.topic{font:400 13px/20px var(--mono); color:var(--signal)}
+.experts{display:grid; gap:8px}
+.experts li{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 14px; border:1px solid var(--ci-line); border-radius:var(--r-md); background:var(--ci-panel); color:var(--ci-text); font-size:15px; line-height:20px}
+.experts li.best{border-color:var(--signal)}
+.experts small{font:400 11px/14px var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--ci-mute); white-space:nowrap}
+.experts li.best small{color:var(--signal)}
+.experts.run li{animation:slide .4s ease-out both} .experts.run li:nth-child(2){animation-delay:.12s} .experts.run li:nth-child(3){animation-delay:.24s}
+@keyframes slide{from{opacity:0; transform:translateX(16px)}}
+
+.checks{display:grid; gap:14px}
+.checks-head, .checks-row{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px}
+.checks-head span{font:500 11px/14px var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--ci-mute)}
+.checks-name{font:500 12px/16px var(--mono); color:var(--ci-text); margin-bottom:-8px}
+
+/* goal module */
+.goal{display:grid; gap:8px; padding:14px; background:var(--ci-panel); border:1px solid var(--ci-line); border-radius:var(--r-md)}
+.goal[hidden]{display:none}
+.goal-t{font:400 20px/1.2 var(--display); color:var(--ci-text)}
+.gbar{display:flex; align-items:center; gap:10px; font:500 12px/16px var(--mono); color:var(--ci-text)}
+.gbar i{position:relative; flex:1; height:14px; min-width:0}
+.gbar i::before{content:""; position:absolute; left:0; right:0; top:6px; border-top:2px dotted var(--ci-mute)}
+.gbar b{position:absolute; left:0; top:5px; width:45%; height:4px; border-radius:2px; background:var(--signal)}
+.gbar b::before{content:""; position:absolute; left:0; top:-3px; width:10px; height:10px; border-radius:50%; background:var(--signal)}
+.gbar em{position:absolute; left:45%; top:1px; width:12px; height:12px; margin-left:-6px; border-radius:50%; background:var(--ci-panel); border:2px solid var(--signal); box-sizing:border-box}
+.gmeta{font:400 12px/16px var(--mono); color:var(--ci-mute)}
+.gdesc{font-size:14px; line-height:20px; color:var(--ci-mute)}
+.duo-wrap{display:grid; gap:14px; min-width:0}
+.duo{display:grid; gap:16px; align-items:start} .duo > *{min-width:0}
+@media (min-width:1180px){ .duo{grid-template-columns:minmax(0,5fr) minmax(0,4fr)} .duo .panel{padding:18px} }
+.gchart{display:block; width:100%; height:auto; max-width:300px}
+.gchart text{font:400 10px var(--mono); fill:var(--ci-mute)}
+.gchart .tgt{stroke:var(--ci-mute); stroke-width:1.5; stroke-dasharray:2 5; stroke-linecap:round}
+.gchart .ax{fill:none; stroke:var(--ci-line); stroke-width:1.5}
+.gchart .ln{fill:none; stroke:var(--ci-water); stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:1; stroke-dashoffset:0}
+.gchart .pt{fill:var(--ci-text)} .gchart .pt.ok{fill:var(--signal)} .gchart .pt.risk{fill:none; stroke:var(--ci-sun); stroke-width:2}
+.gchart.arm .ln{stroke-dashoffset:1} .gchart.arm .pt{opacity:0}
+.gchart.arm.play .ln{stroke-dashoffset:0; transition:stroke-dashoffset .8s ease-out}
+.gchart.arm.play .pt{opacity:1; transition:opacity .4s ease-out; transition-delay:calc(var(--i)*.13s)}
+.legend .ok{background:var(--signal); border-radius:50%} .legend .risk{border:2px solid var(--ci-sun); border-radius:50%; box-sizing:border-box}
+.trust{color:var(--ci-mute)}
+/* fund block */
+.fund{display:grid; gap:32px; align-items:start} .fund > *{min-width:0}
+.fund-copy{display:grid; gap:20px}
+.fund-list{display:grid; gap:12px}
+@media (min-width:920px){ .fund{grid-template-columns:minmax(0,6fr) minmax(0,5fr); gap:56px} }
+.pp-h{font:400 13px/20px var(--mono); color:var(--ci-mute); margin-bottom:8px}
+.pp-rows{display:grid; gap:2px}
+.pp-rows li{display:grid; grid-template-columns:minmax(0,9.5em) minmax(0,1fr); gap:12px; align-items:center; padding:6px 8px; margin-inline:-8px; border-radius:var(--r-md); color:var(--ci-text); font-size:15px; line-height:20px}
+.pp-rows li:hover{background:var(--ci-panel)}
+.pp-rows i{display:block; height:10px}
+.pp-rows b{display:block; height:100%; width:var(--w); border-radius:5px; background:var(--ci-water); transform-origin:left}
+.pp-rows em{font:400 13px/20px var(--mono); font-style:normal; color:var(--ci-mute)}
+.pp-dots{display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; font:400 13px/20px var(--mono); color:var(--ci-text)}
+.pp-dots .dots{display:inline-flex; gap:6px}
+.pp-dots i{width:14px; height:14px; border-radius:50%; border:2px solid var(--ci-mute); box-sizing:border-box}
+.pp-dots i.on{background:var(--signal); border-color:var(--signal)}
+.pp.arm .pp-rows b{transform:scaleX(0)} .pp.arm .pp-dots i.on{background:transparent; border-color:var(--ci-mute)}
+.pp.arm.play .pp-rows b{transform:none; transition:transform .8s ease-out}
+.pp.arm.play .pp-dots i.on{background:var(--signal); border-color:var(--signal); transition:background .2s ease-out, border-color .2s ease-out; transition-delay:calc(.3s + var(--i)*.12s)}
+
+/* hero: sentence on top, the four lines on the loop */
+.hero2{display:grid; gap:32px; align-items:center; padding-block:clamp(32px,4vw,48px) clamp(40px,5vw,64px)}
+.hero2 > *{min-width:0}
+.vb-top{display:grid; gap:20px}
+.hero2 h1{font-size:clamp(36px,4.6vw,60px); line-height:1.02; max-width:15ch}
+.hero2 .lead{max-width:48ch}
+.va-big{display:none; width:100%; max-width:680px; height:auto; margin-inline:auto}
+.va-big .ring{fill:none; stroke:var(--water-soft); stroke-width:9; stroke-linecap:round}
+.va-big .arr{fill:var(--water)} .va-big .nd{fill:var(--tint); stroke:var(--water); stroke-width:2}
+.va-big use{fill:none; stroke:var(--sig); stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round}
+.va-big .cim{--m-sun:var(--clay); --m-line:var(--sig); opacity:.85}
+.va-big .vp{font:400 28px var(--display); fill:var(--text)}
+.va-big .st{font:500 12px var(--mono); letter-spacing:.14em; fill:var(--sig)}
+.va-big .mid{font:400 16px var(--display); fill:var(--text); text-anchor:middle}
+.va-big .trav{transform-origin:360px 255px; animation:orbit 18s linear infinite}
+.va-big .csun{transform-box:fill-box; transform-origin:50% 100%; animation:breathe 3.2s ease-in-out infinite alternate}
+.vb-steps{position:relative; display:grid; gap:20px}
+.vb-steps li{position:relative; display:grid; grid-template-columns:44px minmax(0,1fr); gap:6px 14px; align-items:center}
+.vb-steps .badge{position:relative; z-index:1; grid-row:span 2}
+.vb-steps .mono{color:var(--sig)}
+.vb-steps .vp{font:400 22px/1.12 var(--display); color:var(--text); grid-column:2}
+.vb-steps::before{content:""; position:absolute; left:21px; top:22px; bottom:22px; width:2px; background:var(--water-soft)}
+@media (min-width:900px){ .hero2{grid-template-columns:minmax(0,5fr) minmax(0,6fr); gap:40px} .va-big{display:block} .hero2 .vb-steps{display:none} }
+@media (prefers-reduced-motion:reduce){ .va-big .trav, .va-big .csun{animation:none} }
+
+.rhythm div span:last-child{font:400 clamp(19px,1.6vw,21px)/1.2 var(--display)}
+
+/* circle variations */
+.vbar{background:var(--ci-ground); color:var(--ci-text); padding:14px 0; border-top:1px solid var(--ci-line)}
+.vbar .wrap{display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 16px}
+.vbar b{font:500 12px/16px var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--signal)}
+.vbar span{font-size:15px; line-height:20px; color:var(--ci-mute)}
+.cv-bg{background:linear-gradient(to bottom,var(--water-top),var(--water-deep)); padding:clamp(28px,5vw,56px) 0}
+.cv-bg .panel{max-width:560px; margin-inline:auto}
+.cv-topic{font:400 clamp(26px,3.4vw,34px)/1.1 var(--display); color:var(--ci-text)}
+.cv-sub{font:400 13px/20px var(--mono); color:var(--ci-mute)}
+.cv-btn{align-self:flex-start; display:inline-flex; align-items:center; gap:10px; min-height:44px; padding:0 20px; border-radius:var(--r-pill); border:1px solid #5e7570; color:var(--ci-text); font:500 15px/20px var(--sans)}
+.cv-btn::before{content:"+"; color:var(--signal)}
+.cv-get{display:grid; gap:4px; padding:14px 16px; border:1px solid var(--signal); border-radius:var(--r-md); background:var(--ci-panel)}
+.cv-get .k{font:500 11px/14px var(--mono); letter-spacing:.12em; text-transform:uppercase; color:var(--signal)}
+.cv-get .v{font:400 20px/1.2 var(--display); color:var(--ci-text)}
+@keyframes cvin{from{opacity:0; transform:translateY(8px)}}
+@keyframes cvflow{from{stroke-dashoffset:24}to{stroke-dashoffset:0}}
+/* 1 three moments */
+.cv-moments{position:relative; display:grid; gap:22px}
+.cv-moments::before{content:""; position:absolute; left:15px; top:16px; bottom:16px; width:2px; background:var(--ci-line)}
+.cv-moments li{position:relative; display:grid; grid-template-columns:32px minmax(0,1fr); gap:6px 14px}
+.cv-moments .n{grid-row:span 3; width:32px; height:32px; border-radius:50%; display:grid; place-items:center; background:var(--ci-ground); border:2px solid var(--signal); color:var(--signal); font:500 13px/1 var(--mono); position:relative; z-index:1}
+.cv-moments .k{font:500 11px/14px var(--mono); letter-spacing:.12em; text-transform:uppercase; color:var(--ci-mute); align-self:end}
+.cv-moments .t{font-size:16px; line-height:22px; color:var(--ci-text)}
+.cv-seats{display:flex; gap:8px; align-items:center; margin-top:4px}
+.cv-seats i{width:16px; height:16px; border-radius:50%; background:var(--ci-water)}
+.cv-seats i.op{border-radius:4px; background:var(--signal)} .cv-seats i.you{background:transparent; border:2px dashed var(--ci-sun); box-sizing:border-box}
+.cv-seats span{font:400 12px/16px var(--mono); color:var(--ci-mute); margin-left:6px}
+.cv-tags{display:flex; flex-wrap:wrap; gap:6px; margin-top:4px}
+.cv-tags span{font:400 12px/16px var(--mono); color:var(--ci-text); border:1px solid var(--ci-line); background:var(--ci-panel); border-radius:var(--r-pill); padding:4px 10px}
+/* 2 the room */
+.cv-room{display:block; width:100%; max-width:440px; height:auto; margin-inline:auto}
+.cv-room .ring{fill:none; stroke:var(--ci-line); stroke-width:1.5; stroke-dasharray:3 5}
+.cv-room .peer{fill:var(--ci-water)} .cv-room .op{fill:var(--signal)}
+.cv-room .you{fill:var(--ci-ground); stroke:var(--ci-sun); stroke-width:2.5}
+.cv-room .flow{fill:none; stroke:var(--ci-water); stroke-width:1.5; stroke-dasharray:4 8; animation:cvflow 1.6s linear infinite}
+.cv-room .flow.o{stroke:var(--signal)}
+.cv-room text{font:400 11px var(--mono); fill:var(--ci-mute)} .cv-room .lab{fill:var(--ci-text)}
+.cv-room .mid{font:400 19px var(--display); fill:var(--ci-text); text-anchor:middle}
+.cv-room .yt{fill:var(--ci-sun)}
+.cv-leg{display:flex; flex-wrap:wrap; gap:6px 18px; font:400 12px/16px var(--mono); color:var(--ci-mute)}
+.cv-leg span{display:inline-flex; align-items:center; gap:8px}
+.cv-leg i{width:12px; height:12px; display:inline-block; border-radius:50%; background:var(--ci-water)}
+.cv-leg .op{border-radius:3px; background:var(--signal)} .cv-leg .you{background:transparent; border:2px solid var(--ci-sun); box-sizing:border-box}
+/* 3 the summary */
+.cv-note{display:grid; gap:0; border:1px solid var(--ci-line); border-radius:var(--r-md); background:var(--ci-panel); overflow:hidden}
+.cv-note > div{display:grid; grid-template-columns:minmax(0,9.5em) minmax(0,1fr); gap:6px 14px; padding:12px 14px; border-top:1px solid var(--ci-line)}
+.cv-note > div:first-child{border-top:0}
+.cv-note .k{font:500 11px/20px var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--ci-mute)}
+.cv-note ul{display:grid; gap:4px} .cv-note li{font-size:15px; line-height:20px; color:var(--ci-text)}
+.cv-note .next{background:var(--ci-ground); box-shadow:inset 3px 0 0 var(--signal)} .cv-note .next .k{color:var(--signal)}
+.cv-note .next li{display:flex; gap:10px; align-items:flex-start} .cv-note .next li::before{content:""; flex:none; width:14px; height:14px; margin-top:3px; border:2px solid var(--signal); border-radius:4px; box-sizing:border-box}
+@media (max-width:480px){ .cv-note > div{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){ .cv-moments li, .cv-note > div, .cv-room .flow{animation:none} }
+
+/* design 2 reworked: sign up, then something comes out */
+.cv2 .flow, .cv2 .lab{opacity:0; transition:opacity .5s ease-out}
+.cv2[data-on="true"] .flow, .cv2[data-on="true"] .lab{opacity:1}
+.cv2[data-on="true"] .lab.l2{transition-delay:.3s} .cv2[data-on="true"] .lab.l3{transition-delay:.6s}
+.cv2 .you{stroke-dasharray:4 4; transition:fill .3s ease-out}
+.cv2[data-on="true"] .you{stroke-dasharray:none; fill:var(--ci-sun)}
+.cv2 .yt-on{display:none} .cv2[data-on="true"] .yt-on{display:inline} .cv2[data-on="true"] .yt-off{display:none}
+.cv2-btn{align-self:center; display:inline-flex; align-items:center; gap:10px; min-height:44px; padding:0 22px; border-radius:var(--r-pill); border:1px solid #5e7570; background:transparent; color:var(--ci-text); font:500 15px/20px var(--sans); cursor:pointer}
+.cv2-btn::before{content:"+"; color:var(--signal)}
+.cv2-btn:hover{border-color:var(--ci-text)}
+.cv2-btn:focus-visible{outline:2px solid var(--signal); outline-offset:3px}
+.cv2-btn[aria-pressed="true"]{background:var(--signal); border-color:var(--signal); color:var(--on-signal)}
+.cv2-btn[aria-pressed="true"]::before{content:"\2713"; color:var(--on-signal)}
+.cv2-status{text-align:center; font:400 13px/20px var(--mono); color:var(--ci-mute)}
+.cv2-out{display:grid; gap:10px}
+.cv2-out[hidden]{display:none}
+.cv2-out.show{animation:cvrise .5s ease-out}
+@keyframes cvrise{from{transform:translateY(14px)}}
+.cv2-out h3{color:var(--signal)}
+@media (prefers-reduced-motion:reduce){ .cv2 .flow, .cv2 .lab{transition:none} .cv2-out.show{animation:none} }
+
+/* compact circle */
+.cv3{display:grid; gap:14px}
+.cv3 .cv-topic{font-size:clamp(22px,2.6vw,26px)}
+.cv3-grid{display:grid; gap:14px; align-items:center}
+@media (min-width:540px) and (max-width:919px), (min-width:1100px){ .cv3-grid{grid-template-columns:minmax(0,4fr) minmax(0,7fr); gap:20px} }
+.cv3-left{display:grid; gap:10px; justify-items:center}
+.cv3 .cv-room{max-width:250px}
+.cv3 .cv-room text{font-size:10px}
+.cv3 .cv2-btn{min-height:40px; padding:0 18px; font-size:14px}
+.cv3-right{position:relative; display:grid; gap:8px}
+.cv3-right h3{color:var(--signal)}
+.cv3 .cv-note > div{grid-template-columns:minmax(0,6.2em) minmax(0,1fr); gap:4px 10px; padding:8px 12px}
+.cv3 .cv-note .k{font-size:10px; line-height:18px} .cv3 .cv-note li{font-size:14px; line-height:18px}
+.cv3 .cv-note{transition:filter .5s ease-out, opacity .5s ease-out}
+.cv3[data-out="false"] .cv-note{filter:blur(6px); opacity:.45}
+.cv3-veil{position:absolute; inset:24px 0 0 0; display:grid; place-items:center; text-align:center; padding:12px; font:400 18px/1.2 var(--display); color:var(--ci-text)}
+.cv3[data-out="true"] .cv3-veil{display:none}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap}
+@media (max-width:480px){ .cv3 .cv-note > div{grid-template-columns:minmax(0,6.2em) minmax(0,1fr)} }
+@media (prefers-reduced-motion:reduce){ .cv3 .cv-note{transition:none} }
+
+@media (min-width:920px){ .solve-panel{align-self:stretch} .solve-panel .applied{margin-top:auto; padding-top:16px; border-top:1px solid var(--ci-line)} .solve-panel .cv3{margin-block:auto} }
+
+/* network: example profiles */
+.people-wrap{display:grid; gap:10px; margin-top:4px}
+.people-head{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; color:var(--mute)}
+.people{display:grid; gap:0; border-top:1px solid var(--line)}
+.people li{display:grid; grid-template-columns:48px minmax(0,1fr); gap:14px; align-items:center; padding:12px 0; border-bottom:1px solid var(--line)}
+.people .avatar{width:48px; height:48px; border-radius:50%; display:block; border:1px solid var(--line)}
+.people strong{display:block; font:500 16px/22px var(--sans); color:var(--text)}
+.people small{display:block; font-size:14px; line-height:20px; color:var(--mute)}
+
+/* core */
+.core{display:grid; gap:32px; align-items:center}
+.core h2{color:var(--ci-text)}
+.record{border:1px solid var(--signal); border-radius:var(--r-lg); background:var(--ci-panel); padding:20px; display:grid; gap:10px}
+.record ol{display:grid; gap:8px}
+.record li{display:grid; grid-template-columns:28px minmax(0,1fr); gap:10px; padding:10px 12px; border:1px solid var(--ci-line); border-radius:var(--r-md); background:var(--ci-ground); color:var(--ci-text); font-size:15px; line-height:20px}
+.record li b{font:500 13px/20px var(--mono); color:var(--signal)}
+.record li small{display:block; font:400 11px/14px var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--ci-mute)}
+.rw{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; font:400 12px/16px var(--mono); color:var(--ci-mute)}
+@media (min-width:920px){ .core{grid-template-columns:minmax(0,5fr) minmax(0,6fr); gap:56px} }
+
+/* icons + illustrations (built from the brand kit: half sun, horizon, ripples, the figure, the pair, the boat, the lakehouse) */
+.ico{width:24px; height:24px; flex:none; fill:none; stroke:currentColor; stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round}
+.ico .f{fill:currentColor; stroke:none}
+.badge{width:44px; height:44px; flex:none; border-radius:50%; display:grid; place-items:center; background:var(--raised); border:1px solid var(--line); color:var(--sig)}
+.scene{display:block; width:100%; height:auto; background:var(--tint); border:1px solid var(--line); border-radius:var(--r-lg)}
+.scene .sun{fill:var(--clay)} .scene .ink{fill:var(--text)} .scene .wat{fill:var(--water)}
+.scene .hz{stroke:var(--text)} .scene .r1{stroke:var(--water)} .scene .r2{stroke:var(--water-soft)}
+.scene line{stroke-linecap:round}
+.steps{display:grid; gap:18px}
+.steps li, .icon-list li{display:grid; grid-template-columns:44px minmax(0,1fr); gap:14px; align-items:start}
+.icon-list li{align-items:center}
+.mods{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px}
+.mods li{display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid var(--line); border-radius:var(--r-md); background:var(--raised); color:var(--text); font:500 14px/18px var(--sans)}
+.mods .ico{color:var(--sig)}
+/* stage 1 kept to one screen */
+.stage .water canvas{aspect-ratio:16/5}
+#dig .prose{gap:20px}
+.stage .panel{gap:16px}
+.dig-panel .blob{width:40px; height:40px; box-shadow:0 0 0 6px var(--signal-glow)}
+.dig-panel .els q{font-size:clamp(18px,2vw,22px); min-height:0}
+.dig-panel .chip{min-height:34px; padding:0 12px; font-size:14px}
+.dig-panel .map li{padding:7px 12px}
+.out{padding:14px 20px; gap:4px} .out strong{font-size:22px}
+/* the sprint demo */
+.sp{display:grid; gap:12px}
+.sp .cv-topic{font-size:clamp(22px,2.6vw,26px)}
+.sp-course{display:block; width:100%; height:auto}
+.sp-line{fill:none; stroke:var(--ci-line); stroke-width:1.5; stroke-dasharray:3 5}
+.sp-course circle{fill:var(--ci-ground); stroke:var(--ci-mute); stroke-width:1.5; transition:fill .4s ease-out, stroke .4s ease-out}
+.sp-course circle.done{fill:var(--signal); stroke:var(--signal)}
+.sp-course circle.now{stroke:var(--ci-sun); stroke-width:2.5; stroke-dasharray:4 4}
+.sp[data-on="true"] .sp-course circle.now{fill:var(--ci-sun); stroke-dasharray:none}
+.sp-flag{fill:var(--signal); stroke:var(--signal); stroke-width:1.5; stroke-linejoin:round}
+.sp-course text{font:400 10px var(--mono); fill:var(--ci-mute)} .sp-course .lab{fill:var(--ci-sun)}
+@media (max-width:560px){ .sp-course text{font-size:15px} }
+.sp-week{position:relative; display:grid; gap:8px}
+.sp-week h3{color:var(--signal)}
+.sp .cv-note > div{grid-template-columns:minmax(0,7.5em) minmax(0,1fr); gap:4px 10px; padding:7px 12px}
+.sp .cv-note .k{font-size:10px; line-height:18px} .sp .cv-note li{font-size:14px; line-height:18px}
+.sp .cv-note{transition:filter .5s ease-out, opacity .5s ease-out}
+.sp[data-out="false"] .cv-note{filter:blur(6px); opacity:.45}
+.sp[data-out="true"] .cv3-veil{display:none}
+.sp-foot{display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px}
+.sp .cv2-btn{min-height:40px; padding:0 18px; font-size:14px}
+.wm .cv-note > div{padding:12px 14px} .wm .cv-note li{display:flex; align-items:center; gap:10px; font:400 20px/1.2 var(--display)}
+.wm-m{flex:none; width:22px; height:22px; border-radius:50%; display:grid; place-items:center; font:500 13px/1 var(--mono); font-style:normal; color:var(--ci-mute); border:1.5px solid var(--ci-mute)}
+.wm-m.new{color:var(--ci-sun); border-color:var(--ci-sun)} .wm-m.gone{color:var(--on-signal); background:var(--signal); border-color:var(--signal)}
+.wm-gone{color:var(--ci-mute); text-decoration:line-through; text-decoration-thickness:1px}
+@media (min-width:820px){ .cards2 .card.wide{grid-column:1 / -1} }
+@media (min-width:820px){ .card.wide .people{grid-template-columns:repeat(3,minmax(0,1fr)); column-gap:32px; border-top:0} .card.wide .people li{border-bottom:0; border-top:1px solid var(--line)} }
+.pp-rows li{grid-template-columns:minmax(0,1fr) auto}
+.sp-open{font-size:15px; line-height:22px; color:var(--mute)} .sp-open strong{color:var(--text)}
+@media (prefers-reduced-motion:reduce){ .sp .cv-note, .sp-course circle{transition:none} }
+@media (min-width:920px){ .solve-panel .sp{margin-block:auto} }
+/* the weekend: the deepest point of the descent */
+.wk-copy{display:grid; gap:18px; align-content:start}
+.wk-copy .lead{color:var(--text); max-width:52ch}
+.wk-facts{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px}
+.wk-facts li{display:grid; gap:4px}
+.wk-facts b{font:400 clamp(34px,4vw,44px)/1 var(--display); color:var(--signal)}
+.wk-facts span{font:400 12px/16px var(--mono); color:var(--mute)}
+.wk-grid{display:grid; gap:12px 24px}
+@media (min-width:540px){ .wk-grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
+.wk-grid li{font-size:15px; line-height:21px; color:var(--mute)}
+.wk-grid b{display:block; font:600 15px/21px var(--sans); color:var(--text)}
+.wk-foot{display:flex; flex-wrap:wrap; align-items:center; gap:12px 20px}
+.wk-foot p{flex:1 1 220px; font-size:14px; line-height:20px; color:var(--mute)}
+@media (min-width:920px){ .wk .photo{align-self:stretch; aspect-ratio:auto; min-height:320px} .wk .photo img{position:absolute; inset:0} }
+.callout{display:grid; gap:14px}
+/* photo + signal: real photos in one lake tint, with the Intelligence line drawn over them */
+.photo{position:relative; margin:0; border-radius:var(--r-lg); overflow:hidden; background:#2f6259; aspect-ratio:var(--ar); isolation:isolate}
+.photo img{display:block; width:100%; height:100%; object-fit:cover; filter:saturate(1.08)}
+.photo .sig{position:absolute; inset:0; width:100%; height:100%; z-index:1; filter:drop-shadow(0 0 2px rgba(9,19,17,.85))}
+/* the loop, friendly: a ripple around the sun */
+.loop2{margin:0; background:var(--raised); border:1px solid var(--line); border-radius:var(--r-lg); padding:16px}
+.loop2 svg{display:block; width:100%; height:auto; max-width:500px; margin-inline:auto}
+.loop2 .ring{fill:none; stroke:var(--water-soft); stroke-width:8; stroke-linecap:round}
+.loop2 .arr{fill:var(--water)}
+.loop2 .nd{fill:var(--tint); stroke:var(--water); stroke-width:2}
+.loop2 use{fill:none; stroke:var(--sig); stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round}
+.loop2 .lbl{font:400 23px var(--display); fill:var(--text)}
+.loop2 .n{font:500 13px var(--mono); fill:var(--sig)}
+.loop2 .cim{--m-sun:var(--clay); --m-line:var(--sig); opacity:.85}
+.loop2 .mid{font:400 17px var(--display); fill:var(--text); text-anchor:middle}
+
+.photo figcaption{z-index:1}
+.photo .sig path, .photo .sig ellipse{fill:none; stroke-width:2.5; vector-effect:non-scaling-stroke; stroke-linecap:round; stroke-linejoin:round}
+.photo .sig .base{stroke:rgba(234,241,238,.5)} .photo .sig .live{stroke:var(--signal)}
+.photo figcaption{position:absolute; left:12px; bottom:12px; right:12px; width:fit-content; font:500 11px/14px var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--ci-text); background:var(--ci-ground); border:1px solid var(--ci-line); border-radius:var(--r-pill); padding:5px 12px}
+/* living water: each founder is a ripple source */
+.water{position:relative; margin:0; border:1px solid var(--line); border-radius:var(--r-lg); background:var(--tint); overflow:hidden}
+.water canvas{display:block; width:100%; aspect-ratio:2/1}
+.water figcaption{padding:8px 14px 10px; border-top:1px solid var(--line); background:var(--raised); display:flex; flex-wrap:wrap; gap:4px 16px; font:400 12px/16px var(--mono); color:var(--mute)}
+.sys-top{display:grid; gap:16px; align-items:end}
+.sys-top .loop{order:2}
+@media (min-width:920px){ .sys-top{grid-template-columns:minmax(0,6fr) minmax(0,5fr); gap:56px} }
+.hero-art{min-width:0}
+.rhy{display:block; width:100%; height:auto}
+.card .scene{max-width:260px}
+
+/* the descent: you go under at the waterline, the water deepens to the lake bed, then you surface */
+.gauge{background:var(--ci-ground); border-color:var(--ci-line); --focus:var(--signal)}
+.gauge a{color:var(--ci-mute)} .gauge a b{color:var(--signal)} .gauge a:hover{color:var(--ci-text)}
+.gauge a[aria-current="true"]{background:var(--signal); color:var(--on-signal)} .gauge a[aria-current="true"] b{color:var(--on-signal)}
+.waterline{--set:0}
+.sky{position:relative; height:clamp(70px,10vw,110px); overflow:hidden}
+.sky svg{position:absolute; right:max(16px,8%); bottom:0; width:var(--sunw); height:auto; display:block; transform:translateY(calc(var(--set)*60%))}
+.horizon{height:4px; background:var(--text)}
+.descent{position:relative; background:linear-gradient(to bottom,var(--water-top),var(--water-deep))}
+.deep{--surface:var(--ci-ground); --raised:var(--ci-panel); --line:rgba(234,241,238,.2); --line-strong:#7d948f; --text:var(--ci-text); --body:var(--ci-text); --mute:var(--ci-mute);
+  --sig:var(--signal); --focus:var(--signal); --watch:var(--ci-watch); color:var(--body)}
+.deep .eyebrow{color:var(--ci-text)}
+/* the spring: at the bottom the water turns light, and the half sun from the surface is whole */
+.rise{height:clamp(280px,38vw,420px); background:linear-gradient(to bottom,var(--water-deep),var(--water-top) 45%,var(--spring)); overflow:hidden}
+.rise svg{display:block; width:100%; height:100%; -webkit-mask-image:linear-gradient(to bottom,#000 78%,transparent); mask-image:linear-gradient(to bottom,#000 78%,transparent)}
+.spring{background:var(--spring); --mute:var(--body)}
+.spring .core h2{color:var(--text)}
+.record{border-color:var(--sig); background:var(--raised)}
+.record li{border-color:var(--line); background:var(--surface); color:var(--text)}
+.record li b{color:var(--sig)} .record li small, .rw{color:var(--mute)}
+.deep .link{color:var(--ci-text); border-bottom-color:var(--signal)} .deep .link:hover{color:#fff}
+.deep .rail{background:rgba(234,241,238,.18)}
+.deep .rail::before{content:""; position:absolute; left:-5px; top:-6px; width:12px; height:12px; border-radius:50%; background:var(--signal); box-shadow:0 0 0 6px var(--signal-glow)}
+.deep .water figcaption{background:var(--ci-panel)}
+.depth{position:sticky; top:0; display:block; width:100%; height:100vh; margin-bottom:-100vh; pointer-events:none}
+.descent .stages{z-index:1}
+.ripples{position:absolute; left:0; right:0; top:0; height:60px; pointer-events:none}
+.ripples i{position:absolute; height:4px; border-radius:4px; background:var(--ci-water)}
+.ripples i:first-child{top:16px; right:calc(max(16px,8%) + var(--sunw)*.12); width:calc(var(--sunw)*.76)}
+.ripples i:last-child{top:34px; right:calc(max(16px,8%) + var(--sunw)*.32); width:calc(var(--sunw)*.36); opacity:.6}
+.skin{position:relative; height:112px}
+.skin svg{position:absolute; left:40px; top:44px; width:calc(100% - 40px); height:24px}
+.skin path{fill:none; stroke:rgba(234,241,238,.3); stroke-width:1.5; vector-effect:non-scaling-stroke}
+.skin .token{position:absolute; left:0; top:0; z-index:1; transform:translateY(var(--ty,0px)); font:500 11px/14px var(--mono); letter-spacing:.08em; text-transform:uppercase; white-space:nowrap;
+  padding:6px 12px; border-radius:var(--r-pill); border:1px solid var(--signal); background:var(--ci-ground); color:var(--ci-text)}
+.skin .lvl{position:absolute; right:0; top:16px; color:var(--ci-text)}
+.from{transition:border-color .3s ease-out, box-shadow .3s ease-out} .from.lit{border-color:var(--signal); box-shadow:0 0 0 4px var(--signal-glow)}
+@media (min-width:920px){ .skin svg{left:88px; width:calc(100% - 88px)} }
+@media (prefers-reduced-motion: reduce){ .skin .token, .sky svg{transform:none} .depth{display:none} }
+
+/* more motion: the lake is alive */
+.rise .rg circle{transform-origin:600px 212px; vector-effect:non-scaling-stroke; stroke-opacity:var(--o1); animation:ringout 3.2s linear infinite}
+@keyframes ringout{from{transform:scale(1); stroke-opacity:var(--o1)} to{transform:scale(var(--s)); stroke-opacity:var(--o2)}}
+.rise .sun{transform-origin:600px 212px; animation:breathe 3.2s ease-in-out infinite alternate}
+@keyframes breathe{to{transform:scale(1.06)}}
+.ripples i{animation:shimmer 4.8s ease-in-out infinite alternate} .ripples i:last-child{animation-delay:-2.4s}
+@keyframes shimmer{to{transform:scaleX(1.2)}}
+.photo .sig{animation:wipe 2.4s ease-out .4s both}
+@keyframes wipe{from{clip-path:inset(0 100% 0 0)} to{clip-path:inset(0 0 0 0)}}
+.photo .sig .glow{transform-box:fill-box; transform-origin:center; animation:pulse 3.2s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.6); opacity:.35}}
+.loop2 .trav{transform-origin:260px 200px; animation:orbit 18s linear infinite}
+.loop2 .csun{transform-box:fill-box; transform-origin:50% 100%; animation:breathe 3.2s ease-in-out infinite alternate}
+.skin svg{animation:sway 7s ease-in-out infinite alternate}
+@keyframes sway{to{transform:scaleY(1.9)}}
+.node{transition:background-color .3s ease-out, color .3s ease-out, box-shadow .3s ease-out}
+.deep .node.on{background:var(--signal); color:var(--on-signal); box-shadow:0 0 0 6px var(--signal-glow)}
+.rv{opacity:0; transform:translateY(18px)}
+.rv.in{opacity:1; transform:none; transition:opacity .5s ease-out, transform .5s ease-out; transition-delay:var(--d,0s)}
+.seats.play .peer, .seats.play .op{transform-box:fill-box; transform-origin:center; animation:pop .4s ease-out both}
+.seats.play circle.peer:nth-of-type(2){animation-delay:.15s} .seats.play circle.peer:nth-of-type(3){animation-delay:.3s}
+.seats.play circle.peer:nth-of-type(4){animation-delay:.45s} .seats.play circle.peer:nth-of-type(5){animation-delay:.6s}
+@keyframes pop{from{opacity:0; transform:scale(.3)}}
+.record.play .rhy{animation:wipe 1.8s ease-out both}
+@media (prefers-reduced-motion: reduce){
+  .rise .rg circle, .rise .sun, .ripples i, .photo .sig, .photo .sig .glow, .loop2 .trav, .loop2 .csun, .skin svg, .seats.play .peer, .seats.play .op, .record.play .rhy{animation:none}
+}
+
+/* Cadence Intelligence: the logo where the line starts, the stamp where it works, one line where it learns */
+.ci-lock{display:inline-flex; align-items:center; gap:12px; margin:28px 0 0 40px; padding:8px 18px 8px 10px; border-radius:var(--r-pill); background:var(--ci-ground); border:1px solid var(--ci-line);
+  font:500 12px/16px var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--ci-text)}
+.ci-lock svg{flex:none}
+@media (min-width:920px){ .ci-lock{margin-left:88px} }
+.applied{display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; font:400 13px/20px var(--mono); color:var(--ci-mute)}
+.stamp{display:inline-flex; align-items:center; gap:8px; padding:5px 12px 5px 8px; border-radius:var(--r-pill); background:var(--ci-ground); border:1px solid var(--ci-line);
+  font:500 11px/14px var(--mono); letter-spacing:.12em; text-transform:uppercase; color:var(--ci-text); white-space:nowrap}
+.ci-line{display:flex; flex-wrap:wrap; align-items:center; gap:8px 10px; --m-sun:var(--clay); --m-line:var(--sig)}
+.ci-line .mono{color:var(--sig)}
+
+/* calmer sections */
+.grid3{display:grid; gap:0}
+.grid3 li{padding:12px 0}
+@media (min-width:700px){ .grid3{grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:40px} }
+@media (min-width:1000px){ .grid3{grid-template-columns:repeat(3,minmax(0,1fr))} }
+.proof{display:grid; gap:24px}
+.proof li{display:grid; gap:8px; align-content:start; padding-top:16px; border-top:2px solid var(--line-strong); min-width:0}
+.proof .n{font:400 clamp(40px,5vw,56px)/1 var(--display); color:var(--text); font-variant-numeric:tabular-nums}
+@media (min-width:700px){ .proof{grid-template-columns:repeat(2,minmax(0,1fr)); gap:32px 40px} }
+@media (min-width:1000px){ .proof{grid-template-columns:repeat(3,minmax(0,1fr))} }
+.cards2{display:grid; gap:16px}
+.card{background:var(--raised); border:1px solid var(--line); border-radius:var(--r-lg); padding:24px; display:grid; gap:12px; align-content:start; min-width:0}
+.card h3{font:400 26px/1.15 var(--display); color:var(--text)}
+@media (min-width:820px){ .cards2{grid-template-columns:repeat(2,minmax(0,1fr))} }
+.reach{display:grid; gap:0; border-top:1px solid var(--line)} .reach li{padding:14px 0; border-bottom:1px solid var(--line)}
+@media (min-width:820px){ .reach{grid-template-columns:repeat(3,minmax(0,1fr)); column-gap:40px} }
+.links{display:flex; flex-wrap:wrap; gap:12px 28px}
+.start{display:grid; gap:24px; justify-items:start}
+.start-row{display:grid; gap:16px} .start-row div{display:grid; gap:8px; justify-items:start}
+@media (min-width:700px){ .start-row{grid-template-columns:repeat(2,auto); gap:40px} }
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .loop .blip,.blob,.map li.new,.experts.run li{animation:none}
+  .mk,.gap,.axes{transition:none}
+}
+</style>
+<link rel="stylesheet" href="chrome.css">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5zM3 12.5l9 5 9-5M3 17l9 5 9-5"/></symbol>
+<symbol id="i-pair" viewBox="0 0 24 24"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-circle" viewBox="0 0 24 24"><circle class="f" cx="12" cy="4" r="2"/><circle class="f" cx="19" cy="8" r="2"/><circle class="f" cx="19" cy="16" r="2"/><circle class="f" cx="12" cy="20" r="2"/><circle class="f" cx="5" cy="16" r="2"/><circle class="f" cx="5" cy="8" r="2"/></symbol>
+<symbol id="i-match" viewBox="0 0 24 24"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.3 11l7.4-4M8.3 13l7.4 4"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></symbol>
+<symbol id="i-goal" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+<symbol id="i-trend" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></symbol>
+<symbol id="i-decide" viewBox="0 0 24 24"><path d="M12 21v-7l-6-6V4M12 14l6-6V4M3.5 6.5L6 4l2.5 2.5M15.5 6.5L18 4l2.5 2.5"/></symbol>
+<symbol id="i-carry" viewBox="0 0 24 24"><path d="M12 4v16M7 20h10M5 7h14M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0z"/></symbol>
+<symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></symbol>
+<symbol id="i-coins" viewBox="0 0 24 24"><ellipse cx="12" cy="7" rx="7" ry="3"/><path d="M5 7v5c0 1.7 3.1 3 7 3s7-1.3 7-3V7M5 12v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2zM9 4v14M15 6v14"/></symbol>
+<symbol id="i-post" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4"/></symbol>
+<symbol id="i-usercheck" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 11l2 2 4-4"/></symbol>
+<symbol id="i-one" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10.5 9l2-1.5V17"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.9 6.8 19.6l1-5.8L3.5 9.7l5.9-.8z"/></symbol>
+<symbol id="i-ci" viewBox="0 0 120 120"><path d="M12 78 A22 22 0 0 1 56 78 Z" fill="var(--m-sun, #e3906c)"/><path d="M8 78 H56 L66 46 L78 108 L88 78 H112" fill="none" stroke="var(--m-line, #5fe0b9)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-ci-full" viewBox="0 0 120 120"><path d="M14 78 A20 20 0 0 1 54 78 Z" fill="#e3906c"/><path d="M10 78 H56 L64 52 L76 104 L84 78 H110" fill="none" stroke="#5fe0b9" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><line x1="22" y1="94" x2="46" y2="94" stroke="#8fb1ac" stroke-width="6" stroke-linecap="round"/></symbol>
+</defs></svg>
+
+<header class="top"><a class="skip" href="#main">Skip to content</a><div class="wrap top-in"><a class="brand" href="index.html" aria-label="Cadence, home"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M28 66 A32 32 0 0 1 92 66 Z" fill="var(--clay)"/><line x1="16" y1="76" x2="104" y2="76" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><line x1="30" y1="90" x2="90" y2="90" stroke="var(--water)" stroke-width="6" stroke-linecap="round"/><line x1="46" y1="104" x2="74" y2="104" stroke="var(--water)" stroke-width="6" stroke-linecap="round"/></svg>Cadence</a><nav class="nav" aria-label="Site"><a href="index.html">For funds</a><a href="founders.html">For founders</a><a href="method.html" aria-current="page">The method</a><a href="weekend.html">The weekend</a><a href="trust.html">Trust</a><a href="about.html">About</a></nav><a class="btn btn-clay btn-sm" href="https://app.founderscadence.com/start" target="_blank" rel="noopener">Start your free Check</a><button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span></button></div><div class="top-prog" aria-hidden="true"><i></i><svg class="top-boat" viewBox="0 0 26 14"><path d="M1 5 H25 L21 13 H5 Z" fill="currentColor"/><circle cx="10" cy="3" r="2.4" fill="currentColor"/><circle cx="16" cy="3" r="2.4" fill="currentColor"/></svg></div></header><div class="sheet"><nav aria-label="Menu"><a href="index.html">For funds</a><a href="founders.html">For founders</a><a href="method.html" aria-current="page">The method</a><a href="weekend.html">The weekend</a><a href="trust.html">Trust</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav><a class="btn btn-clay" href="https://app.founderscadence.com/start" target="_blank" rel="noopener">Start your free Check</a><p>The pattern, never the person.</p></div>
+
+<nav class="gauge" aria-label="Depth: layers of the method">
+  <ol class="wrap">
+    <li><a href="#surface"><b>0</b> Surface</a></li>
+    <li><a href="#dig"><b>1</b> Dig</a></li>
+    <li><a href="#reveal"><b>2</b> Reveal</a></li>
+    <li><a href="#solve"><b>3</b> Solve</a></li>
+    <li><a href="#improve"><b>4</b> Improve</a></li>
+    <li><a href="#core"><b>C</b> Team record</a></li>
+  </ol>
+</nav>
+
+<main id="main">
+<section id="surface" data-layer class="wrap hero2">
+  <div class="hero-copy">
+    <p class="mono eyebrow">The Cadence method</p>
+    <h1>A way to make a founding team better, one problem at a time.</h1>
+    <p class="lead">Investors name the team as an important factor when a startup fails. And team problems often start as company problems nobody solved.</p>
+    <div class="btn-row">
+      <a class="btn btn-clay" href="https://app.founderscadence.com/start" target="_blank" rel="noopener">Start your free Check</a>
+      <a class="btn btn-line" href="pulse.html">Start a free Portfolio Pulse</a>
+    </div>
+  </div>
+  <svg class="va-big" viewBox="0 0 720 504" role="img" aria-label="The loop of four stages around the team record: Dig, find the real problem. Reveal, see it together. Solve, solve it with people who have been there. Improve, keep it moving and see what changed. The Cadence Intelligence mark sits under the team record.">
+    <circle class="ring" cx="360" cy="255" r="115" stroke-dasharray="111.6 69" stroke-dashoffset="-34.5"/>
+    <polygon class="arr" points="-8,-7 8,0 -8,7" transform="translate(441.3 173.7) rotate(45)"/><polygon class="arr" points="-8,-7 8,0 -8,7" transform="translate(441.3 336.3) rotate(135)"/>
+    <polygon class="arr" points="-8,-7 8,0 -8,7" transform="translate(278.7 336.3) rotate(225)"/><polygon class="arr" points="-8,-7 8,0 -8,7" transform="translate(278.7 173.7) rotate(315)"/>
+    <g class="trav"><circle cx="360" cy="140" r="7" fill="var(--clay)"/></g>
+    <path class="csun" d="M328 249 A32 32 0 0 1 392 249 Z" fill="var(--clay)"/>
+    <line x1="312" y1="258" x2="408" y2="258" stroke="var(--text)" stroke-width="4.5" stroke-linecap="round"/>
+    <line x1="332" y1="271" x2="388" y2="271" stroke="var(--water)" stroke-width="4.5" stroke-linecap="round"/>
+    <text class="mid" x="360" y="296">The team record</text>
+    <use class="cim" href="#i-ci" x="348" y="302" width="24" height="24"><title>Cadence Intelligence</title></use>
+    <circle class="nd" cx="360" cy="140" r="28"/><use href="#i-layers" x="347" y="127" width="26" height="26"/>
+    <circle class="nd" cx="475" cy="255" r="28"/><use href="#i-pair" x="462" y="242" width="26" height="26"/>
+    <circle class="nd" cx="360" cy="370" r="28"/><use href="#i-circle" x="347" y="357" width="26" height="26"/>
+    <circle class="nd" cx="245" cy="255" r="28"/><use href="#i-trend" x="232" y="242" width="26" height="26"/>
+    <text class="st" x="360" y="54" text-anchor="middle">1 · DIG</text><text class="vp" x="360" y="90" text-anchor="middle">Find the real problem.</text>
+    <text class="st" x="518" y="236">2 · REVEAL</text><text class="vp" x="518" y="270">See it together.</text>
+    <text class="st" x="360" y="424" text-anchor="middle">3 · SOLVE</text><text class="vp" x="360" y="458" text-anchor="middle">Solve it with people</text><text class="vp" x="360" y="490" text-anchor="middle">who have been there.</text>
+    <text class="st" x="202" y="222" text-anchor="end">4 · IMPROVE</text><text class="vp" x="202" y="256" text-anchor="end">Keep it moving, and</text><text class="vp" x="202" y="288" text-anchor="end">see what changed.</text>
+  </svg>
+  <ol class="vb-steps"><li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-layers"/></svg></span><span class="mono">1 · Dig</span><span class="vp">Find the real problem.</span></li><li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-pair"/></svg></span><span class="mono">2 · Reveal</span><span class="vp">See it together.</span></li><li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-circle"/></svg></span><span class="mono">3 · Solve</span><span class="vp">Solve it with people who have been there.</span></li><li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-trend"/></svg></span><span class="mono">4 · Improve</span><span class="vp">Keep it moving, and see what changed.</span></li></ol>
+</section>
+
+<div class="band">
+<section class="wrap sec" aria-labelledby="sys-h">
+  <div class="sec-head">
+    <p class="mono eyebrow" id="sys-h">The rhythm</p>
+    <p class="lead">It fits around a company, not the other way round.</p>
+  </div>
+  <div class="rhythm" role="group" aria-label="The rhythm">
+    <div><span class="mono" style="color:var(--mute)">Once, to start</span><span>The Cadence Check. About fifteen minutes each.</span></div>
+    <div><span class="mono" style="color:var(--mute)">When you are ready</span><span>A Sprint. Six to eight weeks.</span></div>
+    <div><span class="mono" style="color:var(--mute)">Every three months</span><span>A five-minute check-in.</span></div>
+    <div><span class="mono" style="color:var(--mute)">Whenever it helps</span><span>An open circle, or another conversation with Emma.</span></div>
+    <div><span class="mono" style="color:var(--mute)">Once a year, for a few teams</span><span>Three days at the lake.</span></div>
+  </div>
+</section>
+</div>
+
+<div class="waterline" aria-hidden="true"><div class="wrap sky"><svg viewBox="0 0 160 80"><path d="M0 80 A80 80 0 0 1 160 80 Z" fill="var(--clay)"/></svg></div><div class="horizon"></div></div>
+<div class="descent deep">
+<canvas class="depth" aria-hidden="true"></canvas>
+<div class="wrap ripples" aria-hidden="true"><i></i><i></i></div>
+<div class="wrap stages" id="stages">
+  <div class="rail" aria-hidden="true"><i></i></div>
+  <div class="ci-lock"><svg width="40" height="40" role="img" aria-label="Cadence Intelligence logo"><use href="#i-ci-full"/></svg><span>Cadence Intelligence</span></div>
+
+  <!-- STAGE 1 -->
+  <section class="stage" id="dig" data-layer aria-labelledby="dig-h">
+    <span class="node" aria-hidden="true">1</span>
+    <div class="stage-head">
+      <div class="stage-meta"><span class="mono eyebrow">Stage 1 · Dig</span></div>
+      <h2 id="dig-h" class="h-l">What is really going on?</h2>
+    </div>
+    <div class="stage-body">
+      <div class="prose">
+        <figure class="water"><canvas data-water="dig" role="img" aria-label="Ripples spread from one founder. Choosing a topic adds a stronger ring, one layer deeper."></canvas><figcaption><span>One founder, alone</span><span id="dig-cap">The Check</span></figcaption></figure>
+        <ul class="steps">
+          <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-mic"/></svg></span><p>It starts with the Cadence Check: a private conversation with Emma, our AI interviewer. Each founder does it alone, talking or typing.</p></li>
+          <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-layers"/></svg></span><p>It covers your company, you as a founder, and how you two decide. To go further, you pick a topic about the two of you.</p></li>
+        </ul>
+        <div class="out">
+          <span class="mono" style="color:var(--mute)">You get</span>
+          <p><strong>Your Company Map.</strong> The three hardest things in your company right now, in your own words.</p>
+          <a class="next" href="#reveal">↓ goes into stage 2 · Reveal</a>
+        </div>
+      </div>
+      <div class="ci panel dig-panel">
+        <div class="panel-head"><h3>Emma · Cadence Check</h3><span class="tag">Example data</span></div>
+        <div class="els"><span class="blob" aria-hidden="true"></span><q id="els-q" aria-live="polite">Tell me about a decision you two saw differently.</q></div>
+        <div class="panel-head"><h3 id="mod-h">Go further · a topic about the two of you</h3></div>
+        <div class="chips" role="group" aria-labelledby="mod-h">
+          <button class="chip" type="button" data-mod="carry" aria-pressed="false">Who carries what</button>
+          <button class="chip" type="button" data-mod="disagree" aria-pressed="false">How you disagree</button>
+          <button class="chip" type="button" data-mod="going" aria-pressed="false">Where you are going</button>
+          <button class="chip" type="button" data-mod="money" aria-pressed="false">Money between you</button>
+        </div>
+        <div>
+          <h3 style="margin-bottom:10px">Company Map · your three hardest things</h3>
+          <ol class="map" id="map">
+            <li>“Our first sales hire isn't working.”</li>
+            <li>“Runway is shorter than the plan assumes.”</li>
+            <li>“We don't agree who makes the final call on hiring.”</li>
+          </ol>
+        </div>
+        <div class="applied"><span class="stamp"><svg width="20" height="20" aria-hidden="true"><use href="#i-ci"/></svg>Intelligence applied</span><span>Emma asks, follows up and gives your own words back. She never scores you.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="skin" aria-hidden="true" data-to="reveal"><svg viewBox="0 0 1200 24" preserveAspectRatio="none"><path d="M0 12 C150 0 300 24 450 12 S750 0 900 12 S1100 22 1200 12"/></svg><span class="token">Company Map</span><span class="mono lvl">Layer 2</span></div>
+  <!-- STAGE 2 -->
+  <section class="stage" id="reveal" data-layer aria-labelledby="reveal-h">
+    <span class="node" aria-hidden="true">2</span>
+    <div class="stage-head">
+      <div class="stage-meta"><span class="mono eyebrow">Stage 2 · Reveal</span><span class="from">Starts from · your Company Map</span></div>
+      <h2 id="reveal-h" class="h-l">Do we see it the same way?</h2>
+    </div>
+    <div class="stage-body">
+      <div class="prose">
+        <figure class="water"><canvas data-water="reveal" role="img" aria-label="Two founders, each a source of ripples. The two patterns stay apart until both say yes, then they cross and the meeting points light up."></canvas><figcaption><span>Founder A · circle</span><span>Founder B · diamond</span></figcaption></figure>
+        <ul class="steps">
+          <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-pair"/></svg></span><p>Both founders' answers are laid side by side, only when you both say yes. You see where you agree and where you differ. You never see each other's sentences.</p></li>
+          <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-clock"/></svg></span><p>Then, if you ask for it, a 45-minute call: the two of you with a founder who has been there.</p></li>
+        </ul>
+        <div class="out">
+          <span class="mono" style="color:var(--mute)">You get</span>
+          <p><strong>Your side-by-side view</strong>, and one rule in your own words.</p>
+          <a class="next" href="#solve">↓ goes into stage 3 · Solve</a>
+        </div>
+      </div>
+      <div class="ci panel">
+        <div class="panel-head"><h3 id="pair-h">Side by side</h3><span class="tag">Example data</span></div>
+        <div class="chips" role="group" aria-label="Consent">
+          <button class="chip" type="button" id="yes-a" data-yes aria-pressed="false">Founder A says yes</button>
+          <button class="chip" type="button" id="yes-b" data-yes aria-pressed="false">Founder B says yes</button>
+        </div>
+        <p class="readout" id="pair-state" aria-live="polite" style="color:var(--ci-mute)">0 of 2 said yes · the pair view stays closed</p>
+        <div class="pair" id="pair" data-open="false">
+          <div class="axes">
+            <div class="axis" style="--a:30;--b:72;--lo:30;--hi:72"><div class="axis-top"><b>How we decide</b><span class="verdict">You differ</span></div><div class="track"><i class="gap"></i><i class="mk a"></i><i class="mk b"></i></div></div>
+            <div class="axis" style="--a:55;--b:60;--lo:55;--hi:60"><div class="axis-top"><b>Who carries what</b><span class="verdict">You agree</span></div><div class="track"><i class="gap"></i><i class="mk a"></i><i class="mk b"></i></div></div>
+            <div class="axis" style="--a:40;--b:44;--lo:40;--hi:44"><div class="axis-top"><b>Where we are going</b><span class="verdict">You agree</span></div><div class="track"><i class="gap"></i><i class="mk a"></i><i class="mk b"></i></div></div>
+          </div>
+          <p class="veil">Opens only when both founders say yes.</p>
+        </div>
+        <div class="legend"><span><i class="a"></i>Founder A · circle</span><span><i class="b"></i>Founder B · diamond</span></div>
+        <div class="applied"><span class="stamp"><svg width="20" height="20" aria-hidden="true"><use href="#i-ci"/></svg>Intelligence applied</span><span>It shows both views, with no verdict. You two talk it through.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="skin" aria-hidden="true" data-to="solve"><svg viewBox="0 0 1200 24" preserveAspectRatio="none"><path d="M0 12 C150 24 300 0 450 12 S750 24 900 12 S1100 2 1200 12"/></svg><span class="token">Side by side + one rule</span><span class="mono lvl">Layer 3</span></div>
+  <!-- STAGE 3 -->
+  <section class="stage" id="solve" data-layer aria-labelledby="solve-h">
+    <span class="node" aria-hidden="true">3</span>
+    <div class="stage-head">
+      <div class="stage-meta"><span class="mono eyebrow">Stage 3 · Solve</span><span class="from">Starts from · your side-by-side view and one rule</span></div>
+      <h2 id="solve-h" class="h-l">Who has solved this before?</h2>
+    </div>
+    <div class="stage-body">
+      <div class="prose">
+        <figure class="photo" style="--ar:1400/540">
+          <img src="img/session.jpg" width="1400" height="712" loading="lazy" alt="A facilitator opens a session for a small group of founders seated in a half circle on a lawn above the lake.">
+          <svg class="sig" viewBox="0 0 1400 712" preserveAspectRatio="none" aria-hidden="true">
+            <ellipse class="live" cx="900" cy="420" rx="480" ry="170" stroke-dasharray="6 10"/>
+            <circle cx="420" cy="420" r="26" fill="var(--signal-glow)"/><circle cx="420" cy="420" r="11" fill="var(--signal)"/>
+          </svg>
+          <figcaption>Opening session</figcaption>
+        </figure>
+        <ul class="steps">
+          <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-goal"/></svg></span><p><strong>The Cadence Sprint.</strong> You choose one problem and work on it for six to eight weeks, with one goal and one number.</p></li>
+          <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-circle"/></svg></span><p><strong>With people who have solved it.</strong> An expert one-to-one, and a circle of four or five founders with the same problem.</p></li>
+        </ul>
+        <p class="sp-open"><strong>Open circles.</strong> One hour on one topic, for any founder. A good way to try it first.</p>
+        <div class="out">
+          <span class="mono" style="color:var(--mute)">You get</span>
+          <p><strong>A finished Sprint</strong>, with the number at the start and at the end, and what you keep doing.</p>
+          <a class="next" href="#improve">↓ goes into stage 4 · Improve</a>
+        </div>
+      </div>
+      <div class="ci panel solve-panel">
+        <div class="panel-head"><h3>Your Sprint · week 3 of 8</h3><span class="tag">Example data</span></div>
+        <div class="sp" id="cv2" data-on="false" data-out="true">
+          <div><p class="cv-topic">Extend our runway</p><p class="cv-sub">One goal · one number: months of runway</p></div>
+          <svg class="sp-course" viewBox="0 0 520 64" role="img" aria-label="A course of eight buoys, one for each week. Two are filled, the boat is at week three, and a flag marks week eight, where you measure.">
+            <path class="sp-line" d="M30 34 C96 26 162 42 228 34 S360 26 426 34 S470 38 492 34"/>
+            <circle class="b done" cx="30" cy="34" r="6"/><circle class="b done" cx="96" cy="34" r="6"/><circle class="b now" cx="162" cy="34" r="6"/><circle class="b" cx="228" cy="34" r="6"/><circle class="b" cx="294" cy="34" r="6"/><circle class="b" cx="360" cy="34" r="6"/><circle class="b" cx="426" cy="34" r="6"/><circle class="b" cx="492" cy="34" r="6"/>
+            <path class="sp-flag" d="M492 34V10l14 5-14 5"/>
+            <text x="20" y="60" text-anchor="start">kick-off</text><text class="lab" x="162" y="16" text-anchor="middle">you · week 3</text><text x="510" y="60" text-anchor="end">measure</text>
+          </svg>
+          <div class="sp-week" id="cv2-out">
+            <h3>This week · five minutes</h3>
+            <div class="cv-note">
+              <div><span class="k">Did I do it</span><ul><li>Yes. Cut back to the one product that sells</li></ul></div>
+              <div><span class="k">What happened</span><ul><li>Two customers agreed to pay up front</li></ul></div>
+              <div><span class="k">Number now</span><ul><li>10 months, from 9 at the start</li></ul></div>
+              <div class="next"><span class="k">Next week</span><ul><li>Take the plan to my expert session</li></ul></div>
+            </div>
+            <p class="cv3-veil" aria-hidden="true">Four lines. Only you read them.</p>
+          </div>
+          <div class="sp-foot">
+            <button class="cv2-btn" type="button" id="cv2-btn" aria-pressed="false" aria-controls="cv2-out">Do this week's five minutes</button>
+            <span class="cv-sub">Next: your circle, at the halfway point</span>
+          </div>
+          <p class="sr" id="cv2-status" aria-live="polite"></p>
+        </div>
+        <div class="applied"><span class="stamp"><svg width="20" height="20" aria-hidden="true"><use href="#i-ci"/></svg>Intelligence applied</span><span>None on your plan or notes. Only you read them.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="skin" aria-hidden="true" data-to="improve"><svg viewBox="0 0 1200 24" preserveAspectRatio="none"><path d="M0 12 C150 0 300 24 450 12 S750 0 900 12 S1100 22 1200 12"/></svg><span class="token">A finished Sprint</span><span class="mono lvl">Layer 4</span></div>
+  <!-- STAGE 4 -->
+  <section class="stage" id="improve" data-layer aria-labelledby="improve-h">
+    <span class="node" aria-hidden="true">4</span>
+    <div class="stage-head">
+      <div class="stage-meta"><span class="mono eyebrow">Stage 4 · Improve</span><span class="from">Starts from · your finished Sprint</span></div>
+      <h2 id="improve-h" class="h-l">Is it actually getting better?</h2>
+    </div>
+    <div class="stage-body">
+      <div class="prose">
+        <ul class="steps">
+          <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-clock"/></svg></span><p>Every three months you take five minutes: what is hardest now?</p></li>
+          <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-trend"/></svg></span><p>You see what is new on your list, what is still there and what has gone. That is where your next Sprint starts.</p></li>
+        </ul>
+        <div class="out">
+          <span class="mono" style="color:var(--mute)">You get</span>
+          <p><strong>A record of what moved</strong>, in your own words and your own numbers.</p>
+          <a class="next" href="#core">↓ written to the team record</a>
+        </div>
+      </div>
+      <div class="ci panel">
+        <div class="panel-head"><h3>What moved · after three months</h3><span class="tag">Example data</span></div>
+        <div class="sp wm">
+          <div class="cv-note">
+            <div><span class="k">New on your list</span><ul><li><i class="wm-m new" aria-hidden="true">+</i>Go-to-market</li></ul></div>
+            <div><span class="k">Still there</span><ul><li><i class="wm-m" aria-hidden="true">=</i>Runway</li></ul></div>
+            <div><span class="k">Gone</span><ul><li class="wm-gone"><i class="wm-m gone" aria-hidden="true">✓</i>The senior hire</li></ul></div>
+          </div>
+          <p class="cv-sub">Your next Sprint starts from this list.</p>
+        </div>
+        <div class="applied"><span class="stamp"><svg width="20" height="20" aria-hidden="true"><use href="#i-ci"/></svg>Intelligence applied</span><span>It lays this quarter next to the last one. You say what changed.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="skin" aria-hidden="true" data-to="weekend"><svg viewBox="0 0 1200 24" preserveAspectRatio="none"><path d="M0 12 C150 24 300 0 450 12 S750 24 900 12 S1100 2 1200 12"/></svg><span class="token">Your team record</span><span class="mono lvl">The deep end</span></div>
+  <!-- THE WEEKEND -->
+  <section class="stage wk" id="weekend" aria-labelledby="wk-h">
+    <span class="node" aria-hidden="true">≈</span>
+    <div class="stage-head">
+      <div class="stage-meta"><span class="mono eyebrow">Once a year · The weekend</span><span class="from">At most six a year</span></div>
+      <h2 id="wk-h" class="h-l">Three days at the lake, out of the business.</h2>
+    </div>
+    <div class="stage-body">
+      <figure class="photo" style="--ar:1400/904">
+        <img src="img/house.jpg" width="1400" height="904" loading="lazy" alt="The Lakehouse: a low house on a hillside above a lawn and a pool.">
+        <figcaption>The Lakehouse · Lake Banyoles</figcaption>
+      </figure>
+      <div class="wk-copy">
+        <p class="lead">Everything before this fits in a working week. This does not. You and your co-founder step out together, and the agenda comes from your own team record.</p>
+        <ul class="wk-facts">
+          <li><b>3</b><span>nights at the Lakehouse</span></li>
+          <li><b>4</b><span>founding pairs</span></li>
+          <li><b>0</b><span>investors in the room</span></li>
+        </ul>
+        <ul class="wk-grid">
+          <li><b>Where you are going</b>One shared picture of the next 12 months.</li>
+          <li><b>How you decide</b>Who owns what and who decides, written down.</li>
+          <li><b>Your hardest company problems</b>Experts on what you named, like the next round or a senior hire.</li>
+          <li><b>Other founding pairs</b>See how three other pairs run their company.</li>
+        </ul>
+        <div class="out">
+          <span class="mono" style="color:var(--mute)">You leave with</span>
+          <p><strong>A 90-day plan with names and dates.</strong> Then we stay in touch every quarter for a year.</p>
+        </div>
+        <div class="wk-foot">
+          <a class="btn btn-signal" href="weekend.html" data-placeholder-route>See the weekend →</a>
+          <p>For a few teams a year. A finished Sprint is the best preparation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+</div>
+
+<!-- CORE -->
+<div class="rise" aria-hidden="true"><svg viewBox="0 0 1200 360" preserveAspectRatio="xMidYMax slice">
+  <g class="rg" fill="none" stroke="var(--ci-sun)" stroke-width="2">
+    <circle cx="600" cy="212" r="64" style="--s:1.719;--o1:0;--o2:.6"/><circle cx="600" cy="212" r="110" style="--s:1.5;--o1:.6;--o2:.45"/>
+    <circle cx="600" cy="212" r="165" style="--s:1.394;--o1:.45;--o2:.32"/><circle cx="600" cy="212" r="230" style="--s:1.326;--o1:.32;--o2:.22"/>
+    <circle cx="600" cy="212" r="305" style="--s:1.279;--o1:.22;--o2:.15"/><circle cx="600" cy="212" r="390" style="--s:1.256;--o1:.15;--o2:.1"/>
+    <circle cx="600" cy="212" r="490" style="--s:1.224;--o1:.1;--o2:0"/>
+  </g>
+  <circle class="sun" cx="600" cy="212" r="64" fill="var(--ci-sun)"/>
+</svg></div>
+<section class="spring" id="core" data-layer aria-labelledby="core-h">
+  <div class="wrap sec core">
+    <div class="prose">
+      <p class="mono eyebrow">Core · The team record</p>
+      <h2 id="core-h" class="h-l">The team record</h2>
+      <p class="lead">One private record per founding team, owned by the founders. Every stage reads from it and writes back.</p>
+      <p class="ci-line"><svg width="28" height="28" role="img" aria-label="Cadence Intelligence logo"><use href="#i-ci"/></svg><span class="mono">Cadence Intelligence</span><span>Everything it suggests starts from here.</span></p>
+      <div><a class="btn btn-clay" id="again" href="#dig">Then again, sharper ↑</a></div>
+    </div>
+    <div class="record">
+      <svg class="rhy" viewBox="0 0 300 96" role="img" aria-label="Two rhythm lines, one for each founder, start apart and fall into step.">
+        <path id="rhy-a" d="M12 26 C50 -4 84 70 130 44 S210 50 276 50" fill="none" stroke="var(--clay)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path id="rhy-b" d="M12 76 C50 104 84 28 130 56 S210 50 276 50" fill="none" stroke="var(--sig)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle id="rhy-da" r="3" fill="var(--clay)" opacity="0"/><circle id="rhy-db" r="3" fill="var(--sig)" opacity="0"/>
+        <circle id="rhy-h" cx="276" cy="50" r="10" fill="var(--sig)" fill-opacity=".2"/><circle cx="276" cy="50" r="4.5" fill="var(--sig)"/>
+      </svg>
+      <div class="rw"><span>Owned by the founders</span><span>Private</span></div>
+      <ol>
+        <li><b>1</b><span>Your Company Map<small>From Dig</small></span></li>
+        <li><b>2</b><span>Your side-by-side view and your rules<small>From Reveal</small></span></li>
+        <li><b>3</b><span>Your Sprints, with what you measured<small>From Solve</small></span></li>
+        <li><b>4</b><span>What moved, quarter by quarter<small>From Improve</small></span></li>
+      </ol>
+      <div class="rw"><span>↓ every stage writes back</span><span>↑ every stage reads from it</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap sec" aria-labelledby="app-h">
+  <div class="sec-head"><p class="mono eyebrow">In the app</p><h2 id="app-h" class="h-m">One place, and it always shows your next step.</h2></div>
+  <ul class="grid3 icon-list">
+    <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-mic"/></svg></span><p><strong>Talk to Emma.</strong> Your Check, by voice or typing.</p></li>
+    <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-map"/></svg></span><p><strong>See your result</strong>, and with both yeses, where you two differ.</p></li>
+    <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-goal"/></svg></span><p><strong>Run your Sprint.</strong> Your plan, this week, your next session.</p></li>
+    <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-clock"/></svg></span><p><strong>Check in</strong> every three months.</p></li>
+    <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-circle"/></svg></span><p><strong>Join an open circle</strong> with one tap.</p></li>
+    <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-layers"/></svg></span><p><strong>Keep everything.</strong> Your library, and a report you can print.</p></li>
+  </ul>
+</section>
+
+<div class="band">
+<section class="wrap sec" aria-labelledby="why-h">
+  <div class="sec-head"><p class="mono eyebrow">Why it works</p><h2 id="why-h" class="h-m">Built on what is known to work.</h2></div>
+  <ul class="proof">
+    <li><span class="n">8.1%</span><p><strong>Founders learn most from peers.</strong> In a randomised study of 2,820 young firms, owners who met in small peer groups every month for a year grew revenue 8.1% more than those who did not.</p></li>
+    <li><span class="n">28%</span><p><strong>Whose advice you get matters.</strong> In a field experiment with 100 high-growth startups, founders advised by peers with a structured way of managing people grew 28% larger.</p></li>
+    <li><span class="n">92%</span><p><strong>The team decides the outcome.</strong> 92% of VCs name the team as an important factor when an investment fails.</p></li>
+  </ul>
+  <p class="small">Sources: Cai &amp; Szeidl, Quarterly Journal of Economics (2018); Chatterji, Delecourt, Hasan &amp; Koning, Strategic Management Journal (2019); Gompers et al., Journal of Financial Economics (885 VCs).</p>
+</section>
+</div>
+
+<section class="wrap sec" aria-labelledby="net-h">
+  <div class="sec-head"><p class="mono eyebrow">The network behind it</p><h2 id="net-h" class="h-m">The people who have done it.</h2></div>
+  <div class="cards2">
+    <div class="card wide"><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-circle"/></svg></span>
+      <h3>Shadow Leaders: experts who have done the work.</h3><p>Senior experts, led by Stefan van Eerde. They take the Sprint sessions and lead the circles.</p><div class="people-wrap"><div class="people-head"><span class="mono">Who you meet</span><span class="tag">Example profiles</span></div><ul class="people"><li><svg class="avatar" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" fill="var(--tint)"/><circle cx="24" cy="19" r="8" fill="var(--text)"/><path d="M8 50 A16 16 0 0 1 40 50 Z" fill="var(--text)"/></svg><span><strong>Fractional CFO</strong><small>Runway, board numbers, the next round</small></span></li><li><svg class="avatar" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" fill="var(--surface)"/><circle cx="24" cy="19" r="8" fill="var(--water)"/><path d="M8 50 A16 16 0 0 1 40 50 Z" fill="var(--water)"/></svg><span><strong>Sales lead</strong><small>The first sales hire, turning prospects into customers</small></span></li><li><svg class="avatar" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" fill="var(--tint)"/><circle cx="24" cy="19" r="8" fill="var(--clay)"/><path d="M8 50 A16 16 0 0 1 40 50 Z" fill="var(--clay)"/></svg><span><strong>Hiring lead</strong><small>Senior hires and the first team leads</small></span></li></ul></div></div>
+  </div>
+  <div>
+    <p class="mono" style="color:var(--mute); margin-bottom:12px">How they reach you</p>
+    <ul class="reach icon-list">
+      <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-usercheck"/></svg></span><p><strong>Matched by a person</strong> who knows your problem.</p></li>
+      <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-one"/></svg></span><p><strong>One session first.</strong> More only if it works.</p></li>
+      <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-star"/></svg></span><p><strong>Rated every time.</strong> That decides who is asked again.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section class="wrap sec" aria-labelledby="fund-h">
+  <div class="fund">
+    <div class="fund-copy">
+      <div class="sec-head"><p class="mono eyebrow">For funds</p><h2 id="fund-h" class="h-m">The pattern, never the person.</h2>
+      <p class="lead">Funds that make Cadence available get a Portfolio Pulse. It shows what is happening across their founding teams, never inside one.</p></div>
+      <ul class="icon-list fund-list">
+        <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-layers"/></svg></span><p><strong>What teams name as hardest</strong> across the portfolio.</p></li>
+        <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-usercheck"/></svg></span><p><strong>How many would welcome help.</strong></p></li>
+        <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-goal"/></svg></span><p><strong>How many asked for a Sprint</strong>, started one and finished one.</p></li>
+        <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-clock"/></svg></span><p><strong>How many did their quarterly check-in.</strong></p></li>
+      </ul>
+      <p class="small">From five founding teams up. Never a team, a founder, a goal or a number.</p>
+      <div><a class="link" href="pulse.html">Start a free Portfolio Pulse →</a></div>
+    </div>
+    <div class="ci panel pp" id="pp">
+      <div class="panel-head"><h3>Portfolio Pulse</h3><span class="tag">Example data</span></div>
+      <p class="readout" style="color:var(--ci-mute); margin-top:-12px">Took part: 5–9 teams</p>
+      <div><p class="pp-h">What teams name as hardest</p><ul class="pp-rows"><li><span>Hiring the senior team</span><em>7 teams</em></li><li><span>Runway</span><em>fewer than 5</em></li></ul></div>
+      <div><p class="pp-h">Sprints</p><ul class="pp-rows"><li><span>Asked for a Sprint</span><em>6 teams</em></li><li><span>Built a plan</span><em>5 teams</em></li><li><span>Finished</span><em>fewer than 5</em></li></ul></div>
+    </div>
+  </div>
+</section>
+
+<div class="band">
+<section class="wrap sec" aria-labelledby="eco-h">
+  <div class="sec-head"><p class="mono eyebrow">One independent place</p><h2 id="eco-h" class="h-m">Independent, so both sides can trust it.</h2>
+  <p class="lead">Only founders and vetted experts are inside, and what is said there stays there.</p></div>
+  <div class="links"><a class="link" href="founders.html">For founders →</a><a class="link" href="index.html">For funds →</a><a class="link" href="trust.html" data-placeholder-route>Trust →</a></div>
+</section>
+</div>
+
+<section class="wrap sec start" aria-labelledby="start-h">
+  <h2 id="start-h" class="h-l">Start with stage one.</h2>
+  <div class="start-row">
+    <div><span class="mono" style="color:var(--mute)">Founders</span><a class="btn btn-clay" href="https://app.founderscadence.com/start" target="_blank" rel="noopener">Start your free Check</a></div>
+    <div><span class="mono" style="color:var(--mute)">Funds</span><a class="btn btn-line" href="pulse.html">Start a free Portfolio Pulse</a></div>
+  </div>
+  
+</section>
+</main>
+<div class="cx"><footer class="band deep close water"><div class="wrap"><p class="statement" aria-label="The pattern, never the person."><span>The pattern,</span><span>never the person.</span></p><div class="foot"><div><a class="brand" href="index.html"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M28 66 A32 32 0 0 1 92 66 Z" fill="var(--sun)"/><line x1="16" y1="76" x2="104" y2="76" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><line x1="30" y1="90" x2="90" y2="90" stroke="var(--on-deep-3)" stroke-width="6" stroke-linecap="round"/><line x1="46" y1="104" x2="74" y2="104" stroke="var(--on-deep-3)" stroke-width="6" stroke-linecap="round"/></svg>Cadence</a><small>The independent development arm for VC portfolios.</small></div><div><h4>For funds</h4><ul><li><a href="index.html">Home</a></li><li><a href="pulse.html">Free Portfolio Pulse</a></li></ul></div><div><h4>For founders</h4><ul><li><a href="founders.html">Founders</a></li><li><a href="weekend.html">The weekend</a></li></ul></div><div><h4>Both</h4><ul><li><a href="method.html">The method</a></li><li><a href="trust.html">Trust</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="/privacy.html">Privacy policy</a></li><li><a href="/aviso-legal.html">Aviso legal</a></li></ul></div></div></div></footer></div>
+
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $ = function(s, r){ return (r||document).querySelector(s); };
+  var $$ = function(s, r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
+
+  /* depth gauge: mark the layer in view */
+  var links = $$('.gauge a');
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(!e.isIntersecting) return;
+        links.forEach(function(a){
+          var on = a.getAttribute('href') === '#' + e.target.id;
+          if(on){ a.setAttribute('aria-current','true'); if(a.scrollIntoView && !reduce){ var ol=a.closest('ol'); ol.scrollLeft = a.offsetLeft - ol.clientWidth/2 + a.offsetWidth/2; } }
+          else a.removeAttribute('aria-current');
+        });
+      });
+    }, {rootMargin:'-35% 0px -60% 0px'});
+    $$('[data-layer]').forEach(function(s){ io.observe(s); });
+  }
+
+  /* the line: drawn length follows scroll */
+  var stages = $('#stages'), fill = $('.rail i'), tick = false, nodes = $$('.stage .node');
+  function draw(){
+    tick = false;
+    var r = stages.getBoundingClientRect();
+    var p = (innerHeight * 0.6 - r.top) / r.height;
+    p = Math.max(0, Math.min(1, p));
+    fill.style.setProperty('--p', p.toFixed(4));
+    nodes.forEach(function(n){ n.classList.toggle('on', n.parentNode.offsetTop + n.offsetTop + n.offsetHeight / 2 <= p * r.height); });
+  }
+  if(!reduce){
+    addEventListener('scroll', function(){ if(!tick){ tick = true; requestAnimationFrame(draw); } }, {passive:true});
+    addEventListener('resize', draw); draw();
+  }
+
+  /* Emma types the example question once, when it enters view */
+  var q = $('#els-q'), full = q.textContent, typeT = 0;
+  if(!reduce && 'IntersectionObserver' in window){
+    var once = new IntersectionObserver(function(es){
+      if(!es[0].isIntersecting) return; once.disconnect();
+      var i = 0; q.textContent = ''; q.classList.add('caret');
+      typeT = setInterval(function(){ q.textContent = full.slice(0, ++i); if(i >= full.length){ clearInterval(typeT); setTimeout(function(){ q.classList.remove('caret'); }, 1200); } }, 38);
+    }, {threshold:0.8});
+    once.observe(q);
+  }
+
+  /* a topic about the two of you: Emma asks a question on it, and the ripples go one layer deeper */
+  var TOPICS = {
+    carry:"Which part of the company lands on you without anyone deciding it?",
+    disagree:"What happens between you two when you disagree?",
+    going:"What does the company look like in 18 months, in your picture?",
+    money:"When did you two last talk about pay and equity?"
+  };
+  var mods = $$('[data-mod]'), layerN = 1;
+  mods.forEach(function(b){ b.addEventListener('click', function(){
+    var now = b.getAttribute('aria-pressed') !== 'true';
+    mods.forEach(function(x){ x.setAttribute('aria-pressed', 'false'); }); b.setAttribute('aria-pressed', String(now));
+    clearInterval(typeT); q.classList.remove('caret'); q.textContent = now ? TOPICS[b.dataset.mod] : full;
+    layerN = now ? 2 : 1; var dc = $('#dig-cap'); if(dc) dc.textContent = now ? 'One layer deeper' : 'The Check';
+    if(reduce && window.__water) window.__water();
+  }); });
+
+  /* the pair view opens only when both founders say yes */
+  var pair = $('#pair'), yes = $$('[data-yes]'), state = $('#pair-state');
+  yes.forEach(function(b){ b.addEventListener('click', function(){
+    b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true'));
+    var n = yes.filter(function(x){ return x.getAttribute('aria-pressed') === 'true'; }).length;
+    pair.dataset.open = String(n === 2);
+    state.textContent = n + ' of 2 said yes · ' + (n === 2 ? 'the pair view is open' : 'the pair view stays closed');
+  }); });
+
+  /* sprint: do this week's five minutes, the buoy fills and the four lines sharpen */
+  (function(){
+    var box = document.getElementById('cv2'), btn = document.getElementById('cv2-btn'), st = document.getElementById('cv2-status');
+    if(!box || !btn) return;
+    box.dataset.out = 'false';
+    btn.addEventListener('click', function(){
+      var on = btn.getAttribute('aria-pressed') !== 'true';
+      btn.setAttribute('aria-pressed', String(on)); box.dataset.on = String(on); box.dataset.out = String(on);
+      btn.textContent = on ? 'Week 3 done' : "Do this week's five minutes";
+      st.textContent = on ? 'Week three is filled in. Your four lines are shown.' : 'Week three is open.';
+    });
+  })();
+
+  /* living water: each founder is a ripple source */
+  /* the descent: contour lines tighten with depth, cards travel between layers, the sun sets at the waterline */
+  var desc = $('.descent'), dcv = $('.depth'), dctx = dcv.getContext('2d'), wl = $('.waterline'), skins = $$('.skin'), dots = [];
+  for(var di = 0; di < 44; di++){ var rq = Math.sin(di * 12.9898) * 43758.5453; rq -= Math.floor(rq); var rq2 = Math.sin(di * 78.233) * 12543.21; rq2 -= Math.floor(rq2); dots.push({x:rq, y:rq2 * 3000, p:0.45 + rq * 0.4, r:0.7 + rq2}); }
+  function paintDepth(){
+    var r = desc.getBoundingClientRect(), vh = innerHeight;
+    if(r.bottom < 0 || r.top > vh) return;
+    var dpr = Math.min(2, devicePixelRatio || 1), w = dcv.clientWidth, h = dcv.clientHeight;
+    if(dcv.width !== Math.round(w * dpr) || dcv.height !== Math.round(h * dpr)){ dcv.width = Math.round(w * dpr); dcv.height = Math.round(h * dpr); }
+    dctx.setTransform(dpr, 0, 0, dpr, 0, 0); dctx.clearRect(0, 0, w, h);
+    var T = performance.now() / 1000, sc = Math.max(0, -r.top), d = Math.min(1, sc / Math.max(1, r.height - vh)), s = 150 - 104 * d, off = sc * 0.35;
+    dctx.lineWidth = 1; dctx.strokeStyle = 'rgba(234,241,238,' + (0.07 + 0.07 * d).toFixed(3) + ')';
+    for(var k = Math.floor(off / s) - 1; k * s - off < h + 20; k++){
+      var y = k * s - off; dctx.beginPath();
+      for(var x = 0; x <= w + 24; x += 24){ var yy = y + Math.sin(x * 0.006 + k * 1.7 + T * 0.45) * 10 + Math.sin(x * 0.013 + k * 0.9 - T * 0.3) * 5; if(x) dctx.lineTo(x, yy); else dctx.moveTo(x, yy); }
+      dctx.stroke();
+    }
+    dctx.fillStyle = 'rgba(191,208,203,.3)';
+    dots.forEach(function(p){ var H = h + 40, y = (((p.y - sc * p.p - T * 9 * p.p) % H) + H) % H - 20; dctx.beginPath(); dctx.arc(p.x * w, y, p.r, 0, 6.2832); dctx.fill(); });
+  }
+  function descend(){
+    paintDepth();
+    var vh = innerHeight, wr = wl.getBoundingClientRect();
+    wl.style.setProperty('--set', Math.max(0, Math.min(1, (vh * 0.55 - wr.top) / (vh * 0.55))).toFixed(3));
+    skins.forEach(function(el){
+      var r = el.getBoundingClientRect(), tk = el.querySelector('.token'), t = Math.max(0, Math.min(1, (vh * 0.72 - r.top) / (vh * 0.36)));
+      tk.style.setProperty('--ty', (t * (r.height - tk.offsetHeight)).toFixed(1) + 'px');
+      var tgt = $('#' + el.dataset.to + ' .from'); if(tgt) tgt.classList.toggle('lit', t >= 1);
+    });
+  }
+  if(!reduce){
+    var dtick = false;
+    addEventListener('scroll', function(){ if(!dtick){ dtick = true; requestAnimationFrame(function(){ dtick = false; descend(); }); } }, {passive:true});
+    addEventListener('resize', descend); descend();
+    /* the water keeps moving while you are in it */
+    var inWater = false, wloop = false;
+    function wframe(){ if(!inWater){ wloop = false; return; } paintDepth(); requestAnimationFrame(wframe); }
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){ inWater = es[0].isIntersecting; if(inWater && !wloop){ wloop = true; requestAnimationFrame(wframe); } }, {rootMargin:'100% 0px'}).observe(desc);
+    }
+    /* the ascent: back up through every layer to stage one */
+    $('#again').addEventListener('click', function(e){
+      e.preventDefault();
+      var from = scrollY, to = $('#dig').getBoundingClientRect().top + scrollY - 64, t0 = performance.now(), stop = false;
+      function cancel(){ stop = true; }
+      addEventListener('wheel', cancel, {once:true, passive:true}); addEventListener('touchstart', cancel, {once:true, passive:true});
+      (function step(now){
+        if(stop) return;
+        var p = Math.min(1, (now - t0) / 1800), e2 = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+        scrollTo({top: from + (to - from) * e2, behavior:'instant'});
+        if(p < 1) requestAnimationFrame(step);
+      })(t0);
+    });
+  }
+
+  var css = getComputedStyle(document.documentElement);
+  function tok(n){ return css.getPropertyValue(n).trim(); }
+  var waters = $$('canvas[data-water]').map(function(cv){ return {cv:cv, ctx:cv.getContext('2d'), mode:cv.dataset.water, on:false, o:0}; });
+  function ringSet(cx, gap, phase, maxR){ var a = []; for(var r = (phase % 1) * gap; r < maxR; r += gap) a.push(r); return a; }
+  function strokeRings(c, cx, cy, rs, maxR, col, lw){
+    c.strokeStyle = col; c.lineWidth = lw;
+    rs.forEach(function(r){ if(r < 2) return; c.globalAlpha = Math.pow(1 - r / maxR, 1.3) * 0.9; c.beginPath(); c.arc(cx, cy, r, 0, 6.2832); c.stroke(); });
+    c.globalAlpha = 1;
+  }
+  function paintWater(W, t){
+    var cv = W.cv, c = W.ctx, dpr = Math.min(2, devicePixelRatio || 1), w = cv.clientWidth, h = cv.clientHeight;
+    if(!w) return;
+    if(cv.width !== Math.round(w * dpr)){ cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
+    c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, w, h);
+    var s = w / 300, cy = h * 0.46, water = tok('--water'), sun = tok('--clay'), sig = tok('--sig'), ink = tok('--text');
+    if(W.mode === 'dig'){
+      var cx = w * 0.5, maxR = w * 0.62;
+      strokeRings(c, cx, cy, ringSet(cx, 13 * s, t * 0.1, maxR), maxR, water, 1);
+      c.strokeStyle = sig; c.lineWidth = 2;
+      for(var i = 1; i <= layerN; i++){ c.globalAlpha = 1 - i * 0.12; c.beginPath(); c.arc(cx, cy, (10 + i * 15) * s, 0, 6.2832); c.stroke(); }
+      c.globalAlpha = 1; c.fillStyle = ink; c.beginPath(); c.arc(cx, cy, 5 * s, 0, 6.2832); c.fill();
+    } else {
+      var open = $('#pair').dataset.open === 'true';
+      W.o += ((open ? 1 : 0) - W.o) * (reduce ? 1 : 0.06);
+      var o = W.o, ax = w * 0.34, bx = w * 0.66, maxR2 = w * 0.58;
+      var ra = ringSet(ax, 15 * s, t * 0.1, maxR2), rb = ringSet(bx, 21 * s, t * 0.075 + 0.5, maxR2);
+      c.save(); c.beginPath(); c.rect(0, 0, w / 2 - 3 + o * (w / 2 + 3), h); c.clip(); strokeRings(c, ax, cy, ra, maxR2, water, 1.5); c.restore();
+      c.save(); c.beginPath(); c.rect(w / 2 + 3 - o * (w / 2 + 3), 0, w, h); c.clip(); strokeRings(c, bx, cy, rb, maxR2, sun, 1.5); c.restore();
+      if(o < 0.98){ c.globalAlpha = 1 - o; c.strokeStyle = tok('--line-strong'); c.lineWidth = 1; c.setLineDash([4, 5]); c.beginPath(); c.moveTo(w / 2, 8); c.lineTo(w / 2, h - 8); c.stroke(); c.setLineDash([]); c.globalAlpha = 1; }
+      if(o > 0.02){
+        var d = bx - ax; c.fillStyle = sig;
+        ra.forEach(function(r1){ rb.forEach(function(r2){
+          if(r1 + r2 <= d || Math.abs(r1 - r2) >= d) return;
+          var a = (r1 * r1 - r2 * r2 + d * d) / (2 * d), hh = Math.sqrt(Math.max(0, r1 * r1 - a * a));
+          c.globalAlpha = o * Math.min(1, (1 - r1 / maxR2) + 0.15) * Math.min(1, (1 - r2 / maxR2) + 0.15);
+          c.beginPath(); c.arc(ax + a, cy - hh, 2.2 * s, 0, 6.2832); c.arc(ax + a, cy + hh, 2.2 * s, 0, 6.2832); c.fill();
+        }); });
+        c.globalAlpha = 1;
+      }
+      c.fillStyle = water; c.beginPath(); c.arc(ax, cy, 6 * s, 0, 6.2832); c.fill();
+      c.fillStyle = sun; c.save(); c.translate(bx, cy); c.rotate(0.7854); c.fillRect(-5.5 * s, -5.5 * s, 11 * s, 11 * s); c.restore();
+    }
+  }
+  window.__water = function(){ waters.forEach(function(W){ paintWater(W, 3.3); }); };
+  /* team record: two organic lines that drift and keep falling into step */
+  (function(){
+    var A = document.getElementById('rhy-a'), B = document.getElementById('rhy-b'); if(!A || !B || reduce) return;
+    var da = document.getElementById('rhy-da'), db = document.getElementById('rhy-db'), halo = document.getElementById('rhy-h');
+    var svg = A.ownerSVGElement, on = false, raf = 0, N = 56;
+    function yAt(u, t, sgn){
+      var env = Math.pow(1 - u, 1.25), amp = 21 + 5 * Math.sin(t * 0.37 + (sgn > 0 ? 0 : 1.7));
+      return 50 + sgn * env * (amp * Math.cos(u * 7.2 - t * 0.55 - 0.5) + 4.5 * Math.sin(u * 13 - t * 0.9 + sgn * 1.1)) + sgn * env * 3;
+    }
+    function line(t, sgn){
+      var d = '', i, u;
+      for(i = 0; i <= N; i++){ u = i / N; d += (i ? 'L' : 'M') + (12 + 264 * u).toFixed(1) + ' ' + yAt(u, t, sgn).toFixed(2); }
+      return d;
+    }
+    function dot(el, t, sgn, off){
+      var u = ((t * 0.16 + off) % 1), k = Math.sin(u * Math.PI);
+      el.setAttribute('cx', (12 + 264 * u).toFixed(1)); el.setAttribute('cy', yAt(u, t, sgn).toFixed(2)); el.setAttribute('opacity', (0.9 * Math.min(1, k * 3)).toFixed(2));
+      return u;
+    }
+    function frame(now){
+      var t = now / 1000;
+      A.setAttribute('d', line(t, -1)); B.setAttribute('d', line(t, 1));
+      var u1 = dot(da, t, -1, 0), u2 = dot(db, t, 1, 0.5), near = Math.max(u1, u2);
+      halo.setAttribute('r', (10 + 1.5 * Math.sin(t * 1.6) + (near > 0.9 ? (near - 0.9) * 60 : 0)).toFixed(2));
+      if(on) raf = requestAnimationFrame(frame);
+    }
+    if(!('IntersectionObserver' in window)){ on = true; raf = requestAnimationFrame(frame); return; }
+    new IntersectionObserver(function(es){ es.forEach(function(e){
+      if(e.isIntersecting && !on){ on = true; raf = requestAnimationFrame(frame); }
+      else if(!e.isIntersecting){ on = false; cancelAnimationFrame(raf); }
+    }); }).observe(svg);
+  })();
+  if(reduce || !('IntersectionObserver' in window)){ window.__water(); addEventListener('resize', window.__water); yes.forEach(function(b){ b.addEventListener('click', window.__water); }); }
+  else {
+    var running = false;
+    function frame(ms){ var any = false; waters.forEach(function(W){ if(W.on){ any = true; paintWater(W, ms / 1000); } }); running = any; if(any) requestAnimationFrame(frame); }
+    var wio = new IntersectionObserver(function(es){
+      es.forEach(function(e){ waters.forEach(function(W){ if(W.cv === e.target) W.on = e.isIntersecting; }); });
+      if(!running){ running = true; requestAnimationFrame(frame); }
+    });
+    waters.forEach(function(W){ paintWater(W, 3.3); wio.observe(W.cv); });
+  }
+
+  /* Improve: the same axes at three Checks */
+  var CHECKS = [
+    ['How we decide', [[30,72],[38,62],[46,54]]],
+    ['Who carries what', [[55,60],[56,59],[57,58]]],
+    ["Where we're going", [[40,44],[41,43],[42,43]]],
+    ['Money between us', [[68,28],[62,38],[55,44]]]
+  ];
+  var box = $('#checks');
+  if(box) CHECKS.forEach(function(ax){
+    var name = document.createElement('div'); name.className = 'checks-name'; name.textContent = ax[0]; box.appendChild(name);
+    var row = document.createElement('div'); row.className = 'checks-row';
+    ax[1].forEach(function(v){
+      var t = document.createElement('div'); t.className = 'track';
+      t.style.cssText = '--a:' + v[0] + ';--b:' + v[1] + ';--lo:' + Math.min(v[0],v[1]) + ';--hi:' + Math.max(v[0],v[1]);
+      t.innerHTML = '<i class="gap"></i><i class="mk a"></i><i class="mk b"></i>'; row.appendChild(t);
+    });
+    box.appendChild(row);
+  });
+
+  /* goal module: the card shows while its chip is pressed, hovered or focused; charts play once */
+  (function(){
+    var chip = document.getElementById('m-goal'), card = document.getElementById('goal-card'); if(!chip || !card) return;
+    var hov = false, foc = false;
+    function sync(){ card.hidden = !(chip.getAttribute('aria-pressed') === 'true' || hov || foc); }
+    chip.addEventListener('click', function(){ chip.setAttribute('aria-pressed', String(chip.getAttribute('aria-pressed') !== 'true')); sync(); });
+    chip.addEventListener('mouseenter', function(){ hov = true; sync(); }); chip.addEventListener('mouseleave', function(){ hov = false; sync(); });
+    chip.addEventListener('focus', function(){ foc = true; sync(); }); chip.addEventListener('blur', function(){ foc = false; sync(); });
+    sync();
+    if(reduce || !('IntersectionObserver' in window)) return;
+    var once = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ once.unobserve(e.target); e.target.classList.add('play'); } }); }, {threshold:0.4});
+    ['gchart', 'pp'].forEach(function(id){ var el = document.getElementById(id); if(el){ el.classList.add('arm'); once.observe(el); } });
+  })();
+
+  /* things arrive as you reach them: blocks rise in, seats fill, gaps close, numbers count up */
+  if(!reduce && 'IntersectionObserver' in window){
+    var rio = new IntersectionObserver(function(es){ es.forEach(function(e){
+      if(!e.isIntersecting) return; rio.unobserve(e.target); e.target.classList.add('in');
+      if(e.target.classList.contains('record')) e.target.classList.add('play');
+    }); }, {rootMargin:'0px 0px -8% 0px'});
+    $$('.stage-head, .steps li, .mods li, .out, .panel, .stage .photo, .water, .flow li, .proof li, .grid3 li, .cards2 .card, .reach li, .record').forEach(function(el){
+      if(el.getBoundingClientRect().top < innerHeight * 0.9) return;
+      el.style.setProperty('--d', Math.min(Array.prototype.indexOf.call(el.parentNode.children, el), 5) * 0.07 + 's');
+      el.classList.add('rv'); rio.observe(el);
+    });
+    /* safety net: anything already on screen or scrolled past is shown, even if the observer is late */
+    var rvTick = false;
+    addEventListener('scroll', function(){
+      if(rvTick) return; rvTick = true;
+      setTimeout(function(){ rvTick = false; $$('.rv:not(.in)').forEach(function(el){ if(el.getBoundingClientRect().top < innerHeight * 0.92){ el.classList.add('in'); if(el.classList.contains('record')) el.classList.add('play'); } }); }, 120);
+    }, {passive:true});
+    var rows = $$('.checks-row').map(function(row){
+      var ts = $$('.track', row), full = ts.map(function(t){ return t.style.cssText; });
+      ts.forEach(function(t){ t.style.cssText = full[0]; });
+      return {ts:ts, full:full};
+    });
+    var nums = $$('.proof .n').map(function(el){ var txt = el.textContent, v = parseFloat(txt); return {el:el, v:v, dec:(txt.split('.')[1] || '').replace(/\D/g, '').length, suf:txt.replace(/[\d.]/g, '')}; });
+    var pio = new IntersectionObserver(function(es){ es.forEach(function(e){
+      if(!e.isIntersecting) return; pio.unobserve(e.target);
+      if(e.target.classList.contains('seats')) e.target.classList.add('play');
+      else if(e.target.id === 'checks') rows.forEach(function(R){ [1, 2].forEach(function(i){ setTimeout(function(){ R.ts[i].style.cssText = R.full[i]; }, 350 * i); }); });
+      else nums.forEach(function(N){
+        if(N.el !== e.target) return; var t0 = performance.now();
+        (function step(now){ var p = Math.min(1, (now - t0) / 900), k = 1 - Math.pow(1 - p, 3); N.el.textContent = (N.v * k).toFixed(N.dec) + N.suf; if(p < 1) requestAnimationFrame(step); })(t0);
+      });
+    }); }, {threshold:0.5});
+    $$('.seats, #checks, .proof .n').forEach(function(el){ pio.observe(el); });
+  }
+})();
+</script>
+
+<script src="site.js"></script>
+</body>
+</html>
