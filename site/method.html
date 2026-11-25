@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The method · Cadence</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<style>
+@media (max-width:700px){
+.skin{height:40px}
+.stage .prose figure.water,.wk-grid,.stage .ci.panel:not(.solve-panel){display:none}
+ul.proof{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;scrollbar-width:none}
+ul.proof::-webkit-scrollbar{display:none}
+ul.proof>li{flex:0 0 80%;scroll-snap-align:center}
+.wrap.sec{padding-block:44px}
+}
+</style>
 </head>
 <body>
 <script>try{if(sessionStorage.getItem('tide'))document.documentElement.classList.add('arrive')}catch(e){}</script><link rel="stylesheet" href="/fonts/fonts.css">
@@ -614,6 +624,46 @@ strong{color:var(--text); font-weight:600}
   .mk,.gap,.axes{transition:none}
 }
 </style>
+<style>
+/* next: lake blues on the method page, and the two additions below */
+:root,:root[data-theme="light"]{--tint:#e2eaf0; --text:#131c27; --body:#434f5c; --mute:#5a6673; --text-hover:#24313f;--sig:#2e587c; --focus:#2e587c; --water:#4d7ea8; --water-soft:#a8c3d8;--ci-ground:#0e1926; --ci-panel:#162536; --ci-line:#2a3b4f; --ci-text:#e9eff5; --ci-mute:#a7b7c7;--ci-water:#8fb0cf; --water-top:#2e587c; --water-deep:#102a44;}
+.lead-sub{margin:10px 0 0;color:var(--body);font-size:17px;line-height:1.5;max-width:36em}
+.pick{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 14px}
+.pick button{font:600 14px/1 var(--sans);min-height:44px;padding:0 18px;border-radius:var(--r-pill);border:1.5px solid var(--text);background:transparent;color:var(--text);cursor:pointer}
+.pick button[aria-pressed="true"]{background:var(--text);color:var(--surface)}
+.pickview[data-view="a"]>[data-c="b"],.pickview[data-view="b"]>[data-c="a"]{display:none}
+.case4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0;padding:0;list-style:none}
+.case4 li{background:var(--raised);border:1px solid var(--line);border-radius:var(--r-md);padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.case4 .k{font:500 11px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.case4 p{margin:0;color:var(--text);font:400 19px/1.25 var(--display)}
+.case-tag{font:500 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:10px 0 0}
+.people.two{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:28px}
+/* next: the left side of each stage, calmer. The drawings and the photo stay; the steps are smaller,
+   "You get" is one slim card, and the two Sprint examples are tighter. */
+.stage{gap:18px}
+.stage .h-l{font-size:clamp(30px,3.6vw,44px)}
+.stage .prose{gap:12px}
+.stage .steps{gap:10px}
+.stage .steps li{grid-template-columns:34px minmax(0,1fr);gap:12px}
+.stage .steps .badge{width:34px;height:34px}
+.stage .steps .badge .ico{width:18px;height:18px}
+.stage .steps p{font-size:15.5px;line-height:1.5}
+.stage .out{padding:10px 16px;gap:2px}
+.stage .out p{font-size:15.5px;line-height:1.45}
+.stage .out strong{font-size:20px}
+.stage .out .next{display:none}
+.stage .sp-open{font-size:15px;margin:0}
+.sprint-cases{margin-top:2px}
+.pick{margin:4px 0 10px}
+.pick button{min-height:38px;padding:0 14px;font-size:13.5px}
+.case4{gap:8px}
+.case4 li{padding:10px 12px;gap:4px}
+.case4 p{font-size:16.5px}
+.case-tag{margin-top:6px}
+@media (min-width:900px){.stage{padding-top:26px;padding-bottom:26px}}
+
+@media (max-width:640px){.case4,.people.two{grid-template-columns:minmax(0,1fr)}}
+</style>
 <link rel="stylesheet" href="chrome.css">
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
@@ -690,7 +740,8 @@ strong{color:var(--text); font-weight:600}
 <section class="wrap sec" aria-labelledby="sys-h">
   <div class="sec-head">
     <p class="mono eyebrow" id="sys-h">The rhythm</p>
-    <p class="lead">It fits around a company, not the other way round.</p>
+    <p class="lead">There when your team needs it. Quiet when it doesn't.</p>
+    <p class="lead-sub">Most teams come once or twice a year, with one problem. That is enough to feel supported.</p>
   </div>
   <div class="rhythm" role="group" aria-label="The rhythm">
     <div><span class="mono" style="color:var(--mute)">Once, to start</span><span>The Cadence Check. About fifteen minutes each.</span></div>
@@ -818,6 +869,25 @@ strong{color:var(--text); font-weight:600}
           <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-circle"/></svg></span><p><strong>With people who have solved it.</strong> An expert one-to-one, and a circle of four or five founders with the same problem.</p></li>
         </ul>
         <p class="sp-open"><strong>Open circles.</strong> One hour on one topic, for any founder. A good way to try it first.</p>
+        <div class="sprint-cases">
+          <p class="mono" style="color:var(--mute);margin-bottom:6px">A Sprint at work · pick one</p>
+          <div class="pick who-tabs" data-for="sprint-case" role="group" aria-label="Choose a kind of problem"><button type="button" data-v="a" aria-pressed="true">For the company</button><button type="button" data-v="b" aria-pressed="false">For the founders</button></div>
+          <div class="pickview" id="sprint-case" data-view="a">
+            <ul class="case4" data-c="a">
+              <li><span class="k">The problem</span><p>"Nine months of runway, and we don't agree: raise or cut?"</p></li>
+              <li><span class="k">Who leads</span><p>A fractional CFO, one-to-one.</p></li>
+              <li><span class="k">One goal, one number</span><p>Extend our runway. The number: months of runway.</p></li>
+              <li><span class="k">With</span><p>A circle of founders with the same problem.</p></li>
+            </ul>
+            <ul class="case4" data-c="b">
+              <li><span class="k">The problem</span><p>"My co-founder decides alone, and I hear about it in the stand-up."</p></li>
+              <li><span class="k">Who leads</span><p>A co-founder coach, with the two of you.</p></li>
+              <li><span class="k">One goal, one number</span><p>Decide the big calls together. The number: decisions open for more than two weeks.</p></li>
+              <li><span class="k">With</span><p>A circle of founders with the same problem.</p></li>
+            </ul>
+          </div>
+          <p class="case-tag">Example · the steps are the same every time</p>
+        </div>
         <div class="out">
           <span class="mono" style="color:var(--mute)">You get</span>
           <p><strong>A finished Sprint</strong>, with the number at the start and at the end, and what you keep doing.</p>
@@ -968,18 +1038,6 @@ strong{color:var(--text); font-weight:600}
   </div>
 </section>
 
-<section class="wrap sec" aria-labelledby="app-h">
-  <div class="sec-head"><p class="mono eyebrow">In the app</p><h2 id="app-h" class="h-m">One place, and it always shows your next step.</h2></div>
-  <ul class="grid3 icon-list">
-    <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-mic"/></svg></span><p><strong>Talk to Emma.</strong> Your Check, by voice or typing.</p></li>
-    <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-map"/></svg></span><p><strong>See your result</strong>, and with both yeses, where you two differ.</p></li>
-    <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-goal"/></svg></span><p><strong>Run your Sprint.</strong> Your plan, this week, your next session.</p></li>
-    <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-clock"/></svg></span><p><strong>Check in</strong> every three months.</p></li>
-    <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-circle"/></svg></span><p><strong>Join an open circle</strong> with one tap.</p></li>
-    <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-layers"/></svg></span><p><strong>Keep everything.</strong> Your library, and a report you can print.</p></li>
-  </ul>
-</section>
-
 <div class="band">
 <section class="wrap sec" aria-labelledby="why-h">
   <div class="sec-head"><p class="mono eyebrow">Why it works</p><h2 id="why-h" class="h-m">Built on what is known to work.</h2></div>
@@ -996,7 +1054,7 @@ strong{color:var(--text); font-weight:600}
   <div class="sec-head"><p class="mono eyebrow">The network behind it</p><h2 id="net-h" class="h-m">The people who have done it.</h2></div>
   <div class="cards2">
     <div class="card wide"><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-circle"/></svg></span>
-      <h3>Shadow Leaders: experts who have done the work.</h3><p>Senior experts, led by Stefan van Eerde. They take the Sprint sessions and lead the circles.</p><div class="people-wrap"><div class="people-head"><span class="mono">Who you meet</span><span class="tag">Example profiles</span></div><ul class="people"><li><svg class="avatar" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" fill="var(--tint)"/><circle cx="24" cy="19" r="8" fill="var(--text)"/><path d="M8 50 A16 16 0 0 1 40 50 Z" fill="var(--text)"/></svg><span><strong>Fractional CFO</strong><small>Runway, board numbers, the next round</small></span></li><li><svg class="avatar" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" fill="var(--surface)"/><circle cx="24" cy="19" r="8" fill="var(--water)"/><path d="M8 50 A16 16 0 0 1 40 50 Z" fill="var(--water)"/></svg><span><strong>Sales lead</strong><small>The first sales hire, turning prospects into customers</small></span></li><li><svg class="avatar" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" fill="var(--tint)"/><circle cx="24" cy="19" r="8" fill="var(--clay)"/><path d="M8 50 A16 16 0 0 1 40 50 Z" fill="var(--clay)"/></svg><span><strong>Hiring lead</strong><small>Senior hires and the first team leads</small></span></li></ul></div></div>
+      <h3>Shadow Leaders: experts who have done the work.</h3><p>Senior experts, led by Stefan van Eerde. They take the Sprint sessions and lead the circles. Coaches and a certified psychologist work with the founders themselves.</p><div class="people-wrap"><div class="people-head"><span class="mono">Who you meet</span><span class="tag">Example profiles</span></div><div class="pick who-tabs" data-for="people-view" role="group" aria-label="Choose who it is for"><button type="button" data-v="a" aria-pressed="true">For the company</button><button type="button" data-v="b" aria-pressed="false">For the founders</button></div><div class="pickview" id="people-view" data-view="a"><ul class="people two" data-c="a"><li><svg class="avatar" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" fill="var(--tint)"/><circle cx="24" cy="19" r="8" fill="var(--text)"/><path d="M8 50 A16 16 0 0 1 40 50 Z" fill="var(--text)"/></svg><span><strong>Fractional CFO</strong><small>Runway, board numbers, the next round</small></span></li><li><svg class="avatar" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" fill="var(--surface)"/><circle cx="24" cy="19" r="8" fill="var(--water)"/><path d="M8 50 A16 16 0 0 1 40 50 Z" fill="var(--water)"/></svg><span><strong>Sales lead</strong><small>The first sales hire, turning prospects into customers</small></span></li><li><svg class="avatar" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" fill="var(--tint)"/><circle cx="24" cy="19" r="8" fill="var(--clay)"/><path d="M8 50 A16 16 0 0 1 40 50 Z" fill="var(--clay)"/></svg><span><strong>Hiring lead</strong><small>Senior hires and the first team leads</small></span></li><li><svg class="avatar" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" fill="var(--surface)"/><circle cx="24" cy="19" r="8" fill="var(--text)"/><path d="M8 50 A16 16 0 0 1 40 50 Z" fill="var(--text)"/></svg><span><strong>Operations lead</strong><small>The first managers, and who owns what</small></span></li></ul><ul class="people two" data-c="b"><li><svg class="avatar" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" fill="var(--tint)"/><circle cx="24" cy="19" r="8" fill="var(--text)"/><path d="M8 50 A16 16 0 0 1 40 50 Z" fill="var(--text)"/></svg><span><strong>Co-founder coach</strong><small>How the two of you decide, and who does what</small></span></li><li><svg class="avatar" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" fill="var(--surface)"/><circle cx="24" cy="19" r="8" fill="var(--water)"/><path d="M8 50 A16 16 0 0 1 40 50 Z" fill="var(--water)"/></svg><span><strong>Leadership coach</strong><small>Leading the team while the company grows</small></span></li><li><svg class="avatar" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" fill="var(--tint)"/><circle cx="24" cy="19" r="8" fill="var(--clay)"/><path d="M8 50 A16 16 0 0 1 40 50 Z" fill="var(--clay)"/></svg><span><strong>Certified psychologist</strong><small>Pressure, and when it gets personal</small></span></li></ul></div></div></div>
   </div>
   <div>
     <p class="mono" style="color:var(--mute); margin-bottom:12px">How they reach you</p>
@@ -1004,6 +1062,7 @@ strong{color:var(--text); font-weight:600}
       <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-usercheck"/></svg></span><p><strong>Matched by a person</strong> who knows your problem.</p></li>
       <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-one"/></svg></span><p><strong>One session first.</strong> More only if it works.</p></li>
       <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-star"/></svg></span><p><strong>Rated every time.</strong> That decides who is asked again.</p></li>
+      <li><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-goal"/></svg></span><p><strong>The same steps every time.</strong> One goal, one number, a start and an end.</p></li>
     </ul>
   </div>
 </section>

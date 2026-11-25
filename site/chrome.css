@@ -89,3 +89,7 @@ body{margin:0}
 .cx .foot small{margin-top:14px}
 .cx .foot li a{line-height:2}
 .cx .band{border-radius:0}
+
+/* next: lake blues; the page-change overlay too (the method page has no --d3 of its own) */
+.top,.sheet,.cx{--tint:#e2eaf0; --ink:#131c27; --body:#434f5c; --mute:#5a6673;--water:#4d7ea8; --water-soft:#a8c3d8;--d1:#2e587c; --d2:#23486a; --d3:#183958; --d4:#102a44;--on-deep:#f0f4f8; --on-deep-2:#d0dce8; --on-deep-3:#a2b9cf; --deep-line:rgba(240,244,248,.2);--panel:#0e1926; --panel-2:#162536; --panel-line:#2a3b4f; --panel-text:#e9eff5; --panel-mute:#a7b7c7;}
+body::after{background:#183958}

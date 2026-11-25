@@ -238,3 +238,21 @@ $$('form[data-form]').forEach(function(f){
 frame();
 w.addEventListener('load',req);
 })();
+
+/* next: steps that play one by one (founders, how it works) */
+(function(){
+  var RM=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  [].slice.call(document.querySelectorAll('[data-play]')).forEach(function(box){
+    var steps=[].slice.call(box.querySelectorAll('[data-s-step]')),n=steps.length,cur=0,auto=true,vis=false;
+    if(!n) return;
+    function set(i){cur=i;box.setAttribute('data-step',i+1);steps.forEach(function(x,j){x.classList.toggle('on',j===i)})}
+    steps.forEach(function(x,i){
+      x.addEventListener('click',function(){auto=false;set(i)});
+      x.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();auto=false;set(i)}});
+    });
+    set(0);
+    if(RM||!('IntersectionObserver' in window)) return;
+    new IntersectionObserver(function(es){vis=es[0].isIntersecting},{threshold:.3}).observe(box);
+    setInterval(function(){if(auto&&vis)set((cur+1)%n)},4200);
+  });
+})();
