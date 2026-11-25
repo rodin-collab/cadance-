@@ -876,3 +876,16 @@ body::after{content:"";position:fixed;inset:0;z-index:200;background:var(--d3,#1
 .hero .scene{margin-top:-72px}
 .hero .hero-sub .stack>p{display:none}
 }
+
+/* next: Founders, "How a Sprint solves it". When you reach it, the four steps pop up one after another,
+   left to right, into raised blocks with depth and a shadow. Once only; still for reduced motion. */
+.pb-how li{background:var(--d1);border-color:rgba(240,244,248,.26);transform:translateY(-4px);
+  box-shadow:0 6px 0 var(--d4),0 22px 32px -14px rgba(4,12,24,.7);
+  transition:transform .55s cubic-bezier(.34,1.56,.64,1),opacity .35s ease,background-color .4s ease,box-shadow .5s ease,border-color .4s ease}
+.pb-how li+li::before{transition:opacity .3s ease,transform .3s ease}
+.pb-how li:nth-child(2){transition-delay:.18s}.pb-how li:nth-child(2)::before{transition-delay:.12s}
+.pb-how li:nth-child(3){transition-delay:.36s}.pb-how li:nth-child(3)::before{transition-delay:.30s}
+.pb-how li:nth-child(4){transition-delay:.54s}.pb-how li:nth-child(4)::before{transition-delay:.48s}
+.mo .pb-how[data-rv].pre{opacity:1;transform:none}
+.mo .pb-how.pre li{opacity:0;transform:translateY(14px) scale(.9);background:transparent;border-color:var(--deep-line);box-shadow:0 0 0 var(--d4),0 0 0 rgba(4,12,24,0)}
+.mo .pb-how.pre li+li::before{opacity:0;transform:translate(-90%,-50%)}
