@@ -8,147 +8,731 @@
 <meta name="description" content="The Cadence weekend brings four founding teams together at a lakehouse near Barcelona. No investors and no laptops open all day.">
 <link rel="stylesheet" href="/fonts/fonts.css">
 <link rel="stylesheet" href="site.css">
+<style>
+/* the weekend page (26 Nov), scoped under .wk26 */
+
+/* Layout concept: one weekend told in scroll order. A sticky clock with the Cadence sun rides
+   the horizon while the page sky changes from Friday dusk to Sunday noon. Brand tokens from lp.css. */
+.wk26{--linen:var(--paper);--night:var(--panel);--panel:var(--panel-2);--nline:var(--panel-line);--ntext:var(--panel-text);--nmute:var(--panel-mute);--serif:var(--display);--sky:var(--linen);--fg:var(--ink);--fg2:var(--body);--rule:var(--line);--gut-l:max(16px, env(safe-area-inset-left, 0px));--gut-r:max(16px, env(safe-area-inset-right, 0px));color-scheme:light}
+.wk26 *{box-sizing:border-box}
+.wk26{background:var(--linen);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:clip}
+.wk26 img{max-width:100%;display:block}
+.wk26 a{color:inherit}
+.wk26 :focus-visible{outline:2px solid var(--clay);outline-offset:3px;border-radius:4px}
+.wk26 .k-wrap{max-width:1240px;margin:0 auto;padding-left:var(--gut-l);padding-right:var(--gut-r)}
+.wk26 .label{font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--clay);margin:0}
+.wk26 .readout{font-family:var(--mono);font-size:12.5px;letter-spacing:.02em;color:var(--mute)}
+.wk26 h1,.wk26 h2,.wk26 h3{font-family:var(--serif);font-weight:400;margin:0;text-wrap:balance;letter-spacing:-.005em}
+.wk26 h2{font-size:clamp(38px,5vw,64px);line-height:1.02}
+.wk26 h3{font-size:clamp(26px,2.6vw,34px);line-height:1.1}
+.wk26 p{margin:0}
+.wk26 .lead{font-size:clamp(19px,1.6vw,22px);line-height:1.5;color:var(--body);max-width:36em}
+.wk26 .k-btn{display:inline-flex;align-items:center;gap:10px;font:600 16px/1 var(--sans);padding:16px 22px;border-radius:999px;text-decoration:none;transition:transform .2s,background .2s}
+.wk26 .k-btn:hover{transform:translateY(-2px)}
+.wk26 .k-btn .arr{display:inline-block;transition:transform .3s}
+.wk26 .k-btn:hover .arr{transform:translateX(4px)}
+.wk26 .k-btn-clay{box-shadow:0 10px 24px -14px rgba(168,71,42,.9)}
+.wk26 .k-btn-clay{background:var(--clay);color:#fff}
+.wk26 .k-btn-clay:hover{background:#8F3B22}
+.wk26 .k-btn-line{border:1px solid currentColor;color:inherit}
+.wk26 .chip{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12.5px;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:var(--raised);color:var(--ink);white-space:nowrap}
+.wk26 .k-sec{padding-block:clamp(72px,9vw,128px)}
+.wk26 [data-reveal]{transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+.js .wk26 [data-reveal]:not(.in){transform:translateY(22px)}
+
+/* ---------- top bar ---------- */
+.wk26 .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--linen) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+@supports not (background:color-mix(in srgb,red,blue)){.wk26 .bar{background:var(--linen)}}
+.wk26 .bar{isolation:isolate}
+.wk26 .bar .k-wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.wk26 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--serif);font-size:26px;line-height:1}
+.wk26 .brand svg{width:30px;height:30px}
+.wk26 .bar nav{display:flex;gap:22px;font-size:15px}
+.wk26 .bar nav a{text-decoration:none;color:var(--body)}
+.wk26 .bar nav a:hover{color:var(--ink)}
+.wk26 .bar .k-btn{padding:11px 16px;font-size:14px}
+@media (max-width:860px){.wk26 .bar nav{display:none}}
+
+/* ---------- hero: text left, two photos right (circle + pool), animated ---------- */
+.wk26 .k-hero{--hz:clamp(92px,11vw,132px);position:relative;color:var(--ntext);overflow:hidden;isolation:isolate;
+  background:
+    linear-gradient(90deg,rgba(8,18,17,.62) 0%,rgba(8,18,17,.25) 45%,rgba(8,18,17,0) 70%),
+    linear-gradient(180deg,#081413 0%,#0E2326 26%,#193538 46%,#3A3F3A 64%,#7A4A36 80%,#C2643F 92%,#EFA27A 100%) top/100% calc(100% - var(--hz)) no-repeat,
+    linear-gradient(180deg,#3B2A24 0%,#1A2422 45%,#0B1615 100%) bottom/100% var(--hz) no-repeat;
+  background-color:#0B1615}
+.wk26 .sky-dusk{position:absolute;inset:0 0 var(--hz) 0;z-index:-2;pointer-events:none;background:linear-gradient(180deg,#0D0F22 0%,#1E1D3A 30%,#3D2B4A 52%,#7A3A4E 72%,#D0583F 90%,#F6B27E 100%);opacity:0;animation:wk26-dusk 22s ease-in-out 3s infinite alternate}
+@keyframes wk26-dusk{0%,15%{opacity:0}85%,100%{opacity:.72}}
+.wk26 .stars{position:absolute;left:0;top:0;width:2px;height:2px;border-radius:50%;background:#fff;z-index:-2;pointer-events:none;opacity:.7;animation:wk26-twinkle 6s ease-in-out infinite alternate;
+  box-shadow:6vw 6vh #fff,14vw 14vh rgba(255,255,255,.6),22vw 4vh #fff,31vw 11vh rgba(255,255,255,.5),38vw 3vh #fff,46vw 9vh rgba(255,255,255,.7),53vw 16vh rgba(255,255,255,.45),61vw 5vh #fff,68vw 12vh rgba(255,255,255,.6),75vw 2vh #fff,83vw 8vh rgba(255,255,255,.55),91vw 15vh #fff,96vw 4vh rgba(255,255,255,.6),10vw 22vh rgba(255,255,255,.4),27vw 19vh rgba(255,255,255,.35),57vw 24vh rgba(255,255,255,.3),79vw 21vh rgba(255,255,255,.35),88vw 27vh rgba(255,255,255,.3)}
+@keyframes wk26-twinkle{from{opacity:.25}to{opacity:.75}}
+.wk26 .sun-wrap{position:absolute;left:0;right:0;top:0;bottom:var(--hz);overflow:hidden;z-index:-1;pointer-events:none}
+.wk26 .sun-glow{position:absolute;left:50%;bottom:calc(min(110vw,1300px) / -2);width:min(110vw,1300px);aspect-ratio:1;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(255,196,140,.55),rgba(239,140,95,.28) 38%,rgba(239,140,95,0) 70%);animation:wk26-breathe 9s ease-in-out infinite alternate}
+@keyframes wk26-breathe{from{opacity:.75;transform:translateX(-50%) scale(.95)}to{opacity:1;transform:translateX(-50%) scale(1.05)}}
+.wk26 .sun{position:absolute;left:50%;bottom:0;width:clamp(180px,22vw,300px);aspect-ratio:2/1;transform:translateX(-50%);border-radius:999px 999px 0 0;background:radial-gradient(circle at 50% 100%,#FFF1D6 0%,#FFD29E 28%,#F29A68 60%,#D9643C 100%);box-shadow:0 0 80px 20px rgba(255,170,110,.35);animation:wk26-sunUp 3s cubic-bezier(.2,.7,.2,1) .4s both,wk26-sunArc 22s ease-in-out 3.4s infinite alternate}
+@keyframes wk26-sunUp{from{transform:translate(-50%,100%)}to{transform:translate(-50%,0)}}
+@keyframes wk26-sunArc{0%,15%{transform:translate(-50%,0)}85%,100%{transform:translate(-50%,42%)}}
+.wk26 .k-water{position:absolute;left:0;right:0;bottom:0;height:var(--hz);z-index:-1;pointer-events:none;overflow:hidden}
+.wk26 .k-water::before{content:"";position:absolute;left:50%;top:0;width:clamp(160px,20vw,280px);height:100%;transform:translateX(-50%);background:linear-gradient(180deg,rgba(255,200,150,.55),rgba(255,170,110,0));filter:blur(6px);animation:wk26-shimmer 3.2s ease-in-out infinite alternate}
+@keyframes wk26-shimmer{from{opacity:.55;transform:translateX(-50%) scaleX(.9)}to{opacity:1;transform:translateX(-50%) scaleX(1.08)}}
+.wk26 .k-water::after{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,rgba(255,214,170,0),rgba(255,214,170,.9) 50%,rgba(255,214,170,0))}
+.wk26 .k-water i{position:absolute;left:50%;height:4px;border-radius:4px;transform:translateX(-50%) scaleX(0);animation:wk26-lineIn 1.6s cubic-bezier(.3,.7,.2,1) both,wk26-ripple 5s ease-in-out infinite alternate}
+.wk26 .k-water i:nth-child(1){top:26%;width:min(64vw,760px);background:linear-gradient(90deg,rgba(246,220,203,0),#F6DCCB 30%,#F6DCCB 70%,rgba(246,220,203,0));animation-delay:1s,2.6s}
+.wk26 .k-water i:nth-child(2){top:50%;width:min(42vw,480px);background:linear-gradient(90deg,rgba(169,199,193,0),#A9C7C1 30%,#A9C7C1 70%,rgba(169,199,193,0));animation-delay:1.25s,3s}
+.wk26 .k-water i:nth-child(3){top:72%;width:min(20vw,220px);opacity:.7;background:linear-gradient(90deg,rgba(169,199,193,0),#A9C7C1 30%,#A9C7C1 70%,rgba(169,199,193,0));animation-delay:1.5s,3.4s}
+@keyframes wk26-lineIn{to{transform:translateX(-50%) scaleX(1)}}
+@keyframes wk26-ripple{from{transform:translateX(-50%) scaleX(1)}to{transform:translateX(-50%) scaleX(.9)}}
+.wk26 .hero-grid{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(32px,5vw,80px);align-items:center;padding-block:clamp(48px,7vw,104px) calc(var(--hz) + clamp(40px,5vw,72px))}
+.wk26 .hero-copy{display:grid;gap:28px;align-content:center}
+.wk26 .k-hero .label{color:#F6DCCB;display:flex;align-items:flex-start;gap:10px}
+.wk26 .k-hero .label::before{content:"";flex:none;margin-top:.45em;width:8px;height:8px;border-radius:50%;background:var(--sun);box-shadow:0 0 0 0 rgba(227,144,108,.7);animation:wk26-beacon 2.4s ease-out infinite}
+@keyframes wk26-beacon{to{box-shadow:0 0 0 12px rgba(227,144,108,0)}}
+.wk26 .k-hero h1{font-size:clamp(48px,6.2vw,96px);line-height:.94}
+.wk26 .k-hero h1 em{display:block;font-size:.5em;line-height:1.08;margin-top:.4em;max-width:20ch;color:var(--nmute)}
+.wk26 .k-hero h1 .w{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.08em;margin-bottom:-.08em}
+.wk26 .k-hero h1 .w>span{display:inline-block;animation:wk26-wordUp 1s cubic-bezier(.2,.75,.2,1) both;animation-delay:calc(.15s + var(--i) * 70ms)}
+@keyframes wk26-wordUp{from{transform:translateY(110%)}to{transform:none}}
+.wk26 .hero-copy > p{max-width:30em;color:#DCE6E3;font-size:18px}
+.wk26 .rise{animation:wk26-rise 1s cubic-bezier(.2,.75,.2,1) both;animation-delay:var(--d,0s)}
+@keyframes wk26-rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.wk26 .k-hero .k-row{display:flex;flex-wrap:wrap;gap:12px}
+.wk26 .k-hero .k-btn-line{color:#fff}
+.wk26 .hero-facts{display:flex;flex-wrap:wrap;gap:8px 18px;font-family:var(--mono);font-size:12.5px;color:#E9DCCF;padding-top:18px;border-top:1px solid rgba(246,220,203,.25)}
+.wk26 .hero-facts b{color:#fff;font-weight:500}
+.wk26 .duo-hero{position:relative;aspect-ratio:1/1.02;min-height:0;--mx:0;--my:0;--sy:0}
+.wk26 .duo-hero figure{position:absolute;margin:0;overflow:hidden;border-radius:8px;box-shadow:0 40px 80px -30px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.06);will-change:transform}
+.wk26 .duo-hero img{width:100%;height:100%;object-fit:cover;transform:scale(1.12);animation:wk26-drift 20s ease-out .2s forwards}
+@keyframes wk26-drift{to{transform:scale(1)}}
+.wk26 .duo-hero .f1{inset:0 0 26% 8%;transform:translate3d(calc(var(--mx) * -14px),calc(var(--my) * -10px + var(--sy) * -40px),0);animation:wk26-wipe 1.4s cubic-bezier(.7,0,.2,1) .25s both}
+.wk26 .duo-hero .f1 img{object-position:46% 60%}
+.wk26 .duo-hero .f2{left:0;bottom:0;width:58%;aspect-ratio:4/3;outline:6px solid rgba(11,22,21,.55);transform:translate3d(calc(var(--mx) * 18px),calc(var(--my) * 14px + var(--sy) * 30px),0);animation:wk26-wipeUp 1.3s cubic-bezier(.7,0,.2,1) .75s both}
+.wk26 .duo-hero .f2 img{object-position:50% 55%;animation-delay:.8s}
+@keyframes wk26-wipe{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes wk26-wipeUp{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0 0 0 0)}}
+.wk26 .duo-hero figcaption{position:absolute;left:12px;bottom:12px;display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;padding:6px 11px;border-radius:999px;background:rgba(14,26,24,.72);color:#fff;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:wk26-rise .8s cubic-bezier(.2,.75,.2,1) both}
+.wk26 .duo-hero figcaption::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--signal);animation:wk26-blink 2s ease-in-out infinite}
+@keyframes wk26-blink{50%{opacity:.25}}
+.wk26 .duo-hero .f1 figcaption{left:auto;right:12px;top:12px;bottom:auto;animation-delay:1.6s}
+.wk26 .duo-hero .f2 figcaption{animation-delay:2s}
+.wk26 .sun-badge{position:absolute;right:3%;bottom:6%;width:clamp(96px,10vw,132px);aspect-ratio:1;border-radius:50%;background:var(--linen);color:var(--ink);display:grid;place-items:center;box-shadow:0 18px 40px -18px rgba(0,0,0,.6);transform:translate3d(calc(var(--mx) * 26px),calc(var(--my) * 20px),0);animation:wk26-pop 1s cubic-bezier(.3,1.5,.5,1) 1.5s both}
+@keyframes wk26-pop{from{opacity:0;scale:.4}to{opacity:1;scale:1}}
+.wk26 .sun-badge .k-ring{position:absolute;inset:0;width:100%;height:100%;animation:wk26-spin 26s linear infinite}
+.wk26 .sun-badge .k-ring text{font-family:var(--mono);font-size:10.4px;letter-spacing:.08em;fill:var(--ink)}
+@keyframes wk26-spin{to{transform:rotate(360deg)}}
+.wk26 .sun-badge .mark{width:42%;height:42%;overflow:visible}
+.wk26 .sun-badge .mark .ms{animation:wk26-bob 5s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes wk26-bob{0%,100%{transform:translateY(5px)}50%{transform:translateY(-3px)}}
+.wk26 .scroll-cue{position:absolute;left:50%;bottom:12px;z-index:1;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#F6DCCB;text-decoration:none;animation:wk26-cueIn 1s ease 2.4s both}
+@keyframes wk26-cueIn{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translateX(-50%)}}
+.wk26 .scroll-cue i{display:none;width:1px;height:34px;background:linear-gradient(var(--nmute),transparent);position:relative;overflow:hidden}
+.wk26 .scroll-cue i::after{content:"";position:absolute;left:0;top:-40%;width:1px;height:40%;background:#fff;animation:wk26-drip 1.8s ease-in-out infinite}
+@keyframes wk26-drip{to{top:110%}}
+@media (max-width:900px){.wk26 .hero-grid{grid-template-columns:1fr}.wk26 .duo-hero{aspect-ratio:1/.9;order:-1}.wk26 .scroll-cue{display:none}}
+@media (max-width:520px){.wk26 .duo-hero{aspect-ratio:1/1.05}.wk26 .duo-hero .f1{inset:0 0 30% 0}.wk26 .duo-hero .f2{width:66%}.wk26 .sun-badge{right:2%;bottom:4%}}
+
+/* ---------- scroll progress ---------- */
+.wk26 .progress{position:absolute;left:0;bottom:-1px;height:2px;width:100%;background:var(--clay);transform-origin:0 50%;transform:scaleX(var(--sp,0))}
+
+/* ---------- three questions ---------- */
+.wk26 .qs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:clamp(32px,6vw,96px);align-items:end}
+.wk26 .qlist{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.wk26 .qlist li{font-family:var(--serif);font-size:clamp(34px,4.6vw,62px);line-height:1.08;display:flex;gap:18px;align-items:baseline}
+.wk26 .qlist li span{font-family:var(--mono);font-size:13px;color:var(--clay);transform:translateY(-.6em)}
+.wk26 .qlist li{transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+.wk26 .qlist li:nth-child(2){transition-delay:.15s}.wk26 .qlist li:nth-child(3){transition-delay:.3s}
+.js .wk26 .qlist:not(.in) li{opacity:0;transform:translateX(-18px)}
+@media (max-width:820px){.wk26 .qs{grid-template-columns:1fr}}
+
+/* ---------- people strip ---------- */
+.wk26 .people{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:20px;overflow:hidden;margin-top:clamp(48px,6vw,80px)}
+.wk26 .people div{background:var(--raised);padding:26px 24px;display:grid;gap:8px;align-content:start;transition:background .4s}
+.wk26 .people div:hover{background:#fff}
+.wk26 .people b{color:var(--clay)}
+.wk26 .people b{font-family:var(--serif);font-weight:400;font-size:44px;line-height:1}
+.wk26 .people strong{font-size:17px;font-weight:600}
+.wk26 .people p{font-size:15px;color:var(--body)}
+@media (max-width:900px){.wk26 .people{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.wk26 .people{grid-template-columns:1fr}}
+
+/* ---------- map ---------- */
+.wk26 .map-sec{background:var(--tint)}
+.wk26 .map-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:24px;margin-bottom:clamp(28px,4vw,44px)}
+.wk26 .map{position:relative;border-radius:22px;overflow:hidden;aspect-ratio:1376/768;max-width:100%;box-shadow:0 30px 60px -30px rgba(20,32,30,.35)}
+.wk26 .map img{width:100%;height:100%;object-fit:cover}
+.wk26 .map svg.routes{position:absolute;inset:0;width:100%;height:100%}
+.wk26 .routes path{fill:none;stroke:var(--clay);stroke-width:2.6;stroke-dasharray:8 8;opacity:.9}
+.wk26 .map.in .routes path{animation:wk26-march 1.6s linear infinite}
+@keyframes wk26-march{to{stroke-dashoffset:-32}}
+.wk26 .pin{position:absolute;transform:translate(-50%,-50%) scale(var(--ps,1));transition:transform .6s cubic-bezier(.3,1.6,.5,1);width:16px;height:16px;border-radius:50%;background:var(--clay);border:3px solid var(--linen);box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.wk26 .pin.home{width:24px;height:24px;background:var(--ink);border-color:#F6DCCB}
+.wk26 .pin.home::after{content:"";position:absolute;inset:-12px;border-radius:50%;border:2px solid #F6DCCB;animation:wk26-pulse 2.4s ease-out infinite}
+@keyframes wk26-pulse{from{transform:scale(.6);opacity:1}to{transform:scale(1.8);opacity:0}}
+.wk26 .k-tag{transition:opacity .8s ease .9s;position:absolute;background:var(--linen);color:var(--ink);border-radius:14px;padding:8px 12px 9px;box-shadow:0 6px 18px rgba(20,32,30,.18);display:grid;gap:1px;white-space:nowrap}
+.wk26 .k-tag b{font-size:14.5px;font-weight:600}
+.wk26 .k-tag span{font-family:var(--mono);font-size:12px;color:var(--clay)}
+.wk26 .k-tag.home{background:var(--ink);color:var(--linen);padding:10px 16px}
+.wk26 .k-tag.home b{font-family:var(--serif);font-weight:400;font-size:24px;line-height:1}
+.wk26 .k-tag.home span{color:#F6DCCB}
+.js .wk26 .map:not(.in) .pin{--ps:0}
+.js .wk26 .map:not(.in) .k-tag{opacity:0}
+.wk26 .pin:nth-of-type(2){transition-delay:.1s}.wk26 .pin:nth-of-type(3){transition-delay:.2s}.wk26 .pin:nth-of-type(4){transition-delay:.3s}.wk26 .pin:nth-of-type(5){transition-delay:.4s}.wk26 .pin:nth-of-type(6){transition-delay:.5s}.wk26 .pin:nth-of-type(7){transition-delay:.6s}.wk26 .pin:nth-of-type(8){transition-delay:.75s}
+.wk26 .legend{display:none;list-style:none;padding:0;margin:20px 0 0;gap:10px}
+.wk26 .legend li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding-bottom:10px;font-size:16px}
+.wk26 .legend span{font-family:var(--mono);font-size:13.5px;color:var(--clay)}
+@media (max-width:760px){.wk26 .map .k-tag:not(.home){display:none}.wk26 .legend{display:grid}.wk26 .k-tag.home{transform:translate(-50%,-150%) !important;left:59% !important;top:32% !important}}
+
+/* ---------- system ---------- */
+.wk26 .k-sys{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(36px,6vw,96px);align-items:start}
+.wk26 .sys-intro{position:sticky;top:110px;display:grid;gap:22px}
+.wk26 .specs{display:flex;flex-wrap:wrap;gap:8px}
+.wk26 .k-steps{position:relative;list-style:none;margin:0;padding:0 0 0 44px;display:grid;gap:22px}
+.wk26 .k-steps::before{content:"";position:absolute;left:13px;top:14px;bottom:14px;width:2px;background:var(--line)}
+.wk26 .k-steps .fill{position:absolute;left:13px;top:14px;width:2px;height:var(--p,0%);max-height:calc(100% - 28px);background:var(--clay);transition:height .15s linear}
+.wk26 .step{position:relative;background:var(--raised);border:1px solid var(--line);border-radius:20px;padding:24px 24px 26px;display:grid;gap:14px}
+.wk26 .step::before{content:"";position:absolute;left:-38px;top:26px;width:16px;height:16px;border-radius:50%;background:var(--linen);border:2px solid var(--line-strong,#8C8373)}
+.wk26 .step.on::before{background:var(--clay);border-color:var(--clay)}
+.wk26 .step .label{color:var(--mute)}
+.wk26 .step h3{font-size:30px}
+.wk26 .step p{color:var(--body);font-size:16.5px}
+.wk26 .duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.wk26 .cell{border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:grid;gap:4px;background:var(--linen)}
+.wk26 .cell b{font-size:17px;font-weight:600}
+.wk26 .cell span{font-size:14.5px;color:var(--body)}
+.wk26 .cell.clay{border-color:var(--clay)}
+.wk26 .cell.k-water{border-color:var(--water)}
+.wk26 .lib{display:flex;flex-wrap:wrap;gap:8px}
+.wk26 .lib .chip.pick{border-color:var(--water);background:var(--tint);color:#20413D}
+.wk26 .lib .chip.pick::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--water)}
+@media (max-width:900px){.wk26 .k-sys{grid-template-columns:1fr}.wk26 .sys-intro{position:static}}
+@media (max-width:460px){.wk26 .duo{grid-template-columns:1fr}}
+
+/* ---------- timeline ---------- */
+.wk26 .tl{--sky:var(--linen);background:var(--sky);color:var(--fg);transition:background 1.1s ease,color 1.1s ease}
+.wk26 .tl.dark{--fg:var(--ntext);--fg2:var(--nmute);--rule:var(--nline)}
+.wk26 .tl-head{padding-block:clamp(72px,9vw,120px) 24px}
+.wk26 .tl-head .lead{color:var(--fg2)}
+.wk26 .tl-grid{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:clamp(28px,5vw,72px)}
+.wk26 .clock{position:sticky;top:96px;align-self:start;padding-block:12px 40px;display:grid;gap:14px}
+.wk26 .clock .k-day{font-family:var(--mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--clay)}
+.wk26 .tl.dark .clock .k-day{color:#F6DCCB}
+.wk26 .clock .time{font-family:var(--serif);font-size:clamp(64px,7vw,104px);line-height:.9;font-variant-numeric:tabular-nums}
+.wk26 .clock .what{font-size:16px;color:var(--fg2);min-height:1.5em}
+.wk26 .horizon{width:100%;max-width:300px;height:auto;overflow:visible}
+.wk26 .horizon .hz{stroke:var(--fg);stroke-width:5;stroke-linecap:round;transition:stroke 1.1s}
+.wk26 .horizon .wl{stroke:var(--water);stroke-width:5;stroke-linecap:round}
+.wk26 .horizon .k-arc{fill:none;stroke:var(--fg);stroke-opacity:.18;stroke-width:1.4;stroke-dasharray:3 5}
+.wk26 .horizon #sun{transition:transform 1s cubic-bezier(.3,.7,.2,1)}
+.wk26 .horizon #moon{transition:opacity 1s}
+.wk26 .days{display:flex;gap:6px;margin-top:4px}
+.wk26 .days span{font-family:var(--mono);font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid var(--rule);color:var(--fg2);transition:all .6s}
+.wk26 .days span.on{background:var(--clay);border-color:var(--clay);color:#fff}
+.wk26 .beats{display:grid;gap:clamp(80px,12vh,140px);padding-block:8px 120px}
+.wk26 .beat{display:grid;gap:18px;scroll-margin-top:120px}
+.wk26 .beat figure{margin:0;border-radius:20px;overflow:hidden;position:relative;background:var(--panel)}
+.wk26 .beat figure img{width:100%;aspect-ratio:16/9;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.wk26 .beat.in figure img{transform:scale(1.015)}
+.wk26 .beat figure:hover img{transform:scale(1.05)}
+.wk26 .beat figure{box-shadow:0 30px 60px -36px rgba(14,26,24,.55)}
+.wk26 .beat .k-t{font-family:var(--mono);font-size:13px;color:var(--clay)}
+.wk26 .tl.dark .beat .k-t{color:#F6DCCB}
+.wk26 .beat h3{font-size:clamp(30px,3.4vw,46px)}
+.wk26 .beat p{color:var(--fg2);max-width:34em}
+.wk26 .beat .note{font-family:var(--mono);font-size:12.5px;color:var(--fg2);opacity:.85}
+.wk26 .daymark{display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--clay)}
+.wk26 .daymark::after{content:"";flex:1;height:1px;background:var(--rule)}
+.wk26 .tl.dark .daymark{color:#F6DCCB}
+/* results card */
+.wk26 .results{background:var(--raised);color:var(--ink);border:1px solid var(--line);border-radius:20px;padding:clamp(20px,3vw,32px);display:grid;gap:16px}
+.wk26 .results .k-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.wk26 .results .key{display:flex;gap:16px;font-size:13.5px;color:var(--body)}
+.wk26 .results .key i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.wk26 .rrow{display:grid;grid-template-columns:150px minmax(0,1fr) 70px;gap:14px;align-items:center;font-size:15px}
+.wk26 .track{position:relative;height:10px;border-radius:99px;background:var(--tint)}
+.wk26 .track i{position:absolute;top:50%;width:16px;height:16px;border-radius:50%;transform:translate(-50%,-50%);border:2px solid var(--raised)}
+.wk26 .track i.a{background:var(--ink)} .wk26 .track i.k-b{background:var(--water)}
+.wk26 .track s{position:absolute;top:50%;height:4px;transform:translateY(-50%);background:var(--clay);opacity:.55;border-radius:4px}
+.wk26 .rrow em{font-style:normal;font-family:var(--mono);font-size:12px;text-align:right;color:var(--mute)}
+.wk26 .rrow em.gap{color:var(--clay)}
+@media (max-width:560px){.wk26 .rrow{grid-template-columns:1fr 56px}.wk26 .rrow .track{grid-column:1/-1;order:3}}
+/* plan card */
+.wk26 .plan{background:var(--raised);color:var(--ink);border:1px solid var(--line);border-radius:20px;padding:clamp(20px,3vw,32px);display:grid;gap:14px}
+.wk26 .plan table{width:100%;border-collapse:collapse;font-size:15px}
+.wk26 .plan th{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);text-align:left;font-weight:400;padding:0 8px 8px 0}
+.wk26 .plan td{border-top:1px solid var(--line);padding:11px 8px 11px 0;vertical-align:top}
+.wk26 .plan td:last-child{font-family:var(--mono);font-size:13px;color:var(--clay);white-space:nowrap}
+.wk26 .plan-wrap{overflow-x:auto}
+.wk26 .home-card{border-radius:20px;padding:clamp(24px,3.4vw,40px);background:var(--ink);color:var(--ntext);display:grid;gap:18px}
+.wk26 .home-card ul{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+.wk26 .home-card li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;font-size:18px}
+.wk26 .home-card li::before{content:"";width:18px;height:18px;margin-top:4px;border-radius:50%;background:var(--signal);box-shadow:inset 0 0 0 5px var(--ink)}
+.wk26 .home-card b{font-weight:600}
+@media (max-width:860px){
+  .wk26 .tl-grid{grid-template-columns:1fr}
+  .wk26 .clock{top:calc(env(safe-area-inset-top,0px) + var(--top));z-index:5;grid-template-columns:auto 1fr;align-items:center;gap:4px 16px;padding:12px 0 14px;margin-inline:calc(-1 * var(--gut-l)) calc(-1 * var(--gut-r));padding-left:var(--gut-l);padding-right:var(--gut-r);background:var(--sky);border-bottom:1px solid var(--rule);transition:background 1.1s}
+  .wk26 .clock .time{font-size:46px;grid-row:span 2}
+  .wk26 .clock .horizon,.wk26 .clock .days{display:none}
+  .wk26 .clock .what{font-size:14px;min-height:0}
+}
+
+/* ---------- ledger (the three questions, crossed off) ---------- */
+.wk26 .ledger{position:fixed;z-index:40;left:max(18px, env(safe-area-inset-left,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));width:min(300px,calc(100vw - 36px));background:var(--raised);color:var(--ink);border:1px solid var(--line);border-radius:18px;padding:16px 18px;box-shadow:0 18px 40px -18px rgba(20,32,30,.45);display:grid;gap:10px;transform:translateY(140%);transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.wk26 .ledger.show{transform:none}
+.wk26 .ledger ol{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.wk26 .ledger li{display:grid;gap:2px;font-size:15px;line-height:1.3}
+.wk26 .ledger li .k-q{transition:color .5s}
+.wk26 .ledger li .a{font-size:13.5px;color:#20413D;max-height:0;overflow:hidden;transition:max-height .6s}
+.wk26 .ledger li.done .k-q{text-decoration:line-through;text-decoration-color:var(--clay);text-decoration-thickness:2px;color:var(--mute)}
+.wk26 .ledger li.done .a{max-height:3em}
+@media (max-width:860px){.wk26 .ledger{display:none}}
+
+
+
+/* ---------- payback (night), compact ---------- */
+.wk26 .k-pb{padding-block:clamp(56px,6vw,88px)}
+.wk26 .pb-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(28px,5vw,72px);align-items:end}
+.wk26 .k-pb h2{font-size:clamp(32px,3.6vw,48px);line-height:1.05}
+@media (max-width:860px){.wk26 .pb-grid{grid-template-columns:1fr}}
+.wk26 .night{background:var(--night);color:var(--ntext)}
+.wk26 .night .label{color:var(--signal)}
+.wk26 .night .lead{color:var(--nmute)}
+.wk26 .pay{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(20px,3vw,40px)}
+.wk26 .pay .k-n{font-family:var(--serif);font-size:clamp(60px,6.4vw,96px);line-height:.85;color:var(--signal);font-variant-numeric:tabular-nums}
+.wk26 .pay .k-n small{font-size:.32em;color:var(--ntext)}
+.wk26 .pay p{color:var(--nmute);max-width:20em;margin-top:10px;font-size:15.5px;line-height:1.45}
+.wk26 .pay-line{margin-top:clamp(28px,3.5vw,40px);padding-top:22px;border-top:1px solid var(--nline);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:12px clamp(28px,5vw,72px);align-items:start}
+.wk26 .pay-line p.k-big{font-size:clamp(19px,1.8vw,23px);line-height:1.4}
+.wk26 .pay-line b{color:var(--signal);font-weight:600}
+.wk26 .pay-line .src{font-family:var(--mono);font-size:11.5px;line-height:1.6;color:var(--nmute)}
+@media (max-width:860px){.wk26 .pay-line{grid-template-columns:1fr}}
+@media (max-width:640px){.wk26 .pay{grid-template-columns:1fr}}
+
+/* ---------- year road ---------- */
+.wk26 .road{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;margin-top:48px}
+.wk26 .road::before{content:"";position:absolute;left:8px;right:8px;top:9px;height:2px;background:repeating-linear-gradient(90deg,var(--clay) 0 8px,transparent 8px 16px)}
+.wk26 .stop{position:relative;display:grid;gap:8px;padding-top:34px}
+.wk26 .stop::before{content:"";position:absolute;top:0;left:0;width:20px;height:20px;border-radius:50%;background:var(--linen);border:3px solid var(--clay)}
+.wk26 .stop.first::before{background:var(--clay)}
+.wk26 .stop .label{color:var(--mute)}
+.wk26 .stop b{font-size:18px;font-weight:600}
+.wk26 .stop p{font-size:15.5px;color:var(--body)}
+@media (max-width:860px){.wk26 .road{grid-template-columns:1fr;gap:26px;padding-left:36px}.wk26 .road::before{left:9px;right:auto;top:6px;bottom:6px;width:2px;height:auto;background:repeating-linear-gradient(180deg,var(--clay) 0 8px,transparent 8px 16px)}.wk26 .stop{padding-top:0}.wk26 .stop::before{left:-36px}}
+
+/* ---------- trust / editions / faq ---------- */
+.wk26 .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.wk26 .k-card{border:1px solid var(--line);border-radius:22px;padding:clamp(24px,3vw,36px);background:var(--raised);display:grid;gap:14px;align-content:start;transition:transform .5s cubic-bezier(.2,.7,.2,1),box-shadow .5s}
+.wk26 .k-card:hover{transform:translateY(-4px);box-shadow:0 24px 50px -30px rgba(20,32,30,.4)}
+.wk26 .k-card p{color:var(--body)}
+.wk26 .k-card a{font-weight:600;color:var(--clay);text-decoration:none}
+/* editions: same cards as founderscadence.com/weekend (site.css) */
+.wk26 #editions{--house:#f3dc97;--leaf:#5d8c87;--d1:#33605d;--d2:#27504e;--d3:#1c403f;--on-deep-3:#a4c0ba;--accent:var(--clay);--tint:#e4ece8}
+.wk26 .ed-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.6vw,22px);margin-top:40px}
+.wk26 .edc{background:var(--raised);border:1px solid var(--line);border-radius:22px;padding:14px;display:flex;flex-direction:column;gap:0;transition:transform .5s cubic-bezier(.2,.7,.2,1),box-shadow .5s cubic-bezier(.2,.7,.2,1)}
+.wk26 .edc:hover{transform:translateY(-6px);box-shadow:0 36px 60px -40px rgba(16,42,68,.55)}
+.wk26 .edc ul{display:flex;flex-direction:column;margin:4px 0 0;padding:0;list-style:none}
+.wk26 .edc li{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);font-size:15.5px;line-height:1.3;color:var(--ink)}
+.wk26 .ed-illo{display:block;width:100%;height:auto;border-radius:14px}
+.wk26 .ed-b{padding:18px 8px 6px;display:flex;flex-direction:column;gap:10px}
+.wk26 .ed-p{display:flex;justify-content:space-between;align-items:center;gap:10px;font:500 11px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.wk26 .ed-note{color:var(--mute);letter-spacing:.08em}
+.wk26 .ed-ic{width:24px;height:24px;flex:none;fill:none;stroke:var(--accent);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:760px){.wk26 .ed-grid{grid-template-columns:minmax(0,1fr)}}
+.wk26 .faq{display:grid;gap:0;border-top:1px solid var(--line);margin-top:36px;max-width:860px}
+.wk26 .faq details{border-bottom:1px solid var(--line)}
+.wk26 .faq summary{cursor:pointer;list-style:none;padding:22px 40px 22px 0;font-size:20px;position:relative}
+.wk26 .faq summary::-webkit-details-marker{display:none}
+.wk26 .faq summary::after{content:"+";position:absolute;right:4px;top:16px;font-family:var(--serif);font-size:32px;color:var(--clay);transition:transform .3s}
+.wk26 .faq details[open] summary::after{transform:rotate(45deg)}
+.wk26 .faq details p{padding:0 0 22px;color:var(--body);max-width:40em}
+@media (max-width:760px){.wk26 .two{grid-template-columns:1fr}}
+
+/* ---------- finale ---------- */
+.wk26 .finale{position:relative;overflow:hidden;color:#fff;background:var(--night)}
+.wk26 .finale img{width:100%;height:clamp(460px,70vh,700px);object-fit:cover;opacity:.62;animation:wk26-kb 30s ease-in-out infinite alternate}
+@keyframes wk26-kb{from{transform:scale(1)}to{transform:scale(1.1) translate(-2%,-1%)}}
+.wk26 .finale .over{position:absolute;inset:0;display:flex;align-items:center}
+.wk26 .finale h2{font-size:clamp(46px,7vw,104px);line-height:.95;max-width:12ch}
+.wk26 .finale h2 em{color:#F6DCCB}
+.wk26 .finale .k-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.wk26 .finale .k-btn-line{color:#fff}
+.wk26 .wk-foot{padding-block:40px calc(40px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
+.wk26 .wk-foot .k-wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px 40px}
+.wk26 .wk-foot p{font-size:14px;color:var(--mute);max-width:46em}
+.wk26 .partners{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:baseline}
+.wk26 .partners b{font-family:var(--serif);font-weight:400;font-size:22px;color:var(--ink)}
+
+@media (prefers-reduced-motion:reduce){
+  .wk26 *,.wk26 *::before,.wk26 *::after{animation:none !important;transition:none !important;scroll-behavior:auto !important}
+  .js .wk26 [data-reveal]:not(.in){transform:none}
+  .js .wk26 .qlist:not(.in) li,.js .wk26 .map:not(.in) .k-tag{opacity:1}
+  .wk26 .k-water i{transform:translateX(-50%) scaleX(1)}
+  .wk26 .sun{transform:translateX(-50%)}
+}
+
+.wk26{position:relative;z-index:0}
+
+</style>
 </head>
 <body>
-<script>try{if(sessionStorage.getItem('tide'))document.documentElement.classList.add('arrive')}catch(e){}</script><div class="page" data-page="weekend"><header class="top"><a class="skip" href="#main">Skip to content</a><div class="wrap top-in"><a class="brand" href="index.html" aria-label="Cadence, home"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M28 66 A32 32 0 0 1 92 66 Z" fill="var(--clay)"/><line x1="16" y1="76" x2="104" y2="76" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><line x1="30" y1="90" x2="90" y2="90" stroke="var(--water)" stroke-width="6" stroke-linecap="round"/><line x1="46" y1="104" x2="74" y2="104" stroke="var(--water)" stroke-width="6" stroke-linecap="round"/></svg>Cadence</a><nav class="nav" aria-label="Site"><a href="index.html">For funds</a><a href="founders.html">For founders</a><a href="method.html">The method</a><a href="weekend.html" aria-current="page">The weekend</a><a href="trust.html">Trust</a><a href="about.html">About</a></nav><a class="btn btn-clay btn-sm" href="contact.html">I'm interested</a><button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span></button></div><div class="top-prog" aria-hidden="true"><i></i><svg class="top-boat" viewBox="0 0 26 14"><path d="M1 5 H25 L21 13 H5 Z" fill="currentColor"/><circle cx="10" cy="3" r="2.4" fill="currentColor"/><circle cx="16" cy="3" r="2.4" fill="currentColor"/></svg></div></header><div class="sheet"><nav aria-label="Menu"><a href="index.html">For funds</a><a href="founders.html">For founders</a><a href="method.html">The method</a><a href="weekend.html" aria-current="page">The weekend</a><a href="trust.html">Trust</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav><a class="btn btn-clay" href="contact.html">I'm interested</a><p>The pattern, never the person.</p></div><main id="main"><section class="band wx-hero">
-  <div class="photo par wx-bg"><img src="img/lake-wide.jpg" alt="Lake Banyoles in Catalonia at rest: still water, a white boathouse and rowers in the distance."></div>
-  <div class="wrap wx-in">
-    <p class="wx-tags"><span class="cap">Lake Banyoles, Catalonia</span></p>
-    <h1 class="h1">Three days at the lake. <em>One shared plan for the next 12 months.</em></h1>
-    <div class="hero-sub">
-      <p class="ld">The Cadence weekend brings four founding teams together at a lakehouse near Barcelona. No investors and no laptops open all day.</p>
-      <div class="row"><a class="btn btn-clay" href="contact.html">I'm interested <i>→</i></a><a class="btn btn-line" href="https://app.founderscadence.com/start" target="_blank" rel="noopener">Start your free Check</a></div>
+<script>try{if(sessionStorage.getItem('tide'))document.documentElement.classList.add('arrive')}catch(e){}</script><div class="page" data-page="weekend"><header class="top"><a class="skip" href="#main">Skip to content</a><div class="wrap top-in"><a class="brand" href="index.html" aria-label="Cadence, home"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M28 66 A32 32 0 0 1 92 66 Z" fill="var(--clay)"/><line x1="16" y1="76" x2="104" y2="76" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><line x1="30" y1="90" x2="90" y2="90" stroke="var(--water)" stroke-width="6" stroke-linecap="round"/><line x1="46" y1="104" x2="74" y2="104" stroke="var(--water)" stroke-width="6" stroke-linecap="round"/></svg>Cadence</a><nav class="nav" aria-label="Site"><a href="index.html">For funds</a><a href="founders.html">For founders</a><a href="method.html">The method</a><a href="weekend.html" aria-current="page">The weekend</a><a href="trust.html">Trust</a><a href="about.html">About</a></nav><a class="btn btn-clay btn-sm" href="contact.html">I'm interested</a><button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span></button></div><div class="top-prog" aria-hidden="true"><i></i><svg class="top-boat" viewBox="0 0 26 14"><path d="M1 5 H25 L21 13 H5 Z" fill="currentColor"/><circle cx="10" cy="3" r="2.4" fill="currentColor"/><circle cx="16" cy="3" r="2.4" fill="currentColor"/></svg></div></header><div class="sheet"><nav aria-label="Menu"><a href="index.html">For funds</a><a href="founders.html">For founders</a><a href="method.html">The method</a><a href="weekend.html" aria-current="page">The weekend</a><a href="trust.html">Trust</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav><a class="btn btn-clay" href="contact.html">I'm interested</a><p>The pattern, never the person.</p></div><main id="main"><div class="wk26">
+<!-- HERO -->
+<section class="k-hero" aria-label="The Cadence Weekend">
+  <div class="sky-dusk" aria-hidden="true"></div>
+  <span class="stars" aria-hidden="true"></span>
+  <div class="sun-wrap" aria-hidden="true"><div class="sun-glow"></div><div class="sun"></div></div>
+  <div class="k-water" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="k-wrap hero-grid">
+    <div class="hero-copy">
+      <p class="label rise" style="--d:.05s">The Cadence Weekend · Lake Banyoles, Catalonia</p>
+      <h1 id="heroTitle">Three days at the lake. <em>One shared plan for the next 12 months.</em></h1>
+      <p class="rise" style="--d:1.05s">Four founding pairs, a private lakehouse near Girona, and a method built from your own answers. No investors in the room, and no laptops open all day.</p>
+      <div class="k-row rise" style="--d:1.2s">
+        <a class="k-btn k-btn-clay" href="https://founderscadence.com/contact.html" target="_blank" rel="noopener">I'm interested <span class="arr">→</span></a>
+        <a class="k-btn k-btn-line" href="https://app.founderscadence.com/start" target="_blank" rel="noopener">Start your free Check</a>
+      </div>
+      <div class="hero-facts rise" style="--d:1.35s"><span><b class="count" data-to="4">4</b> founding pairs</span><span><b class="count" data-to="3">3</b> days</span><span><b><span class="count" data-to="30">30</span> min</b> from Girona airport</span><span><b>0</b> investors</span></div>
+    </div>
+    <div class="duo-hero" id="duo">
+      <figure class="f1">
+        <img src="img/weekend/circle.jpg" alt="Founding pairs and a host in a circle of garden chairs on the lawn above Lake Banyoles, a Cadence card on the table." fetchpriority="high">
+        <figcaption>Sat 09:30 · the circle on the lawn</figcaption>
+      </figure>
+      <figure class="f2">
+        <img src="img/weekend/pool.jpg" alt="Founders relaxing at the renovated pool of the house, a bartender serving drinks.">
+        <figcaption>Sat 16:00 · the pool</figcaption>
+      </figure>
+      <div class="sun-badge" aria-hidden="true">
+        <svg class="k-ring" viewBox="0 0 120 120"><defs><path id="ringPath" d="M60 60 m-47 0 a47 47 0 1 1 94 0 a47 47 0 1 1 -94 0"/></defs><text><textPath href="#ringPath" textLength="292">WORK &amp; REST · BOTH, ON PURPOSE · </textPath></text></svg>
+        <svg class="mark" viewBox="0 0 120 120"><path class="ms" d="M28 66 A32 32 0 0 1 92 66 Z" fill="#A8472A"/><line x1="16" y1="76" x2="104" y2="76" stroke="#14201E" stroke-width="7" stroke-linecap="round"/><line x1="30" y1="90" x2="90" y2="90" stroke="#5D8C87" stroke-width="7" stroke-linecap="round"/><line x1="46" y1="104" x2="74" y2="104" stroke="#5D8C87" stroke-width="7" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+  </div>
+  <a class="scroll-cue" href="#questions"><span>The weekend starts Friday</span><i></i></a>
+</section>
+
+<!-- QUESTIONS + PEOPLE -->
+<section class="k-sec" id="questions">
+  <div class="k-wrap">
+    <div class="qs">
+      <div style="display:grid;gap:18px" data-reveal>
+        <p class="label">Friday · you arrive with</p>
+        <p class="lead">Every founding team knows these questions matter. Most never get the time to answer them together. Three days away gives you that time.</p>
+      </div>
+      <ol class="qlist" data-reveal>
+        <li><span>01</span>Where are we going?</li>
+        <li><span>02</span>Who owns what?</li>
+        <li><span>03</span>How do we decide when we disagree?</li>
+      </ol>
+    </div>
+    <div class="people" data-reveal>
+      <div><b class="count" data-to="4">4</b><strong>Founding pairs</strong><p>From different companies and funds, at a similar stage.</p></div>
+      <div><b>1</b><strong>Host</strong><p>Rodin Affourtit, co-founder and co-CEO of a VC-backed company for seven years.</p></div>
+      <div><b class="count" data-to="3">3</b><strong>Experts and a coach</strong><p>Three experts from the Shadow Leaders network, on the problems you named, plus a coach.</p></div>
+      <div><b>0</b><strong>Investors</strong><p>Not yours, not anyone's.</p></div>
     </div>
   </div>
 </section>
 
-<section class="band deep d4 sec water" id="why">
-  <div class="wrap">
-    <header class="hd"><p class="ix">Why go away</p><h2 class="h2" data-rv>The work that never fits in a Tuesday.</h2></header>
-    <ul class="asks" data-rv-kids>
-      <li>Where are we going?</li>
-      <li>Who owns what?</li>
-      <li>How do we decide when we disagree?</li>
+<!-- MAP -->
+<section class="k-sec map-sec" id="where">
+  <div class="k-wrap">
+    <div class="map-head" data-reveal>
+      <div style="display:grid;gap:14px;max-width:640px">
+        <p class="label">Getting there</p>
+        <h2>Thirty minutes from Girona airport. A long way from the office.</h2>
+      </div>
+      <p class="lead" style="max-width:26em">The Lakehouse sits on the hill above Lake Banyoles, the 1992 Olympic rowing lake. Barcelona is 1 h 20 by car, the Costa Brava 40 minutes.</p>
+    </div>
+    <div class="map" id="map" data-reveal>
+      <img src="img/weekend/map.jpg" alt="Illustrated miniature map of the Girona region with Lake Banyoles and the Lakehouse in the centre." loading="lazy">
+      <svg class="routes" viewBox="0 0 1376 768" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M812 250 Q956 220 1101 566"/><path d="M812 250 Q712 200 612 655"/><path d="M812 250 Q1048 190 1285 345"/>
+        <path d="M812 250 Q881 190 950 440"/><path d="M812 250 Q633 146 454 206"/><path d="M812 250 Q722 -12 633 48"/><path d="M812 250 Q481 190 150 300"/>
+      </svg>
+      <span class="pin" style="left:80%;top:73.7%"></span><span class="pin" style="left:44.5%;top:85.3%"></span><span class="pin" style="left:93.4%;top:44.9%"></span>
+      <span class="pin" style="left:69%;top:57.3%"></span><span class="pin" style="left:33%;top:26.8%"></span><span class="pin" style="left:46%;top:6.3%"></span><span class="pin" style="left:10.9%;top:39%"></span>
+      <span class="pin home" style="left:59%;top:32.6%"></span>
+      <div class="k-tag home" style="left:59%;top:32.6%;transform:translate(-50%,-140%)"><b>The Lakehouse</b><span>Lake Banyoles</span></div>
+      <div class="k-tag" style="left:80%;top:73.7%;transform:translate(-50%,30%)"><b>Girona airport</b><span>30 min</span></div>
+      <div class="k-tag" style="left:44.5%;top:85.3%;transform:translate(-112%,-50%)"><b>Barcelona</b><span>1 h 20 min</span></div>
+      <div class="k-tag" style="left:93.4%;top:44.9%;transform:translate(-90%,40%)"><b>Costa Brava</b><span>40 min · coves and sailing</span></div>
+      <div class="k-tag" style="left:69%;top:57.3%;transform:translate(-112%,-30%)"><b>Girona old town</b><span>20 min</span></div>
+      <div class="k-tag" style="left:33%;top:26.8%;transform:translate(-50%,-150%)"><b>Besalú medieval bridge</b><span>15 min</span></div>
+      <div class="k-tag" style="left:46%;top:6.3%;transform:translate(-115%,-20%)"><b>Pyrenees</b><span>1 h</span></div>
+      <div class="k-tag" style="left:10.9%;top:39%;transform:translate(-20%,40%)"><b>Volcanic park</b><span>30 min</span></div>
+    </div>
+    <ul class="legend">
+      <li>Girona airport <span>30 min</span></li><li>Girona old town <span>20 min</span></li><li>Besalú medieval bridge <span>15 min</span></li>
+      <li>Volcanic park <span>30 min</span></li><li>Costa Brava <span>40 min</span></li><li>Pyrenees <span>1 h</span></li><li>Barcelona <span>1 h 20 min</span></li>
     </ul>
-    <p class="ld" data-rv>Every founding team knows these questions matter. Three days away gives you the time for them.</p>
   </div>
 </section>
 
-<section class="band raised sec days" id="programme">
-  <div class="wrap">
-    <header class="hd"><p class="ix">The programme</p><h2 class="h2" data-rv>The three days</h2></header>
-    <svg class="arc" viewBox="0 0 1200 250" role="img" aria-label="The sun crossing the sky over the lake, from the first morning to the last evening.">
-      <defs><clipPath id="sky"><rect x="0" y="-120" width="1200" height="334"/></clipPath></defs>
-      <path class="arc-path" d="M70 214 Q600 -170 1130 214" fill="none" stroke="var(--line-2)" stroke-width="1.5" stroke-dasharray="2 8" stroke-linecap="round"/>
-      <g clip-path="url(#sky)"><g class="arc-sun" transform="translate(600,22)"><circle r="40" fill="var(--clay)"/></g></g>
-      <line x1="0" y1="214" x2="1200" y2="214" stroke="var(--ink)" stroke-width="3"/>
-      <g stroke="var(--water)" stroke-width="3" stroke-linecap="round" class="a-dr"><line x1="420" y1="230" x2="780" y2="230"/><line x1="510" y1="244" x2="690" y2="244" opacity=".6"/></g>
-    </svg>
-    <ol class="g3 daylist">
-      <li class="day"><p class="eb">Day 1</p><h3 class="h3">Arrive and see where you stand.</h3><p>Your results, side by side. What you agree on and where you differ.</p></li>
-      <li class="day"><p class="eb">Day 2</p><h3 class="h3">Agree where you are going.</h3><p>One picture of the next 12 months. Roles, ownership and how you decide.</p></li>
-      <li class="day"><p class="eb">Day 3</p><h3 class="h3">Make it real.</h3><p>A 90-day plan with names and dates, and what you tell your team on Monday.</p></li>
+<!-- SYSTEM -->
+<section class="k-sec" id="system">
+  <div class="k-wrap k-sys">
+    <div class="sys-intro" data-reveal>
+      <p class="label">How every weekend is built</p>
+      <h2>A protocol, not a retreat.</h2>
+      <p class="lead">No two weekends run the same programme. Each one is built from what your team answered in the Founders' Pulse and from your fund's priorities, then measured 90 days later.</p>
+      <div class="specs">
+        <span class="chip">3 days · 2 nights</span><span class="chip">4 pairs · 8 founders</span><span class="chip">3 experts and a coach</span>
+      </div>
+    </div>
+    <ol class="k-steps" id="steps">
+      <span class="fill" aria-hidden="true"></span>
+      <li class="step" data-reveal>
+        <p class="label">Before you come</p>
+        <h3>You arrive prepared.</h3>
+        <p>Each of you does the Check alone, in about fifteen minutes. Then you have a 45-minute call together with your host, so the three days start where it matters.</p>
+      </li>
+      <li class="step" data-reveal>
+        <p class="label">The inputs</p>
+        <h3>Your answers, and what your fund cares about.</h3>
+        <div class="duo">
+          <div class="cell"><b>Founders' Pulse</b><span>Where you agree and where you differ</span></div>
+          <div class="cell"><b>Your Lens</b><span>The fund's priorities for this stage</span></div>
+        </div>
+        <p>Your fund helps pay. It never reads your answers.</p>
+      </li>
+      <li class="step" data-reveal>
+        <p class="label">Always on the programme</p>
+        <h3>Two blocks every team needs.</h3>
+        <div class="duo">
+          <div class="cell clay"><b>Alignment</b><span>Roles and decisions</span></div>
+          <div class="cell clay"><b>Resilience</b><span>The long run</span></div>
+        </div>
+      </li>
+      <li class="step" data-reveal>
+        <p class="label">Picked from your data</p>
+        <h3>Two expert blocks, chosen for your problems.</h3>
+        <p>We match the experts to what your teams named. Two blocks per weekend, from this library:</p>
+        <div class="lib">
+          <span class="chip pick">Hiring leaders</span><span class="chip">Go-to-market</span><span class="chip pick">Next round</span>
+          <span class="chip">Culture and first team</span><span class="chip">Board and investors</span><span class="chip">Runway and money</span>
+        </div>
+      </li>
+      <li class="step" data-reveal>
+        <p class="label">What you leave with</p>
+        <h3>A 90-day plan, measured at day 90.</h3>
+        <p>Names, dates and one number per goal. We check it with you three months later.</p>
+      </li>
     </ol>
   </div>
 </section>
 
-<section class="band deep d3 sec" id="experience">
-  <div class="wrap">
-    <header class="hd"><p class="ix">The experience</p><h2 class="h2" data-rv>Three days you will talk about for years.</h2><p class="ld">The work is serious. Everything around it is exceptional.</p></header>
-    <div class="xp" data-rv>
-      <figure class="xp-c"><img src="img/lake.jpg" alt="Rowers and a coach boat on Lake Banyoles." loading="lazy"><figcaption><span class="xp-k">On the lake</span><h3>Find your cadence on the water.</h3><p>A rowing session on Lake Banyoles. Two people, one boat, one rhythm.</p></figcaption></figure>
-      <figure class="xp-c"><div class="xp-ph"><span>Picture 2 · the dinner table at dusk</span></div><figcaption><span class="xp-k">The table</span><h3>A star dinner.</h3><p>One evening at the table, with the other founding teams.</p></figcaption></figure>
-      <figure class="xp-c"><img src="img/house.jpg" alt="The Lakehouse seen from the pool: a stone house among trees." loading="lazy"><figcaption><span class="xp-k">The house</span><h3>A private lakehouse, fully staffed.</h3><p>Your own room, a private chef and a team that takes care of everything.</p></figcaption></figure>
-      <figure class="xp-c"><div class="xp-ph"><span>Picture 3 · the trail above the lake</span></div><figcaption><span class="xp-k">The hills</span><h3>Out into the hills.</h3><p>Because the best conversations happen while walking.</p></figcaption></figure>
+<!-- TIMELINE -->
+<section class="tl" id="weekend" aria-label="The weekend, hour by hour">
+  <div class="k-wrap tl-head">
+    <div style="display:grid;gap:14px;max-width:760px" data-reveal>
+      <p class="label">The weekend, hour by hour</p>
+      <h2>From Friday afternoon to Sunday lunch.</h2>
+      <p class="lead">Scroll through the three days. The clock and the light follow you.</p>
+    </div>
+  </div>
+  <div class="k-wrap tl-grid">
+    <aside class="clock" aria-live="polite">
+      <span class="k-day" id="cDay">Friday</span>
+      <span class="time" id="cTime">16:00</span>
+      <span class="what" id="cWhat">Arrive</span>
+      <svg class="horizon" viewBox="0 0 220 132" aria-hidden="true">
+        <defs><clipPath id="above"><rect x="0" y="0" width="220" height="86"/></clipPath></defs>
+        <path class="k-arc" d="M24 86 A86 86 0 0 1 196 86"/>
+        <g clip-path="url(#above)"><g id="sun"><circle cx="0" cy="0" r="17" fill="#A8472A"/></g></g>
+        <circle id="moon" cx="176" cy="26" r="9" fill="#A9C7C1" opacity="0"/>
+        <line class="hz" x1="10" y1="92" x2="210" y2="92"/>
+        <line class="wl" x1="40" y1="108" x2="180" y2="108"/>
+        <line class="wl" x1="78" y1="124" x2="142" y2="124"/>
+      </svg>
+      <div class="days"><span data-d="Friday" class="on">Fri</span><span data-d="Saturday">Sat</span><span data-d="Sunday">Sun</span></div>
+    </aside>
+
+    <div class="beats">
+      <div class="daymark">Friday</div>
+      <article class="beat" data-day="Friday" data-time="16:00" data-h="16" data-sky="#F1E4D2" data-what="Arrive">
+        <figure><img src="img/weekend/veranda.jpg" alt="Founders on the covered veranda of the Lakehouse at golden hour, looking down at the lake." loading="lazy"></figure>
+        <span class="k-t">Fri 16:00</span>
+        <h3>Arrive at the Lakehouse.</h3>
+        <p>Drive up the hill, drop your bags, find the other teams on the veranda. The lake is below you for the whole weekend.</p>
+      </article>
+
+      <article class="beat" data-day="Friday" data-time="18:00" data-h="18" data-sky="#EED7BE" data-what="Day 1 · See where you stand">
+        <div class="results">
+          <div class="k-top"><b>Your results, side by side</b><div class="key"><span><i style="background:#14201E"></i>Founder A</span><span><i style="background:#5D8C87"></i>Founder B</span></div></div>
+          <div class="rrow"><span>Direction</span><div class="track"><s style="left:62%;width:8%"></s><i class="a" style="left:62%"></i><i class="k-b" style="left:70%"></i></div><em>close</em></div>
+          <div class="rrow"><span>Roles</span><div class="track"><s style="left:34%;width:40%"></s><i class="a" style="left:34%"></i><i class="k-b" style="left:74%"></i></div><em class="gap">gap</em></div>
+          <div class="rrow"><span>Decisions</span><div class="track"><s style="left:28%;width:30%"></s><i class="a" style="left:58%"></i><i class="k-b" style="left:28%"></i></div><em class="gap">gap</em></div>
+          <div class="rrow"><span>Energy</span><div class="track"><s style="left:48%;width:12%"></s><i class="a" style="left:48%"></i><i class="k-b" style="left:60%"></i></div><em>close</em></div>
+          <p class="readout">Example only. Your own Pulse results are private to the two of you.</p>
+        </div>
+        <span class="k-t">Day 1 · Fri 18:00</span>
+        <h3>See where you stand.</h3>
+        <p>Your results, side by side: what you agree on and where you differ. Nobody else sees them.</p>
+      </article>
+
+      <article class="beat" data-day="Friday" data-time="21:00" data-h="21" data-sky="#2A3A36" data-dark="1" data-what="Dinner on the lawn">
+        <figure><img src="img/weekend/dinner-lawn.jpg" alt="A long candle-lit dinner table under the olive tree at dusk, with the lake and mountains behind." loading="lazy"></figure>
+        <span class="k-t">Fri 21:00</span>
+        <h3>Dinner under the olive tree.</h3>
+        <p>The private chef cooks, the table runs long, and the four founding pairs meet properly.</p>
+      </article>
+
+      <article class="beat" data-day="Friday" data-time="23:30" data-h="23.5" data-sky="#0E1A18" data-dark="1" data-what="Your room">
+        <figure><img src="img/weekend/room.jpg" alt="A calm guest bedroom with linen bedding and French doors to the garden." loading="lazy"></figure>
+        <span class="k-t">Fri 23:30</span>
+        <h3>Your own room.</h3>
+        <p>Made up like a good hotel, with a team that takes care of everything. You don't need to organise a thing.</p>
+      </article>
+
+      <div class="daymark">Saturday</div>
+      <article class="beat" data-day="Saturday" data-time="07:00" data-h="7" data-sky="#E9E3D6" data-what="On the water">
+        <figure><img src="img/weekend/rowing.jpg" alt="Rowers and a coach boat on Lake Banyoles next to the historic white boathouse." loading="lazy"></figure>
+        <span class="k-t">Sat 07:00</span>
+        <h3>Find your cadence on the water.</h3>
+        <p>A rowing session on Lake Banyoles with an Olympic coach. Two people, one boat, one rhythm. Then breathwork and an ice bath.</p>
+      </article>
+
+      <article class="beat" data-day="Saturday" data-time="09:30" data-h="9.5" data-sky="#F3EFE7" data-q="1" data-what="Day 2 · Agree where you are going">
+        <figure><img src="img/weekend/workshop.jpg" alt="Two founding pairs at the oak table on the veranda while a facilitator points at a flipchart of sticky notes." loading="lazy"></figure>
+        <span class="k-t">Day 2 · Sat 09:30</span>
+        <h3>Agree where you are going.</h3>
+        <p>One picture of the next 12 months, worked out on paper, not on laptops. Then roles, ownership and how you decide.</p>
+      </article>
+
+      <article class="beat" data-day="Saturday" data-time="12:00" data-h="12" data-sky="#EAF1EF" data-q="2" data-what="A walk with your expert">
+        <figure><img src="img/weekend/lakewalk.jpg" alt="A mentor with a notebook walks along the lake shore with a founder couple, talking." loading="lazy"></figure>
+        <span class="k-t">Sat 12:00</span>
+        <h3>A walk with your expert.</h3>
+        <p>Time with an expert from the Shadow Leaders network, picked for the problem your team named. Often on foot, along the shore, because the best conversations happen while walking.</p>
+      </article>
+
+      <article class="beat" data-day="Saturday" data-time="16:00" data-h="16" data-sky="#F1E7D6" data-what="A free afternoon">
+        <figure><img src="img/weekend/pool.jpg" alt="Founders relaxing at the pool of the Lakehouse while a bartender makes drinks at the outdoor bar." loading="lazy"></figure>
+        <span class="k-t">Sat 16:00</span>
+        <h3>A free afternoon.</h3>
+        <p>The pool, a drink from the bar, a nap. Or out into the hills above the lake.</p>
+      </article>
+
+      <article class="beat" data-day="Saturday" data-time="20:30" data-h="20.5" data-sky="#1B2A26" data-dark="1" data-what="A star dinner in Girona">
+        <figure><img src="img/weekend/girona-dinner.jpg" alt="A candle-lit tasting-menu dinner under stone vaults in Girona's old town, the chef presenting a dish." loading="lazy"></figure>
+        <span class="k-t">Sat 20:30</span>
+        <h3>A star dinner in Girona.</h3>
+        <p>One evening at a two-Michelin-star table in the old town, with the other founding pairs. Twenty minutes from the house.</p>
+      </article>
+
+      <div class="daymark">Sunday</div>
+      <article class="beat" data-day="Sunday" data-time="09:00" data-h="9" data-sky="#F3EFE7" data-q="3" data-what="Day 3 · Make it real">
+        <div class="plan">
+          <b>Your 90-day plan</b>
+          <div class="plan-wrap"><table>
+            <thead><tr><th>Goal</th><th>Owner</th><th>Number</th><th>By</th></tr></thead>
+            <tbody>
+              <tr><td>Hire a head of sales</td><td>Founder A</td><td>Offer signed</td><td>Week 8</td></tr>
+              <tr><td>Close the bridge round</td><td>Founder B</td><td>€750k committed</td><td>Week 10</td></tr>
+              <tr><td>Weekly decision meeting</td><td>Both</td><td>12 of 12 held</td><td>Week 12</td></tr>
+            </tbody>
+          </table></div>
+          <p class="readout">Example plan. Yours is written by the two of you on Sunday.</p>
+        </div>
+        <span class="k-t">Day 3 · Sun 09:00</span>
+        <h3>Make it real.</h3>
+        <p>A 90-day plan with names and dates, and what you tell your team on Monday.</p>
+      </article>
+
+      <article class="beat" data-day="Sunday" data-time="14:00" data-h="14" data-sky="#EAF1EF" data-what="Home">
+        <div class="home-card">
+          <p class="label" style="color:#F6DCCB">Sunday · you go home with</p>
+          <ul>
+            <li><span><b>One shared picture</b> of where the company is going in the next 12 months.</span></li>
+            <li><span><b>Clear roles and a way to decide</b> that you both agreed to.</span></li>
+            <li><span><b>A 90-day plan</b> you can share with your team.</span></li>
+          </ul>
+        </div>
+        <span class="k-t">Sun 14:00</span>
+        <h3>Home by Sunday evening.</h3>
+        <p>Girona airport is thirty minutes away. Barcelona is an hour and twenty.</p>
+      </article>
     </div>
   </div>
 </section>
 
-<section class="band deep d4 sec" id="house">
-  <div class="wrap">
-    <header class="hd"><p class="ix">The Lakehouse</p><h2 class="h2" data-rv>A private lakehouse on Lake Banyoles, <em>all yours for three days.</em></h2><p class="ld">Four founding teams, no investors. Your own room, a private chef and a team that takes care of everything.</p></header>
-    <div class="hs" data-rv>
-      <div class="photo par hs-main"><img src="img/house.jpg" alt="The Lakehouse seen from the pool: a stone house among trees." loading="lazy"><span class="cap">The Lakehouse</span></div>
-      <div class="hs-side"><div><div class="xp-ph"><span>Picture 4 · your room</span></div></div><div><div class="xp-ph"><span>Picture 5 · the terrace at dusk</span></div></div><div><div class="xp-ph"><span>Picture 6 · the kitchen, the chef at work</span></div></div></div>
+<aside class="ledger" id="ledger" aria-label="Your three questions">
+  <p class="label">Your three questions</p>
+  <ol>
+    <li data-q="1"><span class="k-q">Where are we going?</span><span class="a">One shared picture of the next 12 months.</span></li>
+    <li data-q="2"><span class="k-q">Who owns what?</span><span class="a">Clear roles, agreed by both of you.</span></li>
+    <li data-q="3"><span class="k-q">How do we decide when we disagree?</span><span class="a">A way to decide, written into the plan.</span></li>
+  </ol>
+</aside>
+
+<!-- PAYBACK -->
+<section class="night k-pb">
+  <div class="k-wrap">
+    <div class="pb-grid">
+    <div style="display:grid;gap:14px" data-reveal>
+      <p class="label">Why it pays back</p>
+      <h2>Co-founder trouble is the quiet way portfolios lose value.</h2>
+    </div>
+    <div class="pay">
+      <div data-reveal><div class="k-n"><span class="count" data-to="3">3</span><small> of 14</small></div><p>teams in a typical portfolio lose a co-founder within three years</p></div>
+      <div data-reveal><div class="k-n"><span class="count" data-to="55">55</span><small>%</small></div><p>of VCs say the team is the main reason an investment fails</p></div>
+    </div>
+    </div>
+    <div class="pay-line" data-reveal>
+      <p class="k-big">Keep one of those teams together, and a Fund Weekend costs about <b>2%</b> of a €1.5M first cheque.</p>
+      <p class="src">Example: 14-team portfolio, €1.5M average first cheque, €34k weekend. Sources: Carta (22,352 founders, 23% lose a co-founder within 3 years) · Gompers et al., 2020 (885 VCs).</p>
     </div>
   </div>
 </section>
 
-<section class="band tint sec" id="who">
-  <div class="wrap">
-    <header class="hd"><p class="ix">Who's there</p><h2 class="h2" data-rv>Four founding teams, two hosts, the right experts.</h2></header>
-    <div class="g4" data-rv-kids>
-      <div class="stat rule"><p class="n"><span data-count="4">4</span></p><b class="t">Four founding teams</b><p>From different companies and funds, at a similar stage.</p></div>
-      <div class="stat rule"><p class="n"><span data-count="2">2</span></p><b class="t">Your hosts</b><p>Rodin Affourtit, co-founder and co-CEO of a VC-backed company for seven years. Second host to confirm.</p></div>
-      <div class="stat rule"><p class="n"><u>+</u></p><b class="t">Experts</b><p>From the Shadow Leaders network, on the problems your teams named.</p></div>
-      <div class="stat rule"><p class="n">0</p><b class="t">No investors</b><p>Not yours, not anyone's.</p></div>
+<!-- AFTER -->
+<section class="k-sec" id="after">
+  <div class="k-wrap">
+    <div style="display:grid;gap:14px;max-width:760px" data-reveal>
+      <p class="label">After the weekend</p>
+      <h2>It doesn't end on Sunday.</h2>
+      <p class="lead">For the next year we stay in touch once a quarter. All included. Use what helps, and skip or move any of it.</p>
+    </div>
+    <div class="road" data-reveal>
+      <div class="stop first"><p class="label">Day 3</p><b>The weekend</b><p>Your 90-day plan.</p></div>
+      <div class="stop"><p class="label">Month 3</p><b>Plan check</b><p>A call on your 90-day plan.</p></div>
+      <div class="stop"><p class="label">Month 6</p><b>Reunion</b><p>Online, with the other three pairs.</p></div>
+      <div class="stop"><p class="label">Month 9</p><b>Call</b><p>And an expert if you need one.</p></div>
+      <div class="stop"><p class="label">Month 12</p><b>Year in review</b><p>Your quarterly check-in and a call on the next year.</p></div>
     </div>
   </div>
 </section>
 
-<section class="band sec" id="for">
-  <div class="wrap split mid">
-    <div class="photo par" style="aspect-ratio:5/4"><img src="img/session.jpg" alt="A facilitator opens a session for a small group of founders seated in a half circle on a lawn above the lake." loading="lazy"><span class="cap">A session above the lake</span></div>
-    <div class="stack-l">
-      <header class="hd" style="margin-bottom:0"><p class="ix">Who it is for</p><h2 class="h2" data-rv>A few teams a year, when the moment is right.</h2></header>
-      <p class="mx" data-rv>The weekend is for the one or two teams per fund who want to step back from everything at once: before a round, or after a hard year.</p>
+<!-- TRUST + PAY -->
+<section class="k-sec" style="padding-top:0">
+  <div class="k-wrap two">
+    <div class="k-card" data-reveal>
+      <p class="label">Safe for both of you</p>
+      <h3>What is said at the lake stays at the lake.</h3>
+      <p>Your fund never sees your answers or what you discuss. This is not therapy or mediation.</p>
+      <a href="https://founderscadence.com/trust.html" target="_blank" rel="noopener">Trust →</a>
+    </div>
+    <div class="k-card" data-reveal>
+      <p class="label">Who pays</p>
+      <h3>Your fund will likely help.</h3>
+      <p>Show your fund you are interested: many are willing to pay half, and some pay all of it.</p>
+      <a href="https://founderscadence.com/contact.html" target="_blank" rel="noopener">I'm interested →</a>
     </div>
   </div>
 </section>
 
-<section class="band deep d3 sec water" id="leave">
-  <div class="wrap">
-    <header class="hd"><p class="ix">What you leave with</p><h2 class="h2" data-rv>You go home with three things.</h2></header>
-    <div class="tf" data-rv>
-      <div class="tf-a"><span class="m">Friday · you arrive with</span><ul><li>Where are we going?</li><li>Who owns what?</li><li>How do we decide when we disagree?</li></ul></div>
-      <div class="tf-mid" aria-hidden="true"><svg viewBox="0 0 120 60"><path d="M4 50 A56 56 0 0 1 116 50" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="2 8" stroke-linecap="round"/><circle cx="60" cy="14" r="10" fill="currentColor"/><path d="M104 42l12 8-14 4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Three days</span></div>
-      <div class="tf-b"><span class="m">Sunday · you go home with</span><ul>
-        <li><b>One shared picture</b>of where the company is going in the next 12 months.</li>
-        <li><b>Clear roles and a way to decide</b>that you both agreed to.</li>
-        <li><b>A 90-day plan</b>you can share with your team.</li></ul></div>
+<!-- EDITIONS + FAQ -->
+<section class="k-sec" id="editions" style="padding-top:0">
+  <div class="k-wrap">
+    <div style="display:grid;gap:14px;max-width:760px" data-reveal>
+      <p class="label">Three editions</p>
+      <h2>Choose your edition.</h2>
     </div>
-  </div>
-</section>
-
-<section class="band sec" id="editions">
-  <div class="wrap">
-    <header class="hd"><p class="ix">Three editions</p><h2 class="h2" data-rv>Choose your edition.</h2></header>
-    <div class="ed-grid" data-rv-kids>
-      <article class="edc"><svg class="ed-illo" viewBox="0 0 320 150" aria-hidden="true"><rect width="320" height="150" fill="var(--tint)"/><circle cx="232" cy="96" r="44" fill="var(--clay)"/><path d="M0 96 V84 C40 74 90 72 130 82 C170 70 230 70 320 84 V96 Z" fill="var(--water-soft)" opacity=".7"/><rect x="38" y="70" width="58" height="26" fill="var(--house)"/><path d="M30 72 L48 56 H86 L104 72 Z" fill="var(--clay)"/><rect x="46" y="78" width="10" height="10" fill="var(--ink)"/><rect x="62" y="78" width="10" height="18" fill="var(--ink)"/><rect x="78" y="78" width="10" height="10" fill="var(--ink)"/><circle cx="118" cy="68" r="12" fill="var(--leaf)"/><circle cx="130" cy="74" r="9" fill="var(--leaf)"/><rect x="120" y="76" width="4" height="20" fill="var(--ink)"/><rect y="96" width="320" height="54" fill="var(--d2)"/><line x1="0" y1="96" x2="320" y2="96" stroke="var(--ink)" stroke-width="3"/><path d="M150 84 H206 L198 96 H158 Z" fill="var(--ink)"/><circle cx="170" cy="72" r="5" fill="var(--ink)"/><circle cx="188" cy="72" r="5" fill="var(--water)"/><line x1="200" y1="110" x2="264" y2="110" stroke="var(--sun)" stroke-width="3" stroke-linecap="round"/><line x1="214" y1="122" x2="250" y2="122" stroke="var(--sun)" stroke-width="3" stroke-linecap="round" opacity=".6"/></svg><div class="ed-b"><p class="ed-p">Lake Banyoles</p><h3 class="h3">Lakehouse edition</h3><ul><li><svg class="ed-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15h18l-2.5 4h-13z"/><path d="M9 15L5.5 7M15 15l3.5-8"/></svg>Rowing by Olympic coach</li><li><svg class="ed-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9M12 6l-2-2M12 6l2-2M12 18l-2 2M12 18l2 2"/></svg>Breathwork and an ice bath</li><li><svg class="ed-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.9 6.8 19.6l1-5.8L3.5 9.7l5.9-.8z"/></svg>Two-Michelin-star dinner</li></ul></div></article>
-      <article class="edc"><svg class="ed-illo" viewBox="0 0 320 150" aria-hidden="true"><rect width="320" height="150" fill="var(--tint)"/><circle cx="86" cy="92" r="34" fill="var(--house)"/><path d="M196 92 C206 60 232 44 262 40 C290 36 310 46 320 52 V92 Z" fill="var(--water-soft)"/><circle cx="256" cy="38" r="13" fill="var(--leaf)"/><circle cx="274" cy="34" r="16" fill="var(--leaf)"/><circle cx="294" cy="40" r="12" fill="var(--leaf)"/><rect x="272" y="44" width="4" height="14" fill="var(--ink)"/><rect y="92" width="320" height="58" fill="var(--d1)"/><line x1="0" y1="92" x2="320" y2="92" stroke="var(--ink)" stroke-width="3"/><path d="M132 92 H184 L176 104 H140 Z" fill="var(--ink)"/><line x1="158" y1="46" x2="158" y2="92" stroke="var(--ink)" stroke-width="3"/><path d="M161 50 L186 86 H161 Z" fill="var(--raised)"/><path d="M155 58 L136 86 H155 Z" fill="var(--clay)"/><path d="M20 118 q10 -6 20 0 t20 0 t20 0" fill="none" stroke="var(--on-deep-3)" stroke-width="3" stroke-linecap="round"/><path d="M210 126 q10 -6 20 0 t20 0 t20 0" fill="none" stroke="var(--on-deep-3)" stroke-width="3" stroke-linecap="round"/></svg><div class="ed-b"><p class="ed-p">Costa Brava<span class="ed-note">From year two</span></p><h3 class="h3">Coast edition</h3><ul><li><svg class="ed-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13a7 7 0 0 1 14 0"/><path d="M2 17c2-1.6 4-1.6 6 0s4 1.6 6 0 4-1.6 6 0M4 21c2-1.6 4-1.6 6 0s4 1.6 6 0"/></svg>Sunrise swim in the sea</li><li><svg class="ed-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v13M12 4l7 11h-7M11 7l-5 8h5"/><path d="M3 18h18l-2 3H5z"/></svg>Sailing as a pair</li><li><svg class="ed-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12c3.5-5.5 9.5-5.5 13 0-3.5 5.5-9.5 5.5-13 0z"/><path d="M16 12l5-4v8z"/><circle cx="7.5" cy="11" r=".6"/></svg>Seafood long table beach</li></ul></div></article>
-      <article class="edc"><svg class="ed-illo" viewBox="0 0 320 150" aria-hidden="true"><rect width="320" height="150" fill="var(--d3)"/><circle cx="262" cy="34" r="14" fill="var(--house)"/><path d="M-10 118 L84 26 L150 118 Z" fill="var(--d1)"/><path d="M84 26 L62 48 L76 44 L86 54 L96 44 L108 50 Z" fill="var(--raised)"/><path d="M110 118 L206 44 L300 118 Z" fill="var(--water)"/><path d="M206 44 L184 62 L198 60 L208 70 L218 60 L232 64 Z" fill="var(--raised)"/><rect y="114" width="320" height="36" fill="var(--raised)"/><rect x="132" y="92" width="44" height="24" fill="var(--house)"/><path d="M124 94 L154 74 L184 94 Z" fill="var(--clay)"/><rect x="149" y="100" width="10" height="16" fill="var(--ink)"/><path d="M166 80 v-10" stroke="var(--raised)" stroke-width="4" stroke-linecap="round"/><path d="M168 64 q6 -6 0 -12" fill="none" stroke="var(--on-deep-3)" stroke-width="2.5" stroke-linecap="round"/></svg><div class="ed-b"><p class="ed-p">Pyrenees and the Alps<span class="ed-note">From year two</span></p><h3 class="h3">Alpine edition</h3><ul><li><svg class="ed-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 19l7-11 4 6.5 2.5-3.5L22 19z"/><path d="M7 11.2l2 1.3 2-1.5"/></svg>Hike to a mountain hut</li><li><svg class="ed-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4c-2 3 2 4 0 7M12 4c-2 3 2 4 0 7M16 4c-2 3 2 4 0 7"/><rect x="4" y="14" width="16" height="6" rx="1.5"/></svg>Sauna, then the snow</li><li><svg class="ed-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1 4 5.5 5.5 5.5 10.5a5.5 5.5 0 0 1-11 0c0-2 1-3.2 2-4.2 0 2 1 3 2 3 0-3-1-5 1-9z"/></svg>Fireside dinner</li></ul></div></article>
+    <div class="ed-grid">
+      <article class="edc" data-reveal><svg class="ed-illo" viewBox="0 0 320 150" aria-hidden="true"><rect width="320" height="150" fill="var(--tint)"></rect><circle cx="232" cy="96" r="44" fill="var(--clay)"></circle><path d="M0 96 V84 C40 74 90 72 130 82 C170 70 230 70 320 84 V96 Z" fill="var(--water-soft)" opacity=".7"></path><rect x="38" y="70" width="58" height="26" fill="var(--house)"></rect><path d="M30 72 L48 56 H86 L104 72 Z" fill="var(--clay)"></path><rect x="46" y="78" width="10" height="10" fill="var(--ink)"></rect><rect x="62" y="78" width="10" height="18" fill="var(--ink)"></rect><rect x="78" y="78" width="10" height="10" fill="var(--ink)"></rect><circle cx="118" cy="68" r="12" fill="var(--leaf)"></circle><circle cx="130" cy="74" r="9" fill="var(--leaf)"></circle><rect x="120" y="76" width="4" height="20" fill="var(--ink)"></rect><rect y="96" width="320" height="54" fill="var(--d2)"></rect><line x1="0" y1="96" x2="320" y2="96" stroke="var(--ink)" stroke-width="3"></line><path d="M150 84 H206 L198 96 H158 Z" fill="var(--ink)"></path><circle cx="170" cy="72" r="5" fill="var(--ink)"></circle><circle cx="188" cy="72" r="5" fill="var(--water)"></circle><line x1="200" y1="110" x2="264" y2="110" stroke="var(--sun)" stroke-width="3" stroke-linecap="round"></line><line x1="214" y1="122" x2="250" y2="122" stroke="var(--sun)" stroke-width="3" stroke-linecap="round" opacity=".6"></line></svg><div class="ed-b"><p class="ed-p">Lake Banyoles</p><h3>Lakehouse edition</h3><ul><li><svg class="ed-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15h18l-2.5 4h-13z"></path><path d="M9 15L5.5 7M15 15l3.5-8"></path></svg>Rowing by Olympic coach</li><li><svg class="ed-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9M12 6l-2-2M12 6l2-2M12 18l-2 2M12 18l2 2"></path></svg>Breathwork and an ice bath</li><li><svg class="ed-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.9 6.8 19.6l1-5.8L3.5 9.7l5.9-.8z"></path></svg>Two-Michelin-star dinner</li></ul></div></article>
+      <article class="edc" data-reveal><svg class="ed-illo" viewBox="0 0 320 150" aria-hidden="true"><rect width="320" height="150" fill="var(--tint)"></rect><circle cx="86" cy="92" r="34" fill="var(--house)"></circle><path d="M196 92 C206 60 232 44 262 40 C290 36 310 46 320 52 V92 Z" fill="var(--water-soft)"></path><circle cx="256" cy="38" r="13" fill="var(--leaf)"></circle><circle cx="274" cy="34" r="16" fill="var(--leaf)"></circle><circle cx="294" cy="40" r="12" fill="var(--leaf)"></circle><rect x="272" y="44" width="4" height="14" fill="var(--ink)"></rect><rect y="92" width="320" height="58" fill="var(--d1)"></rect><line x1="0" y1="92" x2="320" y2="92" stroke="var(--ink)" stroke-width="3"></line><path d="M132 92 H184 L176 104 H140 Z" fill="var(--ink)"></path><line x1="158" y1="46" x2="158" y2="92" stroke="var(--ink)" stroke-width="3"></line><path d="M161 50 L186 86 H161 Z" fill="var(--raised)"></path><path d="M155 58 L136 86 H155 Z" fill="var(--clay)"></path><path d="M20 118 q10 -6 20 0 t20 0 t20 0" fill="none" stroke="var(--on-deep-3)" stroke-width="3" stroke-linecap="round"></path><path d="M210 126 q10 -6 20 0 t20 0 t20 0" fill="none" stroke="var(--on-deep-3)" stroke-width="3" stroke-linecap="round"></path></svg><div class="ed-b"><p class="ed-p">Costa Brava<span class="ed-note">From year two</span></p><h3>Coast edition</h3><ul><li><svg class="ed-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13a7 7 0 0 1 14 0"></path><path d="M2 17c2-1.6 4-1.6 6 0s4 1.6 6 0 4-1.6 6 0M4 21c2-1.6 4-1.6 6 0s4 1.6 6 0"></path></svg>Sunrise swim in the sea</li><li><svg class="ed-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v13M12 4l7 11h-7M11 7l-5 8h5"></path><path d="M3 18h18l-2 3H5z"></path></svg>Sailing as a pair</li><li><svg class="ed-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12c3.5-5.5 9.5-5.5 13 0-3.5 5.5-9.5 5.5-13 0z"></path><path d="M16 12l5-4v8z"></path><circle cx="7.5" cy="11" r=".6"></circle></svg>Seafood long table beach</li></ul></div></article>
+      <article class="edc" data-reveal><svg class="ed-illo" viewBox="0 0 320 150" aria-hidden="true"><rect width="320" height="150" fill="var(--d3)"></rect><circle cx="262" cy="34" r="14" fill="var(--house)"></circle><path d="M-10 118 L84 26 L150 118 Z" fill="var(--d1)"></path><path d="M84 26 L62 48 L76 44 L86 54 L96 44 L108 50 Z" fill="var(--raised)"></path><path d="M110 118 L206 44 L300 118 Z" fill="var(--water)"></path><path d="M206 44 L184 62 L198 60 L208 70 L218 60 L232 64 Z" fill="var(--raised)"></path><rect y="114" width="320" height="36" fill="var(--raised)"></rect><rect x="132" y="92" width="44" height="24" fill="var(--house)"></rect><path d="M124 94 L154 74 L184 94 Z" fill="var(--clay)"></path><rect x="149" y="100" width="10" height="16" fill="var(--ink)"></rect><path d="M166 80 v-10" stroke="var(--raised)" stroke-width="4" stroke-linecap="round"></path><path d="M168 64 q6 -6 0 -12" fill="none" stroke="var(--on-deep-3)" stroke-width="2.5" stroke-linecap="round"></path></svg><div class="ed-b"><p class="ed-p">Pyrenees and the Alps<span class="ed-note">From year two</span></p><h3>Alpine edition</h3><ul><li><svg class="ed-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 19l7-11 4 6.5 2.5-3.5L22 19z"></path><path d="M7 11.2l2 1.3 2-1.5"></path></svg>Hike to a mountain hut</li><li><svg class="ed-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4c-2 3 2 4 0 7M12 4c-2 3 2 4 0 7M16 4c-2 3 2 4 0 7"></path><rect x="4" y="14" width="16" height="6" rx="1.5"></rect></svg>Sauna, then the snow</li><li><svg class="ed-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1 4 5.5 5.5 5.5 10.5a5.5 5.5 0 0 1-11 0c0-2 1-3.2 2-4.2 0 2 1 3 2 3 0-3-1-5 1-9z"></path></svg>Fireside dinner</li></ul></div></article>
     </div>
-  </div>
-</section>
-
-<section class="band tint sec" id="after">
-  <div class="wrap">
-    <header class="hd"><p class="ix">Before and after</p></header>
-    <div class="split">
-      <div class="stack" data-rv><h2 class="h2">You arrive prepared.</h2><p class="mx">Each of you does your Check, and you have a 45-minute call together with your host, so the three days start where it matters.</p></div>
-      <div class="stack" data-rv><h2 class="h2">It doesn't end on Sunday.</h2><p class="mx">For the next year we stay in touch once a quarter. All included. Use what helps.</p></div>
-    </div>
-    <ol class="months" data-draw data-rv-kids>
-      <li><span class="eb">Month 3</span><p>A call on your 90-day plan.</p></li>
-      <li><span class="eb">Month 6</span><p>A reunion with the other three teams, online.</p></li>
-      <li><span class="eb">Month 9</span><p>A call, and an expert if you need one.</p></li>
-      <li><span class="eb">Month 12</span><p>Your quarterly check-in and a call: your year in review, and the next one.</p></li>
-    </ol>
-  </div>
-</section>
-
-<section class="band sec-s" id="safe">
-  <div class="wrap g2" data-rv-kids>
-    <div class="card stack"><p class="eb">Safe for both of you</p><h3 class="h3">What is said at the lake stays at the lake.</h3><p>Your fund never sees your answers or what you discuss. This is not therapy or mediation.</p><p><a class="lk" href="trust.html">Trust →</a></p></div>
-    <div class="card stack"><p class="eb">Who pays</p><h3 class="h3">Your fund will likely help.</h3><p>Show your fund you are interested: many are willing to pay half, and some pay all of it.</p><p><a class="lk" href="contact.html">I'm interested →</a></p></div>
-  </div>
-</section>
-
-<section class="band sec" id="questions">
-  <div class="wrap split w57">
-    <header class="hd"><h2 class="h2" data-rv>Common questions</h2></header>
-    <div class="qa">
-      <details open><summary>Do we both have to come?</summary><p>Yes. The weekend is for the founding team, not one founder.</p></details>
+    <div class="faq">
+      <details><summary>Do we both have to come?</summary><p>Yes. The weekend is for the founding team, not one founder.</p></details>
       <details><summary>We are three co-founders.</summary><p>Welcome. Tell us and we will plan for it.</p></details>
       <details><summary>Is this a year-long programme?</summary><p>No. You commit to three days. The calls afterwards are included, and you can skip or move any of them.</p></details>
       <details><summary>Do we have to share anything with our fund?</summary><p>No. Nothing you say or answer goes to your investor.</p></details>
@@ -157,13 +741,119 @@
   </div>
 </section>
 
-<section class="band wx-hero wx-end" id="go">
-  <div class="photo par wx-bg"><img src="img/lake.jpg" alt="Rowers and a coach boat on Lake Banyoles." loading="lazy"></div>
-  <div class="wrap wx-in">
-    <h2 class="h1" data-rv>Three days that set up <em>your next year.</em></h2>
-    <div class="row"><a class="btn btn-clay" href="contact.html">I'm interested <i>→</i></a><a class="btn btn-line" href="https://app.founderscadence.com/start" target="_blank" rel="noopener">Start your free Check</a></div>
-  </div>
+<!-- FINALE -->
+<section class="finale">
+  <img src="img/weekend/lakewalk.jpg" alt="" loading="lazy">
+  <div class="over"><div class="k-wrap">
+    <h2>Three days that set up <em>your next year.</em></h2>
+    <div class="k-row">
+      <a class="k-btn k-btn-clay" href="https://founderscadence.com/contact.html" target="_blank" rel="noopener">I'm interested <span class="arr">→</span></a>
+      <a class="k-btn k-btn-line" href="https://app.founderscadence.com/start" target="_blank" rel="noopener">Start your free Check</a>
+    </div>
+  </div></div>
 </section>
-</main><footer class="band deep close water"><div class="wrap"><div class="close-routes"><a href="https://app.founderscadence.com/start" target="_blank" rel="noopener"><span class="eb">Founders</span><b>Start your free Check <i>→</i></b></a><a href="pulse.html"><span class="eb">Funds</span><b>Start a free Portfolio Pulse <i>→</i></b></a></div><p class="statement" aria-label="The pattern, never the person."><span>The pattern,</span><span>never the person.</span></p><div class="foot"><div><a class="brand" href="index.html"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M28 66 A32 32 0 0 1 92 66 Z" fill="var(--sun)"/><line x1="16" y1="76" x2="104" y2="76" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><line x1="30" y1="90" x2="90" y2="90" stroke="var(--on-deep-3)" stroke-width="6" stroke-linecap="round"/><line x1="46" y1="104" x2="74" y2="104" stroke="var(--on-deep-3)" stroke-width="6" stroke-linecap="round"/></svg>Cadence</a><small>The independent development arm for VC portfolios.</small></div><div><h4>For funds</h4><ul><li><a href="index.html">Home</a></li><li><a href="pulse.html">Free Portfolio Pulse</a></li></ul></div><div><h4>For founders</h4><ul><li><a href="founders.html">Founders</a></li><li><a href="weekend.html">The weekend</a></li></ul></div><div><h4>Both</h4><ul><li><a href="method.html">The method</a></li><li><a href="trust.html">Trust</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="/privacy.html">Privacy policy</a></li><li><a href="/aviso-legal.html">Aviso legal</a></li></ul></div></div></div></footer></div><script src="site.js"></script>
+</div></main><footer class="band deep close water"><div class="wrap"><div class="foot"><div><a class="brand" href="index.html"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M28 66 A32 32 0 0 1 92 66 Z" fill="var(--sun)"/><line x1="16" y1="76" x2="104" y2="76" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><line x1="30" y1="90" x2="90" y2="90" stroke="var(--on-deep-3)" stroke-width="6" stroke-linecap="round"/><line x1="46" y1="104" x2="74" y2="104" stroke="var(--on-deep-3)" stroke-width="6" stroke-linecap="round"/></svg>Cadence</a><small>The independent development arm for VC portfolios.</small></div><div><h4>For funds</h4><ul><li><a href="index.html">Home</a></li><li><a href="pulse.html">Free Portfolio Pulse</a></li></ul></div><div><h4>For founders</h4><ul><li><a href="founders.html">Founders</a></li><li><a href="weekend.html">The weekend</a></li></ul></div><div><h4>Both</h4><ul><li><a href="method.html">The method</a></li><li><a href="trust.html">Trust</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="/privacy.html">Privacy policy</a></li><li><a href="/aviso-legal.html">Aviso legal</a></li></ul></div></div></div></footer></div><script src="site.js"></script>
+<script>
+(function(){
+  var root=document.documentElement; root.classList.add('js');
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* hero: split the title into words that rise in */
+  var h1=document.getElementById('heroTitle');
+  if(h1 && !reduce){
+    var wi=0;
+    (function split(el){
+      [].slice.call(el.childNodes).forEach(function(n){
+        if(n.nodeType===3){
+          var parts=n.textContent.split(/(\s+)/), frag=document.createDocumentFragment();
+          parts.forEach(function(t){
+            if(!t) return;
+            if(/^\s+$/.test(t)){frag.appendChild(document.createTextNode(t));return;}
+            var w=document.createElement('span'); w.className='w';
+            var inner=document.createElement('span'); inner.textContent=t; inner.style.setProperty('--i',wi++);
+            w.appendChild(inner); frag.appendChild(w);
+          });
+          n.parentNode.replaceChild(frag,n);
+        } else if(n.nodeType===1){ split(n); }
+      });
+    })(h1);
+  }
+
+  /* hero: photos follow the pointer and drift on scroll */
+  var duo=document.getElementById('duo'), hero=document.querySelector('.k-hero');
+  if(duo && !reduce){
+    var tx=0,ty=0,cx=0,cy=0,raf=null;
+    function loop(){cx+=(tx-cx)*.08;cy+=(ty-cy)*.08;duo.style.setProperty('--mx',cx.toFixed(3));duo.style.setProperty('--my',cy.toFixed(3));
+      if(Math.abs(tx-cx)>.001||Math.abs(ty-cy)>.001){raf=requestAnimationFrame(loop)}else{raf=null}}
+    hero.addEventListener('pointermove',function(e){if(e.pointerType!=='mouse')return;var r=hero.getBoundingClientRect();tx=(e.clientX-r.left)/r.width-.5;ty=(e.clientY-r.top)/r.height-.5;if(!raf)raf=requestAnimationFrame(loop)});
+    hero.addEventListener('pointerleave',function(){tx=0;ty=0;if(!raf)raf=requestAnimationFrame(loop)});
+  }
+  var prog=document.getElementById('progress')||document.createElement('i');
+  function heroScroll(){
+    var y=scrollY, max=document.documentElement.scrollHeight-innerHeight;
+    prog.style.setProperty('--sp',max>0?(y/max).toFixed(4):0);
+    if(duo && !reduce){var h=hero.offsetHeight;duo.style.setProperty('--sy',Math.min(1,y/h).toFixed(3));}
+  }
+
+  /* reveal */
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{rootMargin:'0px 0px -10% 0px'});
+  document.querySelectorAll('[data-reveal], .map').forEach(function(el){io.observe(el)});
+
+  /* count-up */
+  var cio=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(!e.isIntersecting) return; cio.unobserve(e.target);
+    if(reduce) return;
+    var el=e.target,to=+el.dataset.to,t0=null;
+    function f(t){if(!t0)t0=t;var p=Math.min(1,(t-t0)/1100);el.textContent=Math.round(to*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f);}
+    requestAnimationFrame(f);
+  })},{threshold:.6});
+  document.querySelectorAll('.count').forEach(function(el){cio.observe(el)});
+
+  /* system progress line */
+  var steps=document.getElementById('steps'), fill=steps.querySelector('.fill'), stepEls=steps.querySelectorAll('.step');
+  function sysProgress(){
+    var r=steps.getBoundingClientRect(), mid=innerHeight*0.55;
+    var p=Math.max(0,Math.min(1,(mid-r.top)/r.height));
+    fill.style.setProperty('--p',(p*100)+'%');
+    stepEls.forEach(function(s){s.classList.toggle('on',s.getBoundingClientRect().top<mid)});
+  }
+
+  /* timeline */
+  var tl=document.getElementById('weekend'), beats=[].slice.call(document.querySelectorAll('.beat')), ledger=document.getElementById('ledger');
+  var cDay=document.getElementById('cDay'), cTime=document.getElementById('cTime'), cWhat=document.getElementById('cWhat');
+  var sun=document.getElementById('sun'), moon=document.getElementById('moon'), dayPills=document.querySelectorAll('.days span');
+  var current=-1;
+  function sunAt(h){
+    /* 06:30 rise at left, 13:00 top, 20:30 set at right; outside that it sits below the horizon */
+    var p=(h-6.5)/14, a=Math.PI*(1-p), cx=110, cy=92, R=86;
+    var x=cx+R*Math.cos(a), y=cy-R*Math.sin(a);
+    if(p<0||p>1){x=p<0?24:196;y=124;}
+    sun.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+')');
+    moon.style.opacity=(p<0||p>1)?1:0;
+  }
+  function setBeat(i){
+    if(i===current) return; current=i; var b=beats[i];
+    cDay.textContent=b.dataset.day; cTime.textContent=b.dataset.time; cWhat.textContent=b.dataset.what;
+    tl.style.setProperty('--sky',b.dataset.sky); tl.classList.toggle('dark',!!b.dataset.dark);
+    sunAt(parseFloat(b.dataset.h));
+    dayPills.forEach(function(d){d.classList.toggle('on',d.dataset.d===b.dataset.day)});
+    var qMax=0; beats.slice(0,i+1).forEach(function(x){if(x.dataset.q)qMax=Math.max(qMax,+x.dataset.q)});
+    ledger.querySelectorAll('li').forEach(function(li){li.classList.toggle('done',+li.dataset.q<=qMax)});
+  }
+  function tlScroll(){
+    var r=tl.getBoundingClientRect(); var inTl=r.top<innerHeight*0.5 && r.bottom>innerHeight*0.6;
+    ledger.classList.toggle('show',inTl);
+    var mid=innerHeight*0.5, best=0;
+    beats.forEach(function(b,i){if(b.getBoundingClientRect().top<mid)best=i;});
+    setBeat(best);
+    beats.forEach(function(b){var rr=b.getBoundingClientRect();if(rr.top<innerHeight*.85)b.classList.add('in')});
+  }
+  var ticking=false;
+  function onScroll(){if(ticking)return;ticking=true;requestAnimationFrame(function(){heroScroll();sysProgress();tlScroll();ticking=false;});}
+  addEventListener('scroll',onScroll,{passive:true}); addEventListener('resize',onScroll);
+  setBeat(0); onScroll();
+
+})();
+</script>
 </body>
 </html>
