@@ -895,3 +895,19 @@ body::after{content:"";position:fixed;inset:0;z-index:200;background:var(--d3,#1
 .pb-ex{color:var(--sun)}
 .pb-co{color:#a8d4ff}
 .pb-em{color:var(--on-deep-3)}
+
+/* next: the Founders hero is sized like the For funds hero */
+@media (min-width:901px){
+.fhero .hero-in{position:relative;z-index:2;padding-block:clamp(18px,4vh,56px) 0;gap:clamp(12px,2.4vh,30px)}
+.fhero .h1.h1-s{max-width:none;font-size:clamp(40px,min(5.6vw,10vh),96px)}
+.fhero .scene{margin-top:clamp(-64px,-5vh,-20px)}
+}
+@media (min-width:901px) and (max-height:700px){
+.fhero .hero-in{padding-top:14px;gap:10px}
+.fhero .h1.h1-s{font-size:clamp(38px,min(5.2vw,8.8vh),60px)}
+.fhero .ld{font-size:16px;line-height:1.45}
+.fhero .hero-sub{align-items:start}
+.fhero .hero-sub .row{flex-wrap:nowrap;gap:8px}
+.fhero .hero-sub .btn{padding:10px 16px;font-size:14px;white-space:nowrap}
+.fhero .scene{margin-top:-72px}
+}
