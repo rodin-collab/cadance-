@@ -5,173 +5,633 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>For founders · Cadence</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<meta name="description" content="A private 15-minute Check finds what is really holding your company back.">
+<meta name="description" content="Cadence is a private place for you and your co-founder. You say what is really going on. We bring someone who has solved it before. Your investor never reads a word.">
+<meta property="og:title" content="For founders · Cadence">
+<meta property="og:description" content="Cadence is a private place for you and your co-founder. You say what is really going on. We bring someone who has solved it before. Your investor never reads a word.">
+<meta property="og:image" content="/img/weekend/circle.jpg">
 <link rel="stylesheet" href="/fonts/fonts.css">
 <link rel="stylesheet" href="site.css">
+<style>
+/* Home for funds. One descent through the lake: the surface (ten boats), under water (the problem),
+   the waterline (Cadence, in between), then back up to what the fund sees and gets.
+   Everything here is prefixed hx- and builds on the tokens and classes in site.css. */
+.hx-h2{font-size:clamp(38px,5.6vw,88px);line-height:1;letter-spacing:-.02em}
+.hx-body{font-size:clamp(17px,1.35vw,20px);line-height:1.55;color:var(--body);max-width:34em;text-wrap:pretty}
+
+/* 1 · hero: the surface */
+.hx-hero{overflow:hidden;overflow:clip}
+.hx-hero-in{position:relative;z-index:2;display:grid;gap:18px;padding-block:26px 0}
+.hx-h1{font-size:clamp(42px,12vw,76px);line-height:.98;max-width:11.6em}
+.hx-hero-sub{display:flex;flex-direction:column;gap:20px}
+.hx-hero-sub .ld{font-size:clamp(17px,1.5vw,21px)}
+.hx-lake{position:relative;height:clamp(250px,68vw,340px);margin-top:14px}
+.hx-scene{position:absolute;inset:0;width:100%;height:100%;max-width:none;overflow:visible}
+.hx-b{--bh:var(--on-deep);--b2:var(--on-deep-3)}
+.hx-b.one{--bh:var(--sun);--b2:#f7d2bf}
+.mo .hx-sunc{animation:hx-rise 2.2s var(--ease) both .15s}
+@keyframes hx-rise{from{transform:translateY(150px)}}
+.mo .hx-hills{animation:hx-fade 1.8s ease both}
+@keyframes hx-fade{from{opacity:0}}
+.hx-reeds path{fill:none;stroke:var(--panel);stroke-width:4;stroke-linecap:round}
+.hx-reeds .hd{fill:var(--panel)}
+.mo .hx-reeds{animation:hx-reed 1.9s var(--ease) both .2s}
+@keyframes hx-reed{from{opacity:0;translate:0 90px}}
+.hx-tagl{position:absolute;left:0;top:0;z-index:3;font:500 11px/1 var(--mono);letter-spacing:.06em;white-space:nowrap;padding:8px 11px;border-radius:999px;background:var(--paper);color:var(--ink);box-shadow:0 10px 24px -12px rgba(8,18,30,.6);opacity:0;transition:opacity .6s;pointer-events:none;will-change:transform}
+.hx-tagl.on{opacity:1}
+.hx-tagl.t1{background:var(--sun);color:#3a160a}
+.hx-tagl span{display:block;transition:opacity .45s}
+.hx-tagl .b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0}
+.hx-tagl.sw .a{opacity:0}.hx-tagl.sw .b{opacity:1}
+@media (min-width:901px){
+.hx-hero{min-height:calc(100svh - var(--top));display:flex;flex-direction:column}
+.hx-hero-in{gap:clamp(14px,2.6vh,30px);padding-block:clamp(16px,3.6vh,48px) 0}
+.hx-h1{font-size:clamp(52px,min(6.9vw,11.6vh),132px);line-height:.93;letter-spacing:-.028em;max-width:none}
+.hx-hero-sub{flex-direction:row;align-items:flex-end;justify-content:space-between;gap:clamp(28px,4vw,72px)}
+.hx-hero-sub .ld{max-width:33em}
+.hx-hero-sub .row{flex-wrap:nowrap;flex:none}
+.hx-lake{flex:1;height:auto;min-height:min(42vh,34vw);margin-top:clamp(-20px,-1.5vh,-6px)}
+.hx-tagl{font-size:12px;padding:9px 13px}
+}
+@media (max-width:900px){.hx-reeds{display:none}.hx-planes{height:clamp(300px,84vw,420px)}.hx-hero-sub .btn-line{border:0;min-height:0;padding:0 0 3px;border-radius:0;background:linear-gradient(var(--clay),var(--clay)) 0 100%/100% 1.5px no-repeat;align-self:center}.hx-hero-sub .btn-line:hover{background-color:transparent;color:var(--clay)}}
+
+/* 2 · under water: the problem */
+.hx-under{background:linear-gradient(var(--d3),var(--d4) 62%)}
+.hx-under-in{padding-block:clamp(64px,9vw,150px) clamp(64px,8vw,130px);display:grid;gap:clamp(40px,6vw,96px)}
+.hx-notes{display:grid;gap:14px}
+.hx-note>div{background:rgba(255,255,255,.06);border:1px solid var(--deep-line);border-radius:20px;padding:clamp(20px,2.4vw,34px);box-shadow:0 34px 60px -34px rgba(4,12,22,.75);display:flex;gap:16px;align-items:flex-start}
+.hx-note p{font:400 clamp(23px,2.5vw,36px)/1.14 var(--display);color:var(--on-deep);letter-spacing:-.005em}
+.hx-alone{max-width:21em;margin-top:clamp(28px,3vw,44px)}
+.hx-facts{display:grid;gap:26px}
+.hx-facts .stat{border-top-color:var(--on-deep)}
+.hx-facts .m{letter-spacing:.04em}
+.hx-gauge{display:none}
+@media (max-width:700px){
+.hx-facts .stat{display:grid;grid-template-columns:118px minmax(0,1fr);gap:4px 14px;align-items:start}
+.hx-facts .stat .n{font-size:64px;grid-row:1/3}
+.hx-facts .stat p{font-size:15.5px}
+}
+@media (min-width:901px){
+.hx-under-in{grid-template-columns:minmax(0,1fr) minmax(0,10.4fr);column-gap:clamp(24px,4vw,72px)}
+.hx-under-in>*{grid-column:2}
+.hx-gauge{display:flex;flex-direction:column;align-items:center;gap:16px;grid-column:1;grid-row:1/4;--k:1}
+.hx-gauge span{font:500 11px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--on-deep-3);writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap}
+.hx-gauge i{flex:1;width:1.5px;background:var(--deep-line);position:relative;display:block}
+.hx-gauge i::before{content:"";position:absolute;inset:0;background:var(--sun);transform-origin:top;transform:scaleY(var(--k))}
+.hx-gauge i::after{content:"";position:absolute;left:-5px;top:calc(var(--k)*100% - 6px);width:11.5px;height:11.5px;border-radius:50%;background:var(--sun)}
+.hx-notes{grid-template-columns:repeat(12,minmax(0,1fr));gap:0 20px;padding-bottom:20px}
+.hx-note:nth-child(1){grid-column:1/6}.hx-note:nth-child(1)>div{transform:rotate(-2deg)}
+.hx-note:nth-child(2){grid-column:7/12;margin-top:96px}.hx-note:nth-child(2)>div{transform:rotate(1.6deg)}
+.hx-note:nth-child(3){grid-column:3/9;margin-top:-4px}.hx-note:nth-child(3)>div{transform:rotate(-.8deg)}
+.hx-facts{grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,3vw,48px)}
+}
+
+/* 3 · the waterline: Cadence, in between. On a desktop the screen holds still while the three parts light up. */
+.hx-mid{position:relative;background:var(--paper)}
+.hx-mid .wline{display:none}
+.hx-mid-grid{display:flex;flex-direction:column;gap:14px;padding-block:56px}
+.hx-mid-grid .hx-h2{margin-bottom:14px}
+.hx-c{border-radius:20px;padding:22px;border:1px solid var(--line);background:var(--raised);display:flex;flex-direction:column;gap:14px;color:var(--body)}
+.hx-c.c1{background:var(--d2);border-color:transparent}
+.hx-who{font:500 11px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.hx-say{font:400 clamp(23px,2.25vw,33px)/1.16 var(--display);color:var(--ink);letter-spacing:-.005em;text-wrap:balance}
+.hx-red{display:grid;gap:9px;max-width:260px}
+.hx-red i{display:block;height:11px;border-radius:99px;background:rgba(240,244,248,.22);width:var(--w)}
+.hx-buoy{display:flex;align-items:center;gap:12px;font:400 26px/1 var(--display);color:var(--ink)}
+.hx-buoy svg{width:44px;height:44px;flex:none}
+.hx-bars{display:grid;gap:11px;max-width:330px}
+.hx-bars div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px 12px;font-size:14px;color:var(--ink)}
+.hx-bars em{font:500 12px/1.5 var(--mono);font-style:normal;color:var(--clay)}
+.hx-bars i{grid-column:1/-1;height:7px;border-radius:99px;background:var(--line);overflow:hidden;display:block}
+.hx-bars i::after{content:"";display:block;height:100%;width:var(--w);background:var(--clay);border-radius:99px;transform-origin:left;transition:transform 1.1s var(--ease) .15s}
+.hx-eg{font:500 10.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);border:1px solid var(--line-2);border-radius:999px;padding:6px 9px;align-self:flex-start}
+@media (min-width:901px) and (min-height:600px){
+.hx-mid[data-step]{height:290vh}
+.hx-mid-pin{position:sticky;top:var(--top);height:calc(100vh - var(--top));overflow:hidden}
+.hx-mid-pin::before{content:"";position:absolute;inset:50% 0 0 0;background:linear-gradient(var(--d2),var(--d3))}
+.hx-mid .wline{display:block;position:absolute;left:0;right:0;top:calc(50% - 7px);z-index:2}
+.hx-mid-grid{position:relative;z-index:3;height:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:minmax(0,1fr) minmax(0,1fr);gap:0 clamp(24px,3.4vw,56px);padding-block:0}
+.hx-mid-grid .hx-h2{grid-column:1/3;grid-row:1;align-self:start;padding-top:clamp(24px,6vh,76px);margin:0;font-size:clamp(40px,min(5vw,8.6vh),84px);max-width:9.5em}
+.hx-c{border:0;background:none;padding:0;border-radius:0;transition:opacity .7s var(--ease),transform .9s var(--ease)}
+.hx-c.c1{background:none;grid-column:1;grid-row:2;align-self:start;padding-top:clamp(28px,6vh,64px)}
+.hx-c.c2{grid-column:2;grid-row:1/3;align-self:center;background:var(--raised);border-radius:24px;padding:clamp(22px,2.2vw,32px);box-shadow:0 40px 80px -36px rgba(8,18,30,.55);border:1px solid var(--line)}
+.hx-c.c3{grid-column:3;grid-row:1;align-self:end;padding-bottom:clamp(28px,6vh,64px)}
+.hx-mid[data-step="1"] .c2,.hx-mid[data-step="1"] .c3,.hx-mid[data-step="2"] .c3{opacity:0}
+.hx-mid[data-step="1"] .c2{transform:translateY(90px) scale(.96)}
+.hx-mid[data-step="1"] .c3,.hx-mid[data-step="2"] .c3{transform:translateY(36px)}
+.hx-mid .hx-say{font-size:clamp(25px,min(2.5vw,4.4vh),40px)}
+.hx-bub{position:absolute;inset:50% 0 0 0;z-index:1;overflow:hidden}
+.mo .hx-bub i{position:absolute;bottom:-14px;width:var(--s);height:var(--s);border-radius:50%;border:1.5px solid rgba(240,244,248,.5);animation:hx-bub var(--t) linear infinite;animation-delay:var(--d)}
+@keyframes hx-bub{0%{transform:translate(0,0);opacity:0}12%{opacity:.8}80%{opacity:.5}100%{transform:translate(18px,-46vh);opacity:0}}
+.hx-mid[data-step="1"] .hx-bars i::after,.hx-mid[data-step="2"] .hx-bars i::after{transform:scaleX(0)}
+.hx-mid-dots{position:absolute;right:max(var(--gut),20px);bottom:22px;z-index:4;display:flex;gap:7px}
+.hx-mid-dots i{width:26px;height:3px;border-radius:9px;background:rgba(240,244,248,.28);transition:background .4s}
+.hx-mid[data-step="1"] .hx-mid-dots i:nth-child(1),.hx-mid[data-step="2"] .hx-mid-dots i:nth-child(-n+2),.hx-mid[data-step="3"] .hx-mid-dots i{background:var(--sun)}
+}
+@media not ((min-width:901px) and (min-height:600px)){.hx-mid-dots,.hx-bub{display:none}}
+
+/* 4 · how it works: the steps on the left, the Portfolio Pulse filling in on the right */
+.hx-how-grid{display:grid;gap:44px}
+.hx-steps{display:grid;gap:0;margin-top:clamp(28px,4vw,56px)}
+.hx-steps>li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:0 clamp(16px,2.4vw,36px);padding-block:clamp(26px,3.4vw,48px);border-top:1.5px solid var(--ink)}
+.hx-n{font:400 clamp(54px,6.4vw,104px)/.8 var(--display);color:var(--clay);letter-spacing:-.03em;min-width:.62em}
+.hx-steps .h3{font-size:clamp(26px,2.9vw,42px);line-height:1.08;margin-bottom:12px}
+.hx-steps p{max-width:30em}
+.hx-vis{margin-top:22px;max-width:520px}
+.hx-check{display:flex;align-items:center;gap:18px;background:var(--raised);border:1px solid var(--line);border-radius:18px;padding:18px 20px}
+.hx-check svg{width:64px;height:64px;flex:none}
+.hx-check b{display:block;font:400 22px/1.15 var(--display);color:var(--ink)}
+.hx-check span{font-size:14.5px;line-height:1.45;color:var(--body)}
+.hx-vis .photo{aspect-ratio:16/9}
+.hx-vis .photo.wide{aspect-ratio:2.2/1}
+.hx-pulse{display:flex;flex-direction:column;gap:22px}
+.hx-pulse .big{font-size:clamp(25px,2.5vw,36px);line-height:1.14}
+.hx-pulse .panel-box{transition:opacity .6s var(--ease),transform .7s var(--ease)}
+.hx-how[data-step] .panel-box:not(.on){opacity:.3;transform:translateY(8px)}
+.hx-how[data-step] .panel-box:not(.on) .bar i::after{transform:scaleX(0)}
+@media (min-width:1001px){
+.hx-how-grid{grid-template-columns:minmax(0,6.6fr) minmax(0,5.4fr);gap:clamp(40px,6vw,104px);align-items:start}
+.hx-pulse{position:sticky;top:calc(var(--top) + 28px)}
+}
+@media (max-width:700px){.hx-steps>li{grid-template-columns:minmax(0,1fr);gap:10px}.hx-n{font-size:56px}}
+
+/* 5 · one system: three layers that come apart as you reach them */
+.hx-sys{--ground:var(--panel);overflow:hidden;overflow:clip}
+.hx-sys-grid{display:grid;gap:26px;align-items:center}
+.hx-planes{position:relative;height:clamp(360px,96vw,480px);perspective:1500px;--k:1}
+.hx-pl{position:absolute;left:50%;top:50%;width:clamp(180px,48vw,300px);aspect-ratio:1;border-radius:26px;border:1.5px solid var(--pc);background:color-mix(in srgb,var(--pc) 12%,transparent);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);transform:translate(-50%,-50%) rotateX(57deg) rotateZ(-45deg) translateZ(calc((var(--n) - 1)*(.12 + .88*var(--k))*clamp(84px,13vw,165px)));transition:opacity .4s,border-color .4s;box-shadow:0 0 60px -10px color-mix(in srgb,var(--pc) 35%,transparent)}
+.hx-pl svg{position:absolute;inset:9%;width:82%;height:82%}
+.hx-pl.p1{--pc:var(--signal);--n:2}.hx-pl.p2{--pc:var(--sun);--n:1}.hx-pl.p3{--pc:var(--on-deep-3);--n:0}
+.hx-sys[data-hot="1"] .hx-pl:not(.p1),.hx-sys[data-hot="2"] .hx-pl:not(.p2),.hx-sys[data-hot="3"] .hx-pl:not(.p3){opacity:.22}
+.hx-parts{display:grid}
+.hx-parts li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px 18px;padding-block:clamp(20px,2.4vw,30px);border-top:1px solid var(--deep-line);cursor:default}
+.hx-parts li::before{content:"";width:14px;height:14px;border-radius:4px;border:1.5px solid var(--pc);background:color-mix(in srgb,var(--pc) 30%,transparent);margin-top:.55em;transform:rotate(45deg) scale(.86)}
+.hx-parts li:nth-child(1){--pc:var(--signal)}.hx-parts li:nth-child(2){--pc:var(--sun)}.hx-parts li:nth-child(3){--pc:var(--on-deep-3)}
+.hx-parts .h3{font-size:clamp(26px,2.6vw,38px)}
+.hx-parts p{grid-column:2;max-width:33em}
+.hx-three{margin-top:clamp(48px,7vw,112px);border-top:1px solid var(--deep-line);padding-top:clamp(28px,4vw,56px);font:400 clamp(34px,6.1vw,100px)/1 var(--display);letter-spacing:-.022em;color:var(--on-deep)}
+.hx-three span{display:block}
+.hx-three span:nth-child(1){color:var(--signal)}.hx-three span:nth-child(2){color:var(--sun)}
+@media (min-width:1001px){
+.hx-sys-grid{grid-template-columns:minmax(0,5.4fr) minmax(0,6.6fr);gap:clamp(32px,5vw,88px)}
+.hx-planes{height:clamp(520px,46vw,680px)}
+.hx-pl{width:clamp(240px,23vw,340px)}
+.hx-three span:nth-child(2){padding-left:1.1em}.hx-three span:nth-child(3){padding-left:2.2em}
+}
+
+/* 6 · what your fund gets */
+.hx-gets>li{display:grid;gap:10px;padding-block:clamp(24px,3.2vw,48px);border-top:1.5px solid var(--ink)}
+.hx-gets .h3{font-size:clamp(30px,4vw,62px);line-height:1;letter-spacing:-.015em}
+@media (min-width:901px){.hx-gets>li{grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(32px,6vw,104px);align-items:baseline}}
+
+/* 7 · the pattern, never the person */
+.hx-veil{border-radius:24px;overflow:hidden;box-shadow:0 40px 80px -40px rgba(8,18,30,.5);border:1px solid var(--line)}
+.hx-veil-up{background:var(--raised);padding:clamp(20px,2.4vw,32px);display:flex;flex-direction:column;gap:16px}
+.hx-veil-up .hx-bars{max-width:none}
+.hx-veil-up .hx-bars .lt em{color:var(--mute)}
+.hx-veil-up .hx-bars .lt i::after{background:repeating-linear-gradient(90deg,var(--line-2) 0 4px,transparent 4px 9px)}
+.hx-veil .wline{background:var(--d2);margin-top:-1px;color:var(--ink)}
+.hx-veil .wline svg{background:linear-gradient(var(--raised) 50%,transparent 50%)}
+.hx-veil-down{background:linear-gradient(var(--d2),var(--d3));padding:clamp(20px,2.4vw,32px);display:flex;flex-direction:column;gap:16px}
+.hx-veil-down .hx-red{max-width:none}
+.hx-veil-down p{font:400 clamp(21px,1.9vw,27px)/1.2 var(--display);color:var(--on-deep)}
+.hx-vlab{font:500 11px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);display:flex;justify-content:space-between;gap:12px;align-items:center}
+.hx-veil-down .hx-vlab{color:var(--on-deep-3)}
+.hx-vlab .hx-eg{align-self:auto}
+
+/* 8 · start free */
+.hx-path{display:grid;gap:0;position:relative;--k:1;margin-top:clamp(32px,4.4vw,64px)}
+.hx-path li{position:relative;padding:0 0 26px 34px}
+.hx-path li::before{content:"";position:absolute;left:0;top:5px;width:13px;height:13px;border-radius:50%;border:1.5px solid var(--clay);background:var(--ground)}
+.hx-path li:last-child::before{border-color:var(--ink)}
+.hx-path li::after{content:"";position:absolute;left:6px;top:22px;bottom:-2px;width:1.5px;background:var(--line)}
+.hx-path li:last-child::after{display:none}
+.hx-path b{display:block;font:500 11px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--clay);margin-bottom:6px}
+.hx-path li:last-child b{color:var(--ink)}
+.hx-path p{font:400 clamp(21px,1.75vw,26px)/1.2 var(--display);color:var(--ink);max-width:15em}
+.hx-start-foot{display:flex;flex-wrap:wrap;gap:18px 32px;align-items:center;margin-top:clamp(20px,3vw,44px)}
+.hx-start-foot p{font:400 clamp(21px,1.75vw,26px)/1.2 var(--display);color:var(--ink)}
+@media (min-width:901px){
+.hx-path{grid-template-columns:repeat(5,minmax(0,1fr));gap:0 clamp(16px,2vw,32px);padding-top:46px}
+.hx-path::before,.hx-path::after{content:"";position:absolute;left:0;right:0;top:6px;height:1.5px;background:var(--line)}
+.hx-path::after{background:var(--clay);right:20%;transform:scaleX(var(--k));transform-origin:left}
+.hx-path li{padding:0}
+.hx-path li::before{top:-46px;z-index:1}
+.hx-path li::after{display:none}
+.hx-path b{min-height:1.4em}
+}
+
+/* 9 · who is behind it */
+.hx-people{display:grid;gap:clamp(28px,4vw,64px)}
+.hx-person{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px clamp(16px,2.2vw,32px);align-items:start;border-top:1.5px solid var(--ink);padding-top:clamp(20px,2.4vw,32px)}
+.hx-person img{width:clamp(72px,9vw,132px);height:clamp(72px,9vw,132px);border-radius:50%;object-fit:cover}
+.hx-person blockquote{font:400 clamp(26px,3vw,46px)/1.1 var(--display);color:var(--ink);letter-spacing:-.012em;margin-top:18px;text-wrap:balance}
+.hx-person p{max-width:30em}
+.hx-person p b{color:var(--ink);font-weight:600}
+@media (min-width:1001px){.hx-people{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}}
+@media (max-width:560px){.hx-person.q{grid-template-columns:minmax(0,1fr)}}
+
+/* 10 · closing */
+.hx-end{padding-block:clamp(72px,11vw,180px) clamp(56px,8vw,120px)}
+.hx-endh{font:400 clamp(42px,8vw,136px)/.95 var(--display);letter-spacing:-.028em;color:var(--ink);text-wrap:balance;max-width:11em}
+.hx-endh span{display:block;color:var(--clay);font-style:italic}
+.hx-end .row{margin-top:clamp(28px,4vw,56px)}
+.hx-end .lk{display:inline-block;margin-top:26px}
+.hx-end+.wline{background:var(--paper);color:var(--ink)}
+.hx-end+.wline svg{background:linear-gradient(transparent 50%,var(--d4) 50%)}
+/* Founders page. Same lake as the home page, seen from closer: one boat, two people.
+   fx- is this page's own; hx- pieces are shared with the home page (index.html). */
+.fx-hero{overflow:hidden;overflow:clip}
+.fx-hero-in{position:relative;z-index:2;display:grid;gap:18px;padding-block:26px 0}
+.fx-h1{font-size:clamp(40px,11.4vw,76px);line-height:.98;max-width:12em}
+.fx-h1 em{display:block}
+.fx-hero-sub{display:flex;flex-direction:column;gap:20px}
+.fx-hero-sub .ld{font-size:clamp(17px,1.5vw,21px)}
+.fx-lake{position:relative;height:clamp(270px,74vw,360px);margin-top:10px}
+.fx-scene{position:absolute;inset:0;width:100%;height:100%;max-width:none;overflow:visible}
+.mo .fx-sunc{animation:hx-rise 2.4s var(--ease) both .1s}
+.mo .fx-boat{animation:fx-glide 2.6s var(--ease) both .2s}
+@keyframes fx-glide{from{transform:translateX(420px);opacity:0}}
+.mo .fx-un{animation:fx-sink 2.4s var(--ease) both .9s}
+@keyframes fx-sink{from{opacity:0;transform:translateY(-50px)}}
+.fx-lay{transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+@media (min-width:901px){
+.fx-hero{min-height:calc(100svh - var(--top));display:flex;flex-direction:column}
+.fx-hero-in{gap:clamp(14px,2.6vh,30px);padding-block:clamp(16px,3.6vh,48px) 0}
+.fx-h1{font-size:clamp(52px,min(6.6vw,11.2vh),126px);line-height:.93;letter-spacing:-.028em;max-width:none}
+.fx-hero-sub{flex-direction:row;align-items:flex-end;justify-content:space-between;gap:clamp(28px,4vw,72px)}
+.fx-hero-sub .ld{max-width:34em}
+.fx-hero-sub .row{flex-wrap:nowrap;flex:none}
+.fx-lake{flex:1;height:auto;min-height:min(46vh,36vw);margin-top:clamp(-20px,-1.5vh,-6px)}
+}
+@media (max-width:900px){.fx-hero-sub .btn-line{border:0;min-height:0;padding:0 0 3px;border-radius:0;background:linear-gradient(var(--clay),var(--clay)) 0 100%/100% 1.5px no-repeat;align-self:center}}
+
+/* the problem: what you carry, under the boat */
+.fx-carry{display:grid;gap:14px}
+.fx-none{max-width:22em;margin-top:clamp(28px,3vw,44px)}
+.fx-lean{max-width:20em;border-top:1px solid var(--deep-line);padding-top:clamp(24px,3vw,40px)}
+@media (min-width:901px){
+.fx-carry{grid-template-columns:repeat(12,minmax(0,1fr));gap:0 20px;padding-bottom:30px}
+.fx-carry .hx-note:nth-child(1){grid-column:1/6;margin:0}.fx-carry .hx-note:nth-child(1)>div{transform:rotate(-1.6deg)}
+.fx-carry .hx-note:nth-child(2){grid-column:7/13;margin-top:70px}.fx-carry .hx-note:nth-child(2)>div{transform:rotate(1.4deg)}
+.fx-carry .hx-note:nth-child(3){grid-column:2/8;margin-top:26px}.fx-carry .hx-note:nth-child(3)>div{transform:rotate(1deg)}
+.fx-carry .hx-note:nth-child(4){grid-column:8/13;margin-top:84px}.fx-carry .hx-note:nth-child(4)>div{transform:rotate(-1.2deg)}
+}
+
+/* in between: your investor on the shore, the two of you on the water, Cadence on the line */
+.fx-between{padding-top:clamp(72px,9.5vw,148px);overflow:hidden;overflow:clip}
+.fx-between-in{display:grid;gap:24px}
+.fx-strip{display:block;width:100%;height:clamp(190px,26vw,360px);margin-top:clamp(28px,4vw,56px)}
+.fx-strip text{font:500 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;fill:var(--mute)}
+@media (max-width:900px){.fx-s-l{transform:translateX(335px)}.fx-s-r{transform:translateX(-300px)}.fx-strip text{font-size:19px}}
+@media (min-width:901px){.fx-between-in{grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(32px,6vw,104px);align-items:end}}
+
+/* three steps, each with its picture */
+.fx-steps>li{display:grid;gap:22px;padding-block:clamp(28px,4vw,60px);border-top:1.5px solid var(--ink)}
+.fx-steps .fx-st{display:grid;grid-template-columns:auto minmax(0,1fr);gap:0 clamp(16px,2.4vw,36px)}
+.fx-steps .h3{font-size:clamp(27px,3.2vw,48px);line-height:1.05;margin-bottom:14px}
+.fx-steps .lk{display:inline-block;margin-top:18px}
+.fx-mini{background:var(--raised);border:1px solid var(--line);border-radius:22px;padding:clamp(18px,2vw,28px);display:grid;gap:0;box-shadow:0 40px 70px -44px rgba(8,18,30,.45)}
+.fx-mini li{display:grid;grid-template-columns:86px minmax(0,1fr);gap:14px;align-items:baseline;padding-block:14px;border-top:1px solid var(--line)}
+.fx-mini li:first-child{border-top:0}
+.fx-mini b{font:400 clamp(26px,2.4vw,34px)/1 var(--display);color:var(--clay);letter-spacing:-.01em}
+.fx-mini span{font-size:15.5px;line-height:1.45;color:var(--ink)}
+.fx-steps .photo{aspect-ratio:16/10}
+@media (min-width:901px){.fx-steps>li{grid-template-columns:minmax(0,6.4fr) minmax(0,5.6fr);gap:clamp(32px,6vw,104px);align-items:center}}
+@media (max-width:700px){.fx-steps .fx-st{grid-template-columns:minmax(0,1fr);gap:10px}}
+
+/* the weekend: the showcase */
+.fx-wk{--ground:#efe6d6}
+.fx-wk-open{position:relative;min-height:min(92vh,900px);display:flex;align-items:flex-end;color:#fff;overflow:hidden;background:var(--d4)}
+.fx-wk-open .photo{position:absolute;inset:0;border-radius:0}
+.fx-wk-open .photo::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(8,18,30,.92) 0%,rgba(8,18,30,.62) 46%,rgba(8,18,30,.08) 100%)}
+.fx-wk-open .wrap{position:relative;z-index:2;padding-block:clamp(120px,22vh,260px) clamp(32px,5vw,72px);display:grid;gap:20px}
+.fx-wk-lab{font:500 13px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#f7d2bf}
+.fx-wk-h{font:400 clamp(40px,7vw,116px)/.95 var(--display);letter-spacing:-.026em;color:#fff;text-wrap:balance;max-width:12em;text-shadow:0 2px 40px rgba(0,0,0,.35)}
+.fx-wk-story{display:grid;gap:8px;padding-block:clamp(48px,7vw,120px) clamp(28px,4vw,56px)}
+.fx-wk-text{display:grid;gap:clamp(28px,5vw,0px)}
+.fx-wk-text p{font-size:clamp(19px,1.75vw,26px);line-height:1.42;color:var(--ink);max-width:25em;text-wrap:pretty}
+.fx-wk-text figure{margin-top:18px}
+.fx-wk-text .photo{aspect-ratio:3/2}
+.fx-wk-stack{display:none}
+.fx-four{font:400 clamp(44px,9vw,152px)/.92 var(--display);letter-spacing:-.03em;color:var(--ink);padding-block:clamp(20px,3vw,48px) clamp(28px,4vw,56px)}
+.fx-four span{display:block}
+.fx-four span:nth-child(3){color:var(--clay);font-style:italic}
+.fx-wk-end{display:flex;flex-wrap:wrap;gap:20px 40px;align-items:center;justify-content:space-between;padding-bottom:clamp(64px,9vw,140px)}
+.btn-xl{min-height:68px;padding:0 38px;font-size:18px}
+@media (min-width:1001px){
+.fx-wk-story{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(40px,6vw,104px);align-items:start}
+.fx-wk-text{gap:0}
+.fx-wk-text>div{min-height:78vh;display:flex;flex-direction:column;justify-content:center;transition:opacity .5s}
+.fx-wk[data-on] .fx-wk-text>div:not(.on){opacity:.28}
+.fx-wk-text figure{display:none}
+.fx-wk-stack{display:block;position:sticky;top:calc(var(--top) + 4vh);height:calc(100vh - var(--top) - 8vh);max-height:820px}
+.fx-wk-stack figure{position:absolute;inset:0;margin:0;opacity:0;transition:opacity .8s var(--ease)}
+.fx-wk-stack figure.on{opacity:1}
+.fx-wk-stack .a{position:absolute;inset:0 12% 14% 0;border-radius:22px;overflow:hidden;box-shadow:0 50px 90px -50px rgba(8,18,30,.6);transform:translateY(40px) scale(.97);transition:transform 1.1s var(--ease)}
+.fx-wk-stack .b{position:absolute;right:0;bottom:0;width:46%;aspect-ratio:4/3;border-radius:18px;overflow:hidden;border:6px solid var(--ground);box-shadow:0 40px 70px -40px rgba(8,18,30,.6);transform:translate(60px,60px);transition:transform 1.3s var(--ease) .08s}
+.fx-wk-stack figure.on .a,.fx-wk-stack figure.on .b{transform:none}
+.fx-wk-stack img{width:100%;height:100%;object-fit:cover}
+.fx-wk-stack figcaption{position:absolute;left:16px;top:16px;z-index:2;font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;background:var(--paper);color:var(--ink);padding:9px 12px;border-radius:999px}
+}
+
+/* what it takes */
+.fx-takes{display:grid}
+.fx-takes li{display:grid;gap:6px;padding-block:clamp(20px,2.6vw,36px);border-top:1.5px solid var(--ink)}
+.fx-takes span{font:600 17px/1.35 var(--sans);color:var(--ink)}
+.fx-takes b{font:400 clamp(30px,4.2vw,64px)/1 var(--display);color:var(--ink);letter-spacing:-.015em}
+.fx-takes b small{display:block;font-size:.5em;line-height:1.2;color:var(--body);letter-spacing:0;margin-top:8px}
+@media (min-width:901px){.fx-takes li{grid-template-columns:minmax(0,4fr) minmax(0,8fr);align-items:baseline}}
+
+/* your answers are yours: under the waterline */
+.fx-mine{background:linear-gradient(var(--d2),var(--d4))}
+.fx-who{display:grid;gap:14px;margin-top:clamp(28px,4vw,56px)}
+.fx-who li{background:rgba(255,255,255,.06);border:1px solid var(--deep-line);border-radius:20px;padding:clamp(20px,2vw,28px);display:flex;flex-direction:column;gap:14px}
+.fx-who b{font:500 11.5px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--sun)}
+.fx-who p{font:400 clamp(22px,1.9vw,28px)/1.18 var(--display);color:var(--on-deep)}
+.fx-ai{margin-top:clamp(28px,4vw,56px);display:grid;gap:18px;max-width:44em}
+@media (min-width:1001px){.fx-who{grid-template-columns:repeat(4,minmax(0,1fr))}.fx-who li{min-height:240px;justify-content:space-between}.fx-who li:nth-child(even){transform:translateY(28px)}}
+@media (min-width:641px) and (max-width:1000px){.fx-who{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* free, why, closing */
+.fx-free p{font:400 clamp(28px,4vw,60px)/1.06 var(--display);letter-spacing:-.016em;color:var(--ink);max-width:21em;text-wrap:balance}
+.fx-why{display:grid;gap:22px;align-items:start}
+.fx-why img{width:clamp(84px,10vw,148px);height:clamp(84px,10vw,148px);border-radius:50%;object-fit:cover}
+.fx-why blockquote{font:400 clamp(30px,4.6vw,72px)/1.04 var(--display);letter-spacing:-.02em;color:var(--ink);text-wrap:balance;max-width:17em}
+.fx-why p b{color:var(--ink);font-weight:600}
+@media (min-width:901px){.fx-why{grid-template-columns:auto minmax(0,1fr);gap:clamp(28px,4vw,64px)}}
+.btn-ink{background:var(--ink);color:var(--paper)}
+.btn-ink:hover{background:#000}
+.fx-end .row .btn{min-width:230px}
+</style>
 </head>
 <body>
-<script>try{if(sessionStorage.getItem('tide'))document.documentElement.classList.add('arrive')}catch(e){}</script><div class="page" data-page="founders"><header class="top"><a class="skip" href="#main">Skip to content</a><div class="wrap top-in"><a class="brand" href="index.html" aria-label="Cadence, home"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M28 66 A32 32 0 0 1 92 66 Z" fill="var(--clay)"/><line x1="16" y1="76" x2="104" y2="76" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><line x1="30" y1="90" x2="90" y2="90" stroke="var(--water)" stroke-width="6" stroke-linecap="round"/><line x1="46" y1="104" x2="74" y2="104" stroke="var(--water)" stroke-width="6" stroke-linecap="round"/></svg>Cadence</a><nav class="nav" aria-label="Site"><a href="index.html">For funds</a><a href="founders.html" aria-current="page">For founders</a><a href="method.html">The method</a><a href="weekend.html">The weekend</a><a href="trust.html">Trust</a><a href="about.html">About</a></nav><a class="btn btn-clay btn-sm" href="https://app.founderscadence.com/start" target="_blank" rel="noopener">Start your free Check</a><button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span></button></div><div class="top-prog" aria-hidden="true"><i></i><svg class="top-boat" viewBox="0 0 26 14"><path d="M1 5 H25 L21 13 H5 Z" fill="currentColor"/><circle cx="10" cy="3" r="2.4" fill="currentColor"/><circle cx="16" cy="3" r="2.4" fill="currentColor"/></svg></div></header><div class="sheet"><nav aria-label="Menu"><a href="index.html">For funds</a><a href="founders.html" aria-current="page">For founders</a><a href="method.html">The method</a><a href="weekend.html">The weekend</a><a href="trust.html">Trust</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav><a class="btn btn-clay" href="https://app.founderscadence.com/start" target="_blank" rel="noopener">Start your free Check</a><p>The pattern, never the person.</p></div><main id="main"><section class="band fhero">
-  <div class="wrap hero-in">
-    <p class="eb">For founders</p>
-    <h1 class="h1 h1-s">Your fund pays. Your problems get solved. <em>Nobody else needs to know.</em></h1>
-    <div class="hero-sub">
-      <p class="ld">A private 15-minute Check finds what is really holding your company back.</p>
-      <div class="row"><a class="btn btn-clay" href="https://app.founderscadence.com/start" target="_blank" rel="noopener">Start your free Check <i>→</i></a><a class="btn btn-line" href="#how">How it works</a></div>
+<script>try{if(sessionStorage.getItem('tide'))document.documentElement.classList.add('arrive')}catch(e){}</script><div class="page" data-page="founders"><header class="top"><a class="skip" href="#main">Skip to content</a><div class="wrap top-in"><a class="brand" href="index.html" aria-label="Cadence, home"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M28 66 A32 32 0 0 1 92 66 Z" fill="var(--clay)"/><line x1="16" y1="76" x2="104" y2="76" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><line x1="30" y1="90" x2="90" y2="90" stroke="var(--water)" stroke-width="6" stroke-linecap="round"/><line x1="46" y1="104" x2="74" y2="104" stroke="var(--water)" stroke-width="6" stroke-linecap="round"/></svg>Cadence</a><nav class="nav" aria-label="Site"><a href="index.html">For funds</a><a href="founders.html" aria-current="page">For founders</a><a href="method.html">The method</a><a href="weekend.html">The weekend</a><a href="trust.html">Trust</a><a href="about.html">About</a></nav><a class="btn btn-clay btn-sm" href="https://app.founderscadence.com/start" target="_blank" rel="noopener">Start your free Check</a><button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span></button></div><div class="top-prog" aria-hidden="true"><i></i><svg class="top-boat" viewBox="0 0 26 14"><path d="M1 5 H25 L21 13 H5 Z" fill="currentColor"/><circle cx="10" cy="3" r="2.4" fill="currentColor"/><circle cx="16" cy="3" r="2.4" fill="currentColor"/></svg></div></header><div class="sheet"><nav aria-label="Menu"><a href="index.html">For funds</a><a href="founders.html" aria-current="page">For founders</a><a href="method.html">The method</a><a href="weekend.html">The weekend</a><a href="trust.html">Trust</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav><a class="btn btn-clay" href="https://app.founderscadence.com/start" target="_blank" rel="noopener">Start your free Check</a><p>The pattern, never the person.</p></div><main id="main"><section class="band fx-hero" id="top">
+  <div class="wrap fx-hero-in">
+    <h1 class="h1 fx-h1">The problems you don’t put in the board deck. <em>Say them here first.</em></h1>
+    <div class="fx-hero-sub">
+      <p class="ld">Cadence is a private place for you and your co-founder. You say what is really going on. We bring someone who has solved it before. Your investor never reads a word.</p>
+      <div class="row"><a class="btn btn-clay" href="https://app.founderscadence.com/start" target="_blank" rel="noopener">Start your free Check <i>→</i></a><a class="btn btn-line" href="#how">See how it works</a></div>
     </div>
   </div>
-  <div class="scene fscene">
-    <svg viewBox="-480 0 2400 640" preserveAspectRatio="xMidYMin slice" role="img" aria-label="Two founders in a rowing boat, seen from close by, in the morning. Most of the picture is under the water: light falls in from the surface and the water gets deeper.">
-      <defs><clipPath id="fa"><rect x="-480" y="0" width="2400" height="170"/></clipPath><clipPath id="fb"><rect x="-480" y="170" width="2400" height="470"/></clipPath></defs>
-      <g clip-path="url(#fa)"><g data-mv="0,90"><g class="a-br"><circle cx="1170" cy="170" r="96" fill="var(--house)"/></g></g></g>
-      <rect x="-480" y="170" width="2400" height="170" fill="var(--d1)"/>
-      <rect x="-480" y="340" width="2400" height="150" fill="var(--d2)"/>
-      <rect x="-480" y="490" width="2400" height="150" fill="var(--d3)"/>
-      <g fill="var(--on-deep)" opacity=".05"><path d="M360 170 H520 L300 640 H80 Z"/><path d="M700 170 H820 L640 640 H470 Z"/><path d="M1080 170 H1260 L1120 640 H880 Z"/></g>
-      <g class="a-dr" stroke-linecap="round" stroke-width="6" stroke="var(--house)"><line x1="1080" y1="204" x2="1260" y2="204"/><line x1="1115" y1="234" x2="1225" y2="234" opacity=".7"/><line x1="1145" y1="264" x2="1195" y2="264" opacity=".45"/></g>
-      <g data-mv="90,0"><g class="a-bob">
-        <circle cx="610" cy="34" r="26" fill="var(--ink)"/><path d="M564 116 A46 46 0 0 1 656 116 Z" fill="var(--ink)"/>
-        <circle cx="770" cy="34" r="26" fill="var(--water)"/><path d="M724 116 A46 46 0 0 1 816 116 Z" fill="var(--water)"/>
-        <line x1="590" y1="104" x2="528" y2="170" stroke="var(--ink)" stroke-width="8" stroke-linecap="round"/><line x1="528" y1="170" x2="452" y2="252" stroke="var(--on-deep-3)" stroke-width="8" stroke-linecap="round"/>
-        <line x1="790" y1="104" x2="852" y2="170" stroke="var(--ink)" stroke-width="8" stroke-linecap="round"/><line x1="852" y1="170" x2="928" y2="252" stroke="var(--on-deep-3)" stroke-width="8" stroke-linecap="round"/>
-        <g clip-path="url(#fa)"><path d="M410 116 H970 L916 214 H464 Z" fill="var(--ink)"/></g>
-        <g clip-path="url(#fb)"><path d="M410 116 H970 L916 214 H464 Z" fill="var(--ink)" opacity=".5"/></g>
+  <div class="fx-lake">
+    <svg class="fx-scene" viewBox="0 0 1600 560" preserveAspectRatio="xMidYMax slice" role="img" aria-label="Two founders in one rowing boat at sunrise. Under the water, below the boat, a few private notes that nobody else can read.">
+      <defs>
+        <linearGradient id="fxW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--d1)"/><stop offset=".5" stop-color="var(--d2)"/><stop offset="1" stop-color="var(--d3)"/></linearGradient>
+        <radialGradient id="fxGlow"><stop offset="0" stop-color="var(--sun)" stop-opacity=".6"/><stop offset=".45" stop-color="var(--sun)" stop-opacity=".18"/><stop offset="1" stop-color="var(--sun)" stop-opacity="0"/></radialGradient>
+        <radialGradient id="fxSheen"><stop offset="0" stop-color="var(--sun)" stop-opacity=".4"/><stop offset="1" stop-color="var(--sun)" stop-opacity="0"/></radialGradient>
+        <linearGradient id="fxMist" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--paper)" stop-opacity="0"/><stop offset="1" stop-color="var(--paper)" stop-opacity=".4"/></linearGradient>
+        <clipPath id="fxSky"><rect x="-1600" y="-800" width="4800" height="1050"/></clipPath>
+      </defs>
+      <g class="fx-lay" data-px="-8"><g clip-path="url(#fxSky)"><g data-mv="0,150"><circle cx="900" cy="250" r="430" fill="url(#fxGlow)"/><circle class="fx-sunc" cx="900" cy="250" r="150" fill="var(--clay)"/></g></g></g>
+      <g class="fx-lay" data-px="-16"><g class="hx-hills" data-mv="-50,0">
+        <path d="M-1600 250 V220 C-1300 200 -1000 206 -800 218 C-560 190 -380 200 -200 222 C-40 188 160 178 330 214 C500 232 640 200 800 216 C980 182 1180 176 1380 210 C1600 194 1900 200 2400 222 C2700 206 2900 210 3200 224 V250 Z" fill="var(--water-soft)" opacity=".55"/>
+        <path d="M-1600 250 V238 C-1200 226 -900 232 -620 240 C-380 220 -150 222 60 238 C300 226 520 230 760 240 C1000 222 1240 224 1500 238 C1800 228 2200 230 3200 240 V250 Z" fill="var(--water)" opacity=".3"/>
+        <rect x="-1600" y="170" width="4800" height="80" fill="url(#fxMist)"/>
+        <g opacity=".75" fill="var(--ink)"><g transform="translate(250 250) scale(.3)"><circle cx="-17" cy="-52" r="9"/><path d="M-33 -24 A16 16 0 0 1 -1 -24 Z"/><circle cx="17" cy="-52" r="9"/><path d="M1 -24 A16 16 0 0 1 33 -24 Z"/><path d="M-62 -24 H62 L46 -1 H-46 Z"/></g><g transform="translate(1390 250) scale(.36)"><circle cx="-17" cy="-52" r="9"/><path d="M-33 -24 A16 16 0 0 1 -1 -24 Z"/><circle cx="17" cy="-52" r="9"/><path d="M1 -24 A16 16 0 0 1 33 -24 Z"/><path d="M-62 -24 H62 L46 -1 H-46 Z"/></g><g transform="translate(1250 250) scale(.24)"><circle cx="-17" cy="-52" r="9"/><path d="M-33 -24 A16 16 0 0 1 -1 -24 Z"/><circle cx="17" cy="-52" r="9"/><path d="M1 -24 A16 16 0 0 1 33 -24 Z"/><path d="M-62 -24 H62 L46 -1 H-46 Z"/></g></g>
       </g></g>
-      <g class="a-dr2" stroke-linecap="round" stroke-width="5" stroke="var(--on-deep-3)" opacity=".7"><line x1="250" y1="200" x2="420" y2="200"/><line x1="940" y1="300" x2="1060" y2="300"/><line x1="300" y1="226" x2="390" y2="226" opacity=".6"/></g>
-      <g fill="none" stroke="var(--on-deep-3)" stroke-width="3" opacity=".55" class="a-bob"><circle cx="470" cy="330" r="9"/><circle cx="492" cy="296" r="5"/><circle cx="912" cy="352" r="7"/><circle cx="934" cy="312" r="4"/></g>
-      <line x1="-480" y1="170" x2="1920" y2="170" stroke="var(--ink)" stroke-width="5"/>
+      <rect x="-1600" y="250" width="4800" height="400" fill="url(#fxW)"/>
+      <ellipse cx="900" cy="266" rx="560" ry="170" fill="url(#fxSheen)"/>
+      <g class="a-dr" stroke="var(--sun)" stroke-width="8" stroke-linecap="round"><line x1="740" y1="286" x2="1060" y2="286"/><line x1="800" y1="322" x2="1000" y2="322" opacity=".7"/><line x1="850" y1="358" x2="950" y2="358" opacity=".45"/></g>
+      <g class="a-dr2" stroke="var(--on-deep)" stroke-width="2" stroke-linecap="round" opacity=".13"><line x1="-300" y1="300" x2="260" y2="300"/><line x1="1240" y1="312" x2="1820" y2="312"/><line x1="80" y1="420" x2="640" y2="420"/><line x1="1080" y1="470" x2="1660" y2="470"/><line x1="-200" y1="540" x2="420" y2="540"/></g>
+      <g class="fx-lay" data-px="-44"><g class="fx-un" data-mv="0,-120"><g transform="translate(650 370) rotate(-4)" opacity="0.36"><rect width="230" height="84" rx="14" fill="rgba(255,255,255,.14)" stroke="var(--on-deep)" stroke-opacity=".5"/><rect x="18" y="18" width="194" height="9" rx="4.500" fill="var(--on-deep)" opacity=".7"/><rect x="18" y="37" width="155" height="9" rx="4.500" fill="var(--on-deep)" opacity=".7"/><rect x="18" y="56" width="106" height="9" rx="4.500" fill="var(--on-deep)" opacity=".7"/></g><g transform="translate(930 400) rotate(3)" opacity="0.30"><rect width="250" height="84" rx="14" fill="rgba(255,255,255,.14)" stroke="var(--on-deep)" stroke-opacity=".5"/><rect x="18" y="18" width="214" height="9" rx="4.500" fill="var(--on-deep)" opacity=".7"/><rect x="18" y="37" width="171" height="9" rx="4.500" fill="var(--on-deep)" opacity=".7"/><rect x="18" y="56" width="117" height="9" rx="4.500" fill="var(--on-deep)" opacity=".7"/></g><g transform="translate(770 462) rotate(-2)" opacity="0.22"><rect width="210" height="84" rx="14" fill="rgba(255,255,255,.14)" stroke="var(--on-deep)" stroke-opacity=".5"/><rect x="18" y="18" width="174" height="9" rx="4.500" fill="var(--on-deep)" opacity=".7"/><rect x="18" y="37" width="139" height="9" rx="4.500" fill="var(--on-deep)" opacity=".7"/><rect x="18" y="56" width="95" height="9" rx="4.500" fill="var(--on-deep)" opacity=".7"/></g><g transform="translate(1090 345) rotate(5)" opacity="0.26"><rect width="190" height="84" rx="14" fill="rgba(255,255,255,.14)" stroke="var(--on-deep)" stroke-opacity=".5"/><rect x="18" y="18" width="154" height="9" rx="4.500" fill="var(--on-deep)" opacity=".7"/><rect x="18" y="37" width="123" height="9" rx="4.500" fill="var(--on-deep)" opacity=".7"/><rect x="18" y="56" width="84" height="9" rx="4.500" fill="var(--on-deep)" opacity=".7"/></g><g transform="translate(520 440) rotate(2)" opacity="0.18"><rect width="180" height="84" rx="14" fill="rgba(255,255,255,.14)" stroke="var(--on-deep)" stroke-opacity=".5"/><rect x="18" y="18" width="144" height="9" rx="4.500" fill="var(--on-deep)" opacity=".7"/><rect x="18" y="37" width="115" height="9" rx="4.500" fill="var(--on-deep)" opacity=".7"/><rect x="18" y="56" width="79" height="9" rx="4.500" fill="var(--on-deep)" opacity=".7"/></g></g></g>
+      <g class="fx-lay" data-px="-30"><g class="fx-boat"><g class="a-bob"><g transform="translate(-9 -69) scale(1.3)">
+        <circle cx="610" cy="142" r="14" fill="var(--ink)"/><path d="M585.5 186 A24.5 24.5 0 0 1 634.5 186 Z" fill="var(--ink)"/>
+        <circle cx="680" cy="142" r="14" fill="var(--water)"/><path d="M655.5 186 A24.5 24.5 0 0 1 704.5 186 Z" fill="var(--water)"/>
+        <line x1="596" y1="178" x2="572" y2="230" stroke="var(--ink)" stroke-width="5" stroke-linecap="round"/><line x1="572" y1="230" x2="554" y2="268" stroke="var(--on-deep-3)" stroke-width="5" stroke-linecap="round"/>
+        <line x1="694" y1="178" x2="718" y2="230" stroke="var(--ink)" stroke-width="5" stroke-linecap="round"/><line x1="718" y1="230" x2="736" y2="268" stroke="var(--on-deep-3)" stroke-width="5" stroke-linecap="round"/>
+        <path d="M536 190 H754 L728 228 H562 Z" fill="var(--ink)"/>
+      </g></g></g></g>
+      <line x1="-1600" y1="250" x2="3200" y2="250" stroke="var(--ink)" stroke-width="4"/>
     </svg>
-    <div class="scene-top"><div class="wrap"><span class="m">What your fund sees · counts across five teams or more</span></div></div>
-    <div class="scene-w water deep">
-      <div class="wrap fsw">
-        <div class="pm"><span style="color:var(--on-deep);display:contents"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3.6 23 A17 17 0 0 0 36.4 23 Z" fill="currentColor"/><line x1="0" y1="23" x2="40" y2="23" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="14" r="4" fill="currentColor"/></svg></span><div>Private to you<span>Your fund never sees this</span></div></div>
-        <div class="notes">
-          <div data-par="-24"><p class="note a-bob">What you say and write in your Check</p></div>
-          <div data-par="-52"><p class="note a-bob" style="animation-delay:-2s">Your result</p></div>
-          <div data-par="-80"><p class="note a-bob" style="animation-delay:-3.4s">Your Sprint: the goal, the number, your weekly notes</p></div>
-        </div>
+  </div>
+</section>
+
+<section class="band deep hx-under water" id="problem">
+  <div class="wrap hx-under-in">
+    <div class="hx-gauge" data-draw aria-hidden="true"><span>What anyone sees</span><i></i><span>What you carry</span></div>
+    <h2 class="h2 hx-h2" data-rv>You carry more than anyone sees.</h2>
+    <div>
+      <ul class="hx-notes fx-carry">
+        <li class="hx-note" data-par="-46"><div><p>The hire that isn’t working, and nobody has said it yet.</p></div></li>
+        <li class="hx-note" data-par="34"><div><p>The runway conversation you keep moving to next week.</p></div></li>
+        <li class="hx-note" data-par="-70"><div><p>The decision you heard about after it was made.</p></div></li>
+        <li class="hx-note" data-par="22"><div><p>The feeling that the two of you are building slightly different companies.</p></div></li>
+      </ul>
+      <p class="big fx-none" data-rv>None of this is a crisis. It is what building a company looks like. It only gets bigger when nobody looks at it.</p>
+    </div>
+    <div class="stack-l">
+      <ul class="hx-facts" data-rv-kids>
+        <li class="stat rule"><p class="n"><span data-count="49">49</span><u>%</u></p><p>of founders turn to their co-founder when it gets hard.</p><p class="m">Startup Snapshot, 400+ founders, 2023</p></li>
+        <li class="stat rule"><p class="n"><span data-count="10">10</span><u>%</u></p><p>turn to their investors.</p><p class="m">Startup Snapshot, 400+ founders, 2023</p></li>
+        <li class="stat rule"><p class="n"><span data-count="23">23</span><u>%</u></p><p>of VC-backed founding teams lose a co-founder within three years.</p><p class="m">Carta, 22,352 founders, 2025</p></li>
+      </ul>
+      <p class="big fx-lean" data-rv>So the person you lean on most is also the relationship most worth looking after.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band fx-between" id="cadence">
+  <div class="wrap fx-between-in">
+    <h2 class="h2 hx-h2" data-rv>Cadence is the neutral place in between.</h2>
+    <p class="hx-body" data-rv>We are not your investor, and we don’t report to them. You can say here what you wouldn’t say in a board meeting, and sometimes what you haven’t yet said to each other. Then we help you do something about it.</p>
+  </div>
+  <svg class="fx-strip" viewBox="0 0 1600 330" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <g data-mv="-60,0"><path d="M-800 230 V206 C-560 180 -380 190 -200 208 C-40 176 160 168 330 200 C500 216 640 190 800 204 C980 172 1180 166 1380 198 C1600 184 1900 190 2400 208 V230 Z" fill="var(--water-soft)" opacity=".5"/></g>
+    <g data-mv="-30,0"><g class="fx-s-l"><g transform="translate(150 120) scale(.62)">
+        <line x1="62" y1="177" x2="452" y2="177" stroke="var(--ink)" stroke-width="10" stroke-linecap="round"/>
+        <rect x="82" y="120" width="223" height="54" fill="var(--house)"/>
+        <path d="M100 88 H285 L325 122 H62 Z" fill="var(--clay)"/>
+        <rect x="100" y="136" width="30" height="26" fill="var(--ink)"/><rect x="145" y="136" width="30" height="26" fill="var(--ink)"/><rect x="240" y="136" width="47" height="26" fill="var(--ink)"/>
+        <path d="M195 174 V147 a12.5 12.5 0 0 1 25 0 V174 Z" fill="var(--ink)"/>
+        <circle cx="352" cy="98" r="22" fill="var(--leaf)"/><circle cx="379" cy="88" r="25" fill="var(--leaf)"/><circle cx="406" cy="96" r="22" fill="var(--leaf)"/><circle cx="423" cy="113" r="16" fill="var(--leaf)"/><circle cx="338" cy="112" r="14" fill="var(--leaf)"/><circle cx="382" cy="112" r="20" fill="var(--leaf)"/>
+        <circle cx="349" cy="100" r="8" fill="var(--leaf-soft)"/><circle cx="383" cy="106" r="13" fill="var(--leaf-soft)"/>
+        <path d="M360 174 C367 158 363 141 350 123 L360 116 C366 127 371 134 374 141 C378 131 386 121 395 112 L404 120 C393 135 388 153 392 174 Z" fill="var(--ink)"/>
+      </g><text x="290" y="100" text-anchor="middle">Your investor</text></g></g>
+    <rect x="-800" y="230" width="3200" height="110" fill="var(--d2)"/>
+    <g data-mv="0,0"><line x1="800" y1="230" x2="800" y2="150" stroke="var(--ink)" stroke-width="4"/><circle cx="800" cy="118" r="46" fill="var(--raised)" stroke="var(--ink)" stroke-width="3"/><g transform="translate(766 82) scale(.57)"><path d="M28 66 A32 32 0 0 1 92 66 Z" fill="var(--clay)"/><line x1="16" y1="76" x2="104" y2="76" stroke="var(--ink)" stroke-width="6" stroke-linecap="round"/><line x1="30" y1="90" x2="90" y2="90" stroke="var(--water)" stroke-width="6" stroke-linecap="round"/><line x1="46" y1="104" x2="74" y2="104" stroke="var(--water)" stroke-width="6" stroke-linecap="round"/></g><path d="M776 230 H824 L816 250 H784 Z" fill="var(--clay)"/><text x="800" y="52" text-anchor="middle">Cadence</text></g>
+    <g data-mv="70,0"><g class="fx-s-r"><g class="a-bob"><g transform="translate(660 22) scale(.9)">
+      <circle cx="610" cy="142" r="14" fill="var(--ink)"/><path d="M585.5 186 A24.5 24.5 0 0 1 634.5 186 Z" fill="var(--ink)"/>
+      <circle cx="680" cy="142" r="14" fill="var(--water)"/><path d="M655.5 186 A24.5 24.5 0 0 1 704.5 186 Z" fill="var(--water)"/>
+      <path d="M536 190 H754 L728 228 H562 Z" fill="var(--ink)"/></g></g><text x="1240" y="118" text-anchor="middle">The two of you</text></g></g>
+    <line x1="-800" y1="230" x2="2400" y2="230" stroke="var(--ink)" stroke-width="4"/>
+  </svg>
+</section>
+
+<section class="band sec" id="how">
+  <div class="wrap">
+    <h2 class="h2 hx-h2" data-rv>How it works, in three steps.</h2>
+    <ol class="fx-steps" style="margin-top:clamp(28px,4vw,56px)">
+      <li data-rv><div class="fx-st"><span class="hx-n" aria-hidden="true">1</span><div>
+          <h3 class="h3">You each do a private Check.</h3>
+          <p class="hx-body">Fifteen minutes with our AI interviewer, alone. You see straight away what is hardest for you right now, in your own words. Then you get a free conversation with a person, and you leave with one step for this week.</p>
+        </div></div>
+        <ul class="fx-mini"><li><b>15 min</b><span>The Check, alone.</span></li><li><b>30 min</b><span>A free conversation with a person.</span></li><li><b>1 step</b><span>For this week.</span></li></ul>
+      </li>
+      <li data-rv><div class="fx-st"><span class="hx-n" aria-hidden="true">2</span><div>
+          <h3 class="h3">If one problem is worth it, you do a Sprint.</h3>
+          <p class="hx-body">A few weeks on that one problem, with one goal and one number, and someone who has solved it before.</p>
+        </div></div>
+        <div class="photo par"><img src="img/weekend/lakewalk.jpg" alt="A coach walks along the lake shore with two founders, a notebook open in his hands." width="1800" height="1004" loading="lazy"></div>
+      </li>
+      <li data-rv><div class="fx-st"><span class="hx-n" aria-hidden="true">3</span><div>
+          <h3 class="h3">Once a year, the weekend.</h3>
+          <p class="hx-body">Three days at the lake with a few other founding pairs.</p>
+          <a class="lk" href="weekend.html">See the weekend</a>
+        </div></div>
+        <a class="photo par" href="weekend.html" aria-label="See the weekend"><img src="img/weekend/rowing.jpg" alt="Rowers on Lake Banyoles in the early morning, with the white boathouse behind them." width="1400" height="1045" loading="lazy"><span class="cap">Lake Banyoles</span></a>
+      </li>
+    </ol>
+    <div class="row" style="margin-top:clamp(20px,3vw,40px)"><a class="btn btn-line" href="method.html">See how the method works</a></div>
+  </div>
+</section>
+
+<section class="band deep sec hx-sys" id="system">
+  <div class="wrap">
+    <header class="hd"><h2 class="h2 hx-h2" data-rv>Not just coaching. One system.</h2></header>
+    <div class="hx-sys-grid">
+      <div class="hx-planes" data-draw aria-hidden="true">
+        <div class="hx-pl p3"><svg viewBox="0 0 200 200"><circle cx="19" cy="37" r="4.2" fill="var(--on-deep-3)"/><circle cx="37" cy="37" r="4.2" fill="var(--on-deep-3)"/><circle cx="55" cy="37" r="4.2" fill="var(--on-deep-3)"/><circle cx="73" cy="37" r="4.2" fill="var(--on-deep-3)"/><circle cx="91" cy="37" r="4.2" fill="var(--on-deep-3)"/><circle cx="109" cy="37" r="4.2" fill="var(--on-deep-3)"/><circle cx="127" cy="37" r="4.2" fill="var(--on-deep-3)"/><circle cx="145" cy="37" r="4.2" fill="var(--on-deep-3)"/><circle cx="163" cy="37" r="4.2" fill="var(--on-deep-3)"/><circle cx="181" cy="37" r="4.2" fill="var(--on-deep-3)"/><circle cx="19" cy="55" r="4.2" fill="var(--on-deep-3)"/><circle cx="37" cy="55" r="4.2" fill="var(--on-deep-3)"/><circle cx="55" cy="55" r="4.2" fill="var(--on-deep-3)"/><circle cx="73" cy="55" r="4.2" fill="var(--on-deep-3)"/><circle cx="91" cy="55" r="4.2" fill="var(--on-deep-3)"/><circle cx="109" cy="55" r="4.2" fill="var(--on-deep-3)"/><circle cx="127" cy="55" r="4.2" fill="var(--on-deep-3)"/><circle cx="145" cy="55" r="4.2" fill="var(--on-deep-3)"/><circle cx="163" cy="55" r="4.2" fill="var(--on-deep-3)"/><circle cx="181" cy="55" r="4.2" fill="var(--on-deep-3)"/><circle cx="19" cy="73" r="4.2" fill="var(--on-deep-3)"/><circle cx="37" cy="73" r="4.2" fill="var(--on-deep-3)"/><circle cx="55" cy="73" r="4.2" fill="var(--on-deep-3)"/><circle cx="73" cy="73" r="4.2" fill="var(--on-deep-3)"/><circle cx="91" cy="73" r="4.2" fill="var(--on-deep-3)"/><circle cx="109" cy="73" r="4.2" fill="var(--on-deep-3)"/><circle cx="127" cy="73" r="4.2" fill="var(--on-deep-3)"/><circle cx="145" cy="73" r="4.2" fill="var(--on-deep-3)"/><circle cx="163" cy="73" r="4.2" fill="var(--on-deep-3)"/><circle cx="181" cy="73" r="4.2" fill="var(--on-deep-3)"/><circle cx="19" cy="91" r="4.2" fill="var(--on-deep-3)"/><circle cx="37" cy="91" r="4.2" fill="var(--on-deep-3)"/><circle cx="55" cy="91" r="4.2" fill="var(--on-deep-3)"/><circle cx="73" cy="91" r="4.2" fill="var(--on-deep-3)"/><circle cx="91" cy="91" r="4.2" fill="var(--on-deep-3)"/><circle cx="109" cy="91" r="4.2" fill="var(--on-deep-3)"/><circle cx="127" cy="91" r="4.2" fill="var(--on-deep-3)"/><circle cx="145" cy="91" r="4.2" fill="var(--on-deep-3)"/><circle cx="163" cy="91" r="4.2" fill="var(--on-deep-3)"/><circle cx="181" cy="91" r="4.2" fill="var(--on-deep-3)"/><circle cx="19" cy="109" r="4.2" fill="var(--on-deep-3)"/><circle cx="37" cy="109" r="4.2" fill="var(--on-deep-3)"/><circle cx="55" cy="109" r="4.2" fill="var(--on-deep-3)"/><circle cx="73" cy="109" r="4.2" fill="var(--on-deep-3)"/><circle cx="91" cy="109" r="4.2" fill="var(--on-deep-3)"/><circle cx="109" cy="109" r="4.2" fill="var(--on-deep-3)"/><circle cx="127" cy="109" r="4.2" fill="var(--on-deep-3)"/><circle cx="145" cy="109" r="4.2" fill="var(--on-deep-3)"/><circle cx="163" cy="109" r="4.2" fill="var(--on-deep-3)"/><circle cx="181" cy="109" r="4.2" fill="var(--on-deep-3)"/><circle cx="19" cy="127" r="4.2" fill="var(--on-deep-3)"/><circle cx="37" cy="127" r="4.2" fill="var(--on-deep-3)"/><circle cx="55" cy="127" r="4.2" fill="var(--on-deep-3)"/><circle cx="73" cy="127" r="4.2" fill="var(--on-deep-3)"/><circle cx="91" cy="127" r="4.2" fill="var(--on-deep-3)"/><circle cx="109" cy="127" r="4.2" fill="var(--on-deep-3)"/><circle cx="127" cy="127" r="4.2" fill="var(--on-deep-3)"/><circle cx="145" cy="127" r="4.2" fill="var(--on-deep-3)"/><circle cx="163" cy="127" r="4.2" fill="var(--on-deep-3)"/><circle cx="181" cy="127" r="4.2" fill="var(--on-deep-3)"/><circle cx="19" cy="145" r="4.2" fill="var(--on-deep-3)"/><circle cx="37" cy="145" r="4.2" fill="var(--on-deep-3)"/><circle cx="55" cy="145" r="4.2" fill="var(--on-deep-3)"/><circle cx="73" cy="145" r="4.2" fill="var(--on-deep-3)"/><circle cx="91" cy="145" r="4.2" fill="var(--on-deep-3)"/><circle cx="109" cy="145" r="4.2" fill="var(--on-deep-3)"/><circle cx="127" cy="145" r="4.2" fill="var(--on-deep-3)"/><circle cx="145" cy="145" r="4.2" fill="var(--on-deep-3)"/><circle cx="163" cy="145" r="4.2" fill="var(--on-deep-3)"/><circle cx="181" cy="145" r="4.2" fill="var(--on-deep-3)"/><circle cx="19" cy="163" r="4.2" fill="var(--on-deep-3)"/><circle cx="37" cy="163" r="4.2" fill="var(--on-deep-3)"/><circle cx="55" cy="163" r="4.2" fill="var(--on-deep-3)"/><circle cx="73" cy="163" r="4.2" fill="var(--on-deep-3)"/><circle cx="91" cy="163" r="4.2" fill="var(--on-deep-3)"/><circle cx="109" cy="163" r="4.2" fill="var(--on-deep-3)"/><circle cx="127" cy="163" r="4.2" fill="var(--on-deep-3)"/><circle cx="145" cy="163" r="4.2" fill="var(--on-deep-3)"/><circle cx="163" cy="163" r="4.2" fill="var(--on-deep-3)"/><circle cx="181" cy="163" r="4.2" fill="var(--on-deep-3)"/></svg></div>
+        <div class="hx-pl p2"><svg viewBox="0 0 200 200" fill="none" stroke="var(--sun)" stroke-width="3"><circle cx="78" cy="100" r="42"/><circle cx="122" cy="100" r="42"/><circle cx="100" cy="100" r="5" fill="var(--sun)" stroke="none"/></svg></div>
+        <div class="hx-pl p1"><svg viewBox="0 0 200 200" fill="none" stroke="var(--signal)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 112 H62 L80 62 L104 152 L122 112 H186"/><circle cx="14" cy="112" r="5" fill="var(--signal)" stroke="none"/><circle cx="186" cy="112" r="5" fill="var(--signal)" stroke="none"/></svg></div>
+      </div>
+      <ul class="hx-parts" data-rv-kids>
+        <li data-hot="1"><h3 class="h3">Cadence Intelligence</h3><p class="hx-body">asks the questions, remembers what you said, and gives you a five-minute check-in each week and short exercises between sessions, so the work keeps moving.</p></li>
+        <li data-hot="2"><h3 class="h3">Founder coaches</h3><p class="hx-body">work with the two of you: how you decide, who does what, where you want to go.</p></li>
+        <li data-hot="3"><h3 class="h3">The Shadow Leaders network</h3><p class="hx-body">brings about 80 senior experts for the company itself: a fractional CFO for your runway, a sales lead for your first sales hire, a hiring lead for your senior team.</p></li>
+      </ul>
+    </div>
+    <p class="hx-three" data-rv-kids><span>The system finds the problem.</span><span>The people help you solve it.</span><span>You see what moved.</span></p>
+  </div>
+</section>
+
+<section class="band sec" id="gets">
+  <div class="wrap">
+    <header class="hd"><h2 class="h2 hx-h2" data-rv>What you get</h2></header>
+    <ul class="hx-gets" data-rv-kids>
+      <li><h3 class="h3">Clarity.</h3><p class="hx-body">You know what is really holding you back, and whether your co-founder sees it the same way.</p></li>
+      <li><h3 class="h3">Help that fits.</h3><p class="hx-body">One person, matched to your problem, who has been where you are.</p></li>
+      <li><h3 class="h3">Progress you can see.</h3><p class="hx-body">One number, measured at the start and at the end.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section class="band fx-wk" id="weekend">
+  <div class="fx-wk-open">
+    <div class="photo par"><img src="img/weekend/circle.jpg" alt="Eight founders sit in a circle of garden chairs on the lawn above Lake Banyoles, in the morning light." width="2200" height="1228" loading="lazy"></div>
+    <div class="wrap">
+      <p class="fx-wk-lab" data-rv>The Cadence weekend</p>
+      <h2 class="fx-wk-h" data-rv>Three days at the lake. Just the two of you, and a few founders who get it.</h2>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="fx-wk-story">
+      <div class="fx-wk-text">
+        <div><p>Once a year, four founding pairs come to a private lakehouse on Lake Banyoles, an hour and a half from Barcelona. No investors. No slides. No phones on the table.</p>
+          <figure><div class="photo"><img src="img/weekend/veranda.jpg" alt="Founders stand on the veranda of the lakehouse and look out over the garden to the lake." width="1800" height="1004" loading="lazy"></div></figure></div>
+        <div><p>You work on the questions you never have time for. Where do we want this company to be in three years? Who decides what? What do we each need from the other? The agenda is built from your own Check, so you work on your real questions, with a coach and with experts who have built companies themselves.</p>
+          <figure><div class="photo"><img src="img/weekend/workshop.jpg" alt="Founders work at a long wooden table outside, with paper and a flip chart, no laptops." width="1800" height="1004" loading="lazy"></div></figure></div>
+        <div><p>And in between, you breathe. You row on the lake at sunrise with an Olympic rowing coach, and feel what it is to move in one rhythm. You have dinner at a starred restaurant in Girona. You hike, you swim, you sit on the veranda with people who know what your weeks look like.</p>
+          <figure><div class="photo"><img src="img/weekend/girona-dinner.jpg" alt="A long dinner table under a stone vault in Girona, with the kitchen in view." width="1800" height="1004" loading="lazy"></div></figure></div>
+        <div><p>You go home with one shared plan for the next twelve months, and with three other founding pairs you can call.</p>
+          <figure><div class="photo"><img src="img/weekend/dinner-lawn.jpg" alt="Dinner at a long table on the lawn at sunset, the lake behind." width="1800" height="1004" loading="lazy"></div></figure></div>
+      </div>
+      <div class="fx-wk-stack" aria-hidden="true">
+        <figure class="on"><div class="a"><img src="img/weekend/veranda.jpg" alt="" loading="lazy"></div><div class="b"><img src="img/weekend/aerial.jpg" alt="" loading="lazy"></div><figcaption>The lakehouse</figcaption></figure>
+        <figure><div class="a"><img src="img/weekend/workshop.jpg" alt="" loading="lazy"></div><div class="b"><img src="img/weekend/lakewalk.jpg" alt="" loading="lazy"></div><figcaption>The work</figcaption></figure>
+        <figure><div class="a"><img src="img/weekend/girona-dinner.jpg" alt="" loading="lazy"></div><div class="b"><img src="img/weekend/pool.jpg" alt="" loading="lazy"></div><figcaption>In between</figcaption></figure>
+        <figure><div class="a"><img src="img/weekend/dinner-lawn.jpg" alt="" loading="lazy"></div><div class="b"><img src="img/weekend/rowing.jpg" alt="" loading="lazy"></div><figcaption>Going home</figcaption></figure>
       </div>
     </div>
+    <p class="fx-four" data-rv-kids><span>Four pairs.</span><span>Three days.</span><span>One plan.</span></p>
+    <div class="fx-wk-end" data-rv><a class="btn btn-clay btn-xl" href="weekend.html">See the weekend <i>→</i></a></div>
   </div>
 </section>
 
-<section class="band deep d2 sec water" id="problems">
+<section class="band sec" id="takes">
   <div class="wrap">
-    <header class="hd"><p class="ix">Real problems, solved</p><h2 class="h2" data-rv>The problems that never make the board deck.</h2><p class="ld">What founders bring, and what happens next.</p></header>
-    <ul class="probs pb" data-rv-kids><li><span class="pb-ic"><svg class="pb-svg" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="7" rx="7" ry="3"/><path d="M5 7v5c0 1.7 3.1 3 7 3s7-1.3 7-3V7M5 12v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/></svg></span><p class="q">"Nine months of runway, and we don't agree: raise or cut?"</p><i aria-hidden="true">→</i><p><span class="pb-tag pb-ex">Expert</span>A Sprint on runway with a fractional CFO.</p></li><li><span class="pb-ic"><svg class="pb-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="3"/><circle cx="16.5" cy="9" r="2.5"/><path d="M2 20a6 6 0 0 1 12 0M15 14.5a5 5 0 0 1 7 4.5"/></svg></span><p class="q">"Our first sales hire isn't working, and nobody says it."</p><i aria-hidden="true">→</i><p><span class="pb-tag pb-ex">Expert</span>A Sprint on hiring with someone who has built sales teams.</p></li><li><span class="pb-ic"><svg class="pb-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></svg></span><p class="q">"My co-founder decides alone, and I hear about it in the stand-up."</p><i aria-hidden="true">→</i><p><span class="pb-tag pb-em">Emma · AI</span>A conversation with Emma on how you two decide, then one rule you both agree to.</p></li><li><span class="pb-ic"><svg class="pb-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span><p class="q">"Nobody knows who owns what."</p><i aria-hidden="true">→</i><p><span class="pb-tag pb-co">Coach</span>A Sprint with a co-founder coach: who owns what, agreed by both of you.</p></li><li><span class="pb-ic"><svg class="pb-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4" r="2"/><circle cx="19" cy="8" r="2"/><circle cx="19" cy="16" r="2"/><circle cx="12" cy="20" r="2"/><circle cx="5" cy="16" r="2"/><circle cx="5" cy="8" r="2"/></svg></span><p class="q">"We raise in six months and the story doesn't land."</p><i aria-hidden="true">→</i><p><span class="pb-tag pb-ex">Expert</span>An open circle with an expert who raised that round.</p></li></ul>
-    <div class="pb-how" data-rv><span class="m">How a Sprint solves it</span><ol><li><svg class="pb-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.9 6.8 19.6l1-5.8L3.5 9.7l5.9-.8z"/></svg><span><b>Work on a solution</b> with your expert</span></li><li><svg class="pb-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4" r="2"/><circle cx="19" cy="8" r="2"/><circle cx="19" cy="16" r="2"/><circle cx="12" cy="20" r="2"/><circle cx="5" cy="16" r="2"/><circle cx="5" cy="8" r="2"/></svg><span><b>Test it with peers</b> in your circle</span></li><li><svg class="pb-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg><span><b>Test it in real life</b> in your company</span></li><li><svg class="pb-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.7-5.7L20 8M20 4v4h-4M20 12a8 8 0 0 1-13.7 5.7L4 16M4 20v-4h4"/></svg><span><b>Come back</b> to your expert</span></li></ol></div>
+    <header class="hd"><h2 class="h2 hx-h2" data-rv>What it takes</h2><p class="ld" data-rv>A few hours, spread over months.</p></header>
+    <ul class="fx-takes" data-rv-kids>
+      <li><span>The Check</span><b>15 minutes</b></li>
+      <li><span>The conversation</span><b>30 minutes</b></li>
+      <li><span>A Sprint</span><b>Six hours <small>with your coach or expert, and five minutes a week</small></b></li>
+    </ul>
+    <p class="big" style="margin-top:clamp(28px,4vw,56px)" data-rv>You can start alone. Your co-founder joins when they are ready.</p>
   </div>
 </section>
 
-<section class="band deep d3 sec water" id="how">
+<section class="band deep sec fx-mine water" id="yours">
   <div class="wrap">
-    <header class="hd"><p class="ix">How it works</p><h2 class="h2" data-rv>The real problem is rarely the first one you name.</h2><p class="ld">A missed forecast can be a decision problem. So we start by listening.</p></header>
-    <ol class="hg" data-rv>
-      <li><span class="hg-k">01</span><h3 class="h3">Find it.</h3><p>A private conversation with Emma, our AI interviewer, sets the base. Then a deep dive with a specialist builds the full scope.</p>
-        <div class="hg-x"><p class="hg-emma">What happens between you two when you disagree?</p><p class="hg-row"><b>1</b>"Our first sales hire isn't working."</p><p class="hg-row"><b>2</b>"Runway is shorter than the plan assumes."</p></div></li>
-      <li><span class="hg-k">02</span><h3 class="h3">See it together.</h3><p>When you both say yes, you see where you and your co-founder agree and where you quietly differ. Never each other's words.</p>
-        <div class="hg-x"><p class="hg-said"><span>Founder A says yes</span><span>Founder B says yes</span></p><div class="pair"><span>How we decide</span><em class="df">You differ</em></div><div class="pair"><span>Who carries what</span><em>You agree</em></div><div class="pair"><span>Where we are going</span><em>You agree</em></div></div></li>
-      <li><span class="hg-k">03</span><h3 class="h3">Solve it.</h3><p>A Cadence Sprint on the problem you choose.</p>
-        <div class="hg-x"><span class="lab">Week 3 of 8 · one goal, one number</span><p class="hg-goal">Extend our runway</p>
-          <svg class="hg-course" viewBox="0 0 260 28" aria-hidden="true"><path d="M8 14 C40 6 72 22 104 14 S168 6 200 14 S236 18 252 14" fill="none" stroke="var(--panel-line)" stroke-width="2"/><circle cx="8" cy="14" r="5" fill="var(--signal)"/><circle cx="43" cy="11" r="5" fill="var(--signal)"/><circle cx="78" cy="17" r="6" fill="var(--sun)"/><circle cx="113" cy="13" r="5" fill="var(--panel-line)"/><circle cx="148" cy="10" r="5" fill="var(--panel-line)"/><circle cx="183" cy="12" r="5" fill="var(--panel-line)"/><circle cx="218" cy="16" r="5" fill="var(--panel-line)"/><circle cx="252" cy="14" r="5" fill="var(--panel-line)"/></svg>
-          <span class="lab">Number now · 10 months, from 9</span></div></li>
-      <li><span class="hg-k">04</span><h3 class="h3">Keep it moving.</h3><p>What is hardest now, and what moved.</p>
-        <div class="hg-x"><p class="hg-mv"><b>+</b>Go-to-market<span>new</span></p><p class="hg-mv"><b>=</b>Runway<span>still there</span></p><p class="hg-mv"><b>✓</b>The senior hire<span>gone</span></p></div></li>
-    </ol>
-    <div class="hg-foot" data-rv><span class="m">Example data · private to you · your fund never sees this</span><a class="lk" href="method.html">See the method →</a></div>
+    <h2 class="h2 hx-h2" data-rv>Your answers are yours</h2>
+    <ul class="fx-who" data-rv-kids>
+      <li><b>Your fund</b><p>sees only counts across five teams or more. Never your name or your words.</p></li>
+      <li><b>Your co-founder</b><p>sees what you both agree to share, side by side. Never your words.</p></li>
+      <li><b>Your coach</b><p>reads your notes only with your yes.</p></li>
+      <li><b>You</b><p>can download or delete everything, at any time.</p></li>
+    </ul>
+    <div class="fx-ai" data-rv><p class="hx-body">Our AI asks and listens. It never scores you or labels you. Every judgement comes from a person.</p><p><a class="lk" href="trust.html">How we handle data</a></p></div>
   </div>
 </section>
 
-<section class="band deep d4 sec water" id="sprint">
-  <div class="wrap split">
-    <div class="stack-l">
-      <header class="hd" style="margin-bottom:0"><p class="ix">What a Sprint feels like</p><h2 class="h2" data-rv>Six to eight weeks. <em>Then it is done.</em></h2></header>
-      <ol class="feel" data-rv-kids>
-        <li>You write your plan in ten minutes: the goal, the one number, why now.</li>
-        <li>You meet your expert and your circle at the kick-off.</li>
-        <li>Each week you spend five minutes on four lines.</li>
-        <li>In the last week you measure, and write down what you keep doing.</li>
-      </ol>
-    </div>
-    <div class="sf" data-rv>
-      <div class="photo"><img src="img/session.jpg" alt="A facilitator opens a session for a small group of founders seated in a half circle on a lawn above the lake." loading="lazy"><span class="cap">Your circle</span></div>
-      <p class="sf-face"><span class="sf-duo"><span class="sf-emma" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg></span><img src="img/stefan.jpg" alt="" width="440" height="440" loading="lazy"></span><span><b>Emma and Stefan van Eerde</b>match your expert to your problem</span></p>
-    </div>
-  </div>
-  <div class="wrap sf-big"><p class="big" data-rv>No daily app. No streaks. <em>It asks for your attention only when there is a date and a reason.</em></p></div>
-  <div class="wrap yours">
-    <div class="split rule-s" data-rv>
-      <div class="stack"><p class="eb">Private by design</p><h3 class="h3">Your fund pays. It never learns what needed fixing.</h3></div>
-      <div class="stack"><p>Your fund sees only counts and patterns across five teams or more.</p><p><a class="lk" href="trust.html">Trust →</a></p></div>
-    </div>
+<section class="band raised sec fx-free" id="free">
+  <div class="wrap stack-l">
+    <h2 class="h2 hx-h2" data-rv>Free to start</h2>
+    <p data-rv>The Check and the conversation cost you nothing. When your fund works with Cadence, it supports the Sprints. If your fund isn’t with us yet, start anyway.</p>
   </div>
 </section>
-
-<div class="surface" aria-hidden="true"><span class="wline" aria-hidden="true"><svg viewBox="0 0 1680 14" preserveAspectRatio="none" class="a-wave"><path d="M0 7 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg></span></div>
 
 <section class="band sec" id="why">
-  <div class="wrap why">
-    <img class="why-face" src="img/rodin.jpg" alt="Rodin Affourtit" width="300" height="300" loading="lazy">
-    <figure class="stack-l" data-rv>
-      <p class="eb">Why I built this</p>
-      <blockquote class="big">"My co-founder and I spent a year building two different companies without saying it. I wish we'd had a private place to see that early, paid for by our fund, without our fund knowing what we were struggling with. <em>That is Cadence.</em>"</blockquote>
-      <figcaption class="s"><b class="t">Rodin Affourtit</b>, former co-founder and co-CEO of a VC-backed company, founder of Cadence</figcaption>
-    </figure>
-  </div>
-</section>
-
-<section class="band wk" id="weekend">
-  <div class="photo par wk-bg"><img src="img/lake-wide.jpg" alt="Lake Banyoles in Catalonia: still water, a white boathouse and rowers in the distance." loading="lazy"><span class="cap">Lake Banyoles, Catalonia</span></div>
-  <div class="wrap wk-in">
-    <a class="wk-card" href="weekend.html" data-rv>
-      <span class="eb">The weekend</span>
-      <span class="h2">Three days at the lake. <em>One shared plan for the next 12 months.</em></span>
-      <p>Four founding teams, no investors, at a private lakehouse on Lake Banyoles in Catalonia. Your fund may pay half, or all of it.</p>
-      <ul class="wk-n"><li><b>3</b><span>days at the lake</span></li><li><b>4</b><span>founding teams</span></li><li><b>0</b><span>investors</span></li></ul>
-      <span class="lk" style="align-self:flex-start">The weekend →</span>
-    </a>
-    <figure class="wk-pol" data-par="-40"><img src="img/house.jpg" alt="The Lakehouse above Lake Banyoles, seen from the pool." loading="lazy"><figcaption>The Lakehouse</figcaption></figure>
-  </div>
-</section>
-
-<section class="band tint sec" id="investor">
-  <div class="wrap split w57">
-    <div class="stack-l">
-      <h2 class="h2" data-rv>Your investor wants to help. <em>Most don't know how.</em></h2>
-      <p class="mx">Tell them you want support, without telling them what for. One tap, and your fund sees only how many teams asked.</p>
-      <div class="row"><a class="btn btn-line" href="https://app.founderscadence.com/start" target="_blank" rel="noopener">Tell my fund we would love help <i>→</i></a></div>
-    </div>
-    <div class="stack-l">
-      <div class="g2" data-rv-kids>
-        <div class="stat rule"><p class="n"><span data-count="92">92</span><u>%</u></p><p>of VCs say they add value beyond capital.</p></div>
-        <div class="stat rule"><p class="n"><span data-count="5.2" data-dec="1">5.2</span><small>/ 10</small></p><p>is how founders rate that help.</p></div>
-      </div>
-      <p class="m">Forward Partners &amp; Landscape VC · Creandum, Newfund &amp; Kauffman Fellows</p>
-    </div>
-  </div>
-</section>
-
-<section class="band sec" id="nofund">
   <div class="wrap">
-    <header class="hd"><p class="ix">No fund behind you?</p><h2 class="h2" data-rv>Start anyway.</h2><p class="ld">The Check is free, whether you are bootstrapped or your investor is not part of Cadence yet.</p></header>
-    <div class="g2" data-rv-kids>
-      
-      <div class="stack rule"><h3 class="h3">Open circles</h3><p>are open to every founder: one hour on one topic, led by an expert.</p></div>
-      <div class="stack rule"><h3 class="h3">A Sprint</h3><p>is paid for by funds. Tell your investor you want support.</p></div>
+    <header class="hd"><h2 class="h3" data-rv>Why this exists</h2></header>
+    <div class="fx-why" data-rv>
+      <img src="img/rodin.jpg" alt="Rodin Affourtit" width="300" height="300" loading="lazy">
+      <div class="stack-l">
+        <blockquote>“For years my co-founder and I drifted, slowly, without saying it. Most of it could have been talked about much earlier. I built the place I wish we’d had.”</blockquote>
+        <p class="hx-body"><b>Rodin Affourtit</b>, seven years co-founder and co-CEO of a VC-backed company, founder of Cadence</p>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="band raised sec" id="start">
-  <div class="wrap split mid">
-    <div class="stack-l">
-      <h2 class="h2" data-rv>Start with your own Check. <em>Private, and yours to keep.</em></h2>
-      <div class="start-two"><div class="stack rule-s"><b class="t">Your fund already works with Cadence?</b><p>Use the link they sent you.</p></div><div class="stack rule-s"><b class="t">No fund yet?</b><p>Start, invite your co-founder, and tell your investor when you are ready.</p></div></div>
-      <div class="row"><a class="btn btn-clay" href="https://app.founderscadence.com/start" target="_blank" rel="noopener">Start your free Check <i>→</i></a><a class="btn btn-line" href="contact.html">See the next open circle</a></div>
-      <p><a class="lk" href="index.html">Run a fund? For funds →</a></p>
-    </div>
-    <div class="phone" data-rv><iframe src="https://app.founderscadence.com/start" title="Start your Cadence Check" loading="lazy"></iframe></div>
+<section class="band hx-end fx-end" id="go">
+  <div class="wrap">
+    <h2 class="hx-endh" data-rv>Fifteen minutes to see where you really stand.</h2>
+    <div class="row" data-rv><a class="btn btn-clay" href="https://app.founderscadence.com/start" target="_blank" rel="noopener">Start your free Check</a><a class="btn btn-ink" href="weekend.html">The weekend</a></div>
+    <p data-rv><a class="lk" href="index.html">Run a fund?</a></p>
   </div>
 </section>
+<span class="wline" aria-hidden="true"><svg viewBox="0 0 1680 14" preserveAspectRatio="none" class="a-wave"><path d="M0 7 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg></span>
 </main><footer class="band deep close water"><div class="wrap"><div class="close-routes"><a href="https://app.founderscadence.com/start" target="_blank" rel="noopener"><span class="eb">Founders</span><b>Start your free Check <i>→</i></b></a><a href="pulse.html"><span class="eb">Funds</span><b>Start a free Portfolio Pulse <i>→</i></b></a></div><p class="statement" aria-label="The pattern, never the person."><span>The pattern,</span><span>never the person.</span></p><div class="foot"><div><a class="brand" href="index.html"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M28 66 A32 32 0 0 1 92 66 Z" fill="var(--sun)"/><line x1="16" y1="76" x2="104" y2="76" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><line x1="30" y1="90" x2="90" y2="90" stroke="var(--on-deep-3)" stroke-width="6" stroke-linecap="round"/><line x1="46" y1="104" x2="74" y2="104" stroke="var(--on-deep-3)" stroke-width="6" stroke-linecap="round"/></svg>Cadence</a><small>The independent development arm for VC portfolios.</small></div><div><h4>For funds</h4><ul><li><a href="index.html">Home</a></li><li><a href="pulse.html">Free Portfolio Pulse</a></li></ul></div><div><h4>For founders</h4><ul><li><a href="founders.html">Founders</a></li><li><a href="weekend.html">The weekend</a></li></ul></div><div><h4>Both</h4><ul><li><a href="method.html">The method</a></li><li><a href="trust.html">Trust</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="/privacy.html">Privacy policy</a></li><li><a href="/aviso-legal.html">Aviso legal</a></li></ul></div></div></div></footer></div><script src="site.js"></script>
+<script>
+/* Founders page: the layers of the lake follow the pointer, and the weekend pictures follow the story. */
+(function(){
+'use strict';
+var d=document,w=window;
+var RM=!!(w.matchMedia&&w.matchMedia('(prefers-reduced-motion: reduce)').matches);
+var hero=d.querySelector('.fx-hero');
+if(hero&&!RM&&w.matchMedia('(hover:hover) and (pointer:fine)').matches){
+  var lays=[].slice.call(hero.querySelectorAll('.fx-lay'));
+  hero.addEventListener('pointermove',function(e){var x=e.clientX/w.innerWidth-.5;lays.forEach(function(g){g.style.transform='translateX('+(x*+g.getAttribute('data-px')).toFixed(1)+'px)'})});
+  hero.addEventListener('pointerleave',function(){lays.forEach(function(g){g.style.transform=''})});
+}
+var wk=d.querySelector('.fx-wk');
+if(wk){
+  var ps=[].slice.call(wk.querySelectorAll('.fx-wk-text>div')),figs=[].slice.call(wk.querySelectorAll('.fx-wk-stack figure')),cur=-1,tick=false;
+  var set=function(){
+    tick=false; var line=w.innerHeight*.6,n=0;
+    ps.forEach(function(p,i){if(p.getBoundingClientRect().top<line)n=i});
+    if(n===cur) return; cur=n; wk.setAttribute('data-on',n);
+    ps.forEach(function(p,i){p.classList.toggle('on',i===n)});
+    figs.forEach(function(f,i){f.classList.toggle('on',i===n)});
+  };
+  w.addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(set)}},{passive:true});
+  set();
+}
+var sys=d.querySelector('.hx-sys');
+if(sys){[].slice.call(sys.querySelectorAll('.hx-parts li')).forEach(function(li){
+  li.addEventListener('pointerenter',function(){sys.setAttribute('data-hot',li.getAttribute('data-hot'))});
+  li.addEventListener('pointerleave',function(){sys.removeAttribute('data-hot')});
+})}
+})();
+</script>
 </body>
 </html>
