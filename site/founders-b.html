@@ -98,6 +98,23 @@
 .fy-card .h3{font-size:clamp(26px,2.3vw,36px);line-height:1.06}
 .fy-card .lk{align-self:flex-start;margin-top:auto}
 .fy-ring{width:46%;max-width:190px}
+.fy-sprint{position:absolute;inset:0;width:100%;height:100%;max-width:none}
+.fy-sprint path{fill:none;stroke-linecap:round}
+.fy-sprint .lane{stroke:rgba(240,244,248,.22);stroke-width:2;stroke-dasharray:2 8}
+.fy-sprint .with{stroke:var(--sun);stroke-width:1.5;opacity:.7}
+.fy-sprint .run{stroke:var(--signal);stroke-width:4;stroke-dasharray:1;stroke-dashoffset:0;transition:stroke-dashoffset 2.4s var(--ease) .4s}
+.mo .pre .fy-sprint .run{stroke-dashoffset:1}
+.fy-sprint .wk circle{r:5px;fill:var(--d2);stroke:var(--signal);stroke-width:2}
+.fy-sprint .node{fill:var(--signal)}
+.fy-sprint .node.end{fill:var(--sun)}
+.fy-sprint .goal circle{fill:none;stroke:var(--sun);stroke-width:1.5;opacity:.55}
+.mo .fy-sprint .goal circle{animation:fy-ping 3.2s ease-out infinite}
+.mo .fy-sprint .goal circle+circle{animation-delay:.5s}
+@keyframes fy-ping{0%{transform:scale(.6);opacity:.8}100%{transform:scale(1.25);opacity:0}}
+.fy-sprint text{font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;fill:var(--on-deep-3)}
+.fy-sprint .big{font:400 25px var(--display);letter-spacing:0;text-transform:none;fill:#fff}
+.fy-sprint .s{font-size:10px;text-anchor:middle}
+.fy-sprint .sun{fill:var(--sun)}
 @media (min-width:1001px){.fy-cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;align-items:start}.fy-card:nth-child(2){margin-top:56px}.fy-card:nth-child(3){margin-top:112px}}
 
 /* one system: three circles that come together */
@@ -240,7 +257,18 @@
     <ol class="fy-cards" data-rv-kids>
       <li class="fy-card"><div class="vis"><span class="n" aria-hidden="true">1</span><svg class="fy-ring" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="rgba(240,244,248,.25)" stroke-width="4"/><path d="M32 5 A27 27 0 0 1 59 32" fill="none" stroke="var(--sun)" stroke-width="4" stroke-linecap="round"/><text x="32" y="39" text-anchor="middle" font-family="Instrument Serif, serif" font-size="22" fill="#fff">15</text></svg></div>
         <div class="tx"><h3 class="h3">You each do a private Check.</h3><p>Fifteen minutes with our AI interviewer, alone. You see straight away what is hardest for you right now, in your own words. Then you get a free conversation with a person, and you leave with one step for this week.</p></div></li>
-      <li class="fy-card"><div class="vis"><span class="n" aria-hidden="true">2</span><img src="img/weekend/lakewalk.jpg" alt="A coach walks along the lake shore with two founders, a notebook open in his hands." loading="lazy"></div>
+      <li class="fy-card"><div class="vis"><span class="n" aria-hidden="true">2</span><svg class="fy-sprint" viewBox="0 0 400 300" role="img" aria-label="A Sprint drawn as a course: one goal, one number measured at the start and at the end, a few weeks in between, and someone who has solved it before alongside.">
+          <path class="lane" d="M52 236 C130 236 150 170 214 160 C284 150 300 92 352 84"/>
+          <path class="with" d="M52 252 C134 252 156 188 218 178 C288 168 306 110 352 100"/>
+          <path class="run" pathLength="1" d="M52 236 C130 236 150 170 214 160 C284 150 300 92 352 84"/>
+          <g class="wk"><circle cx="104" cy="229"/><circle cx="150" cy="197"/><circle cx="196" cy="166"/><circle cx="250" cy="150"/><circle cx="300" cy="116"/></g>
+          <circle class="node" cx="52" cy="236" r="9"/><circle class="node end" cx="352" cy="84" r="11"/>
+          <g class="goal" transform="translate(352 84)"><circle r="22"/><circle r="33"/></g>
+          <text x="52" y="278" text-anchor="middle">Start</text><text x="352" y="38" text-anchor="middle">End</text>
+          <text class="big" x="150" y="62">One goal.</text><text class="big" x="150" y="92">One number.</text>
+          <text class="s" x="196" y="226">A few weeks</text>
+          <text class="s sun" x="226" y="262">With someone who has solved it before</text>
+        </svg></div>
         <div class="tx"><h3 class="h3">If one problem is worth it, you do a Sprint.</h3><p>A few weeks on that one problem, with one goal and one number, and someone who has solved it before.</p></div></li>
       <li class="fy-card"><div class="vis"><span class="n" aria-hidden="true">3</span><img src="img/weekend/rowing.jpg" alt="Rowers on Lake Banyoles in the early morning, with the white boathouse behind them." loading="lazy"></div>
         <div class="tx"><h3 class="h3">Once a year, the weekend.</h3><p>Three days at the lake with a few other founding pairs.</p><a class="lk" href="weekend.html">See the weekend</a></div></li>
