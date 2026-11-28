@@ -3,229 +3,600 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Cadence · The independent development arm for VC portfolios</title>
+<title>Cadence · The neutral place between a fund and its founders</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<meta name="description" content="Each founder finds their real problem in a private 15-minute Check. Then the team works on it for six to eight weeks, with an expert who has solved it before.">
-<meta property="og:title" content="Cadence · The independent development arm for VC portfolios">
-<meta property="og:description" content="Each founder finds their real problem in a private 15-minute Check. Then the team works on it for six to eight weeks, with an expert who has solved it before.">
+<meta name="description" content="Founders tell Cadence what is really going on, in private. We help them solve it. You see the pattern across your portfolio, never a team.">
+<meta property="og:title" content="Cadence · The neutral place between a fund and its founders">
+<meta property="og:description" content="Founders tell Cadence what is really going on, in private. We help them solve it. You see the pattern across your portfolio, never a team.">
 <meta property="og:image" content="/img/lake-wide.jpg">
 <link rel="stylesheet" href="/fonts/fonts.css">
 <link rel="stylesheet" href="site.css">
+<style>
+/* Home for funds. One descent through the lake: the surface (ten boats), under water (the problem),
+   the waterline (Cadence, in between), then back up to what the fund sees and gets.
+   Everything here is prefixed hx- and builds on the tokens and classes in site.css. */
+.hx-h2{font-size:clamp(38px,5.6vw,88px);line-height:1;letter-spacing:-.02em}
+.hx-body{font-size:clamp(17px,1.35vw,20px);line-height:1.55;color:var(--body);max-width:34em;text-wrap:pretty}
+
+/* 1 · hero: the surface */
+.hx-hero{overflow:hidden;overflow:clip}
+.hx-hero-in{position:relative;z-index:2;display:grid;gap:18px;padding-block:26px 0}
+.hx-h1{font-size:clamp(42px,12vw,76px);line-height:.98;max-width:11.6em}
+.hx-hero-sub{display:flex;flex-direction:column;gap:20px}
+.hx-hero-sub .ld{font-size:clamp(17px,1.5vw,21px)}
+.hx-lake{position:relative;height:clamp(250px,68vw,340px);margin-top:14px}
+.hx-scene{position:absolute;inset:0;width:100%;height:100%;max-width:none;overflow:visible}
+.hx-b{--bh:var(--on-deep);--b2:var(--on-deep-3)}
+.hx-b.one{--bh:var(--sun);--b2:#f7d2bf}
+.mo .hx-sunc{animation:hx-rise 2.2s var(--ease) both .15s}
+@keyframes hx-rise{from{transform:translateY(150px)}}
+.mo .hx-hills{animation:hx-fade 1.8s ease both}
+@keyframes hx-fade{from{opacity:0}}
+.hx-reeds path{fill:none;stroke:var(--panel);stroke-width:4;stroke-linecap:round}
+.hx-reeds .hd{fill:var(--panel)}
+.mo .hx-reeds{animation:hx-reed 1.9s var(--ease) both .2s}
+@keyframes hx-reed{from{opacity:0;translate:0 90px}}
+.hx-tagl{position:absolute;left:0;top:0;z-index:3;font:500 11px/1 var(--mono);letter-spacing:.06em;white-space:nowrap;padding:8px 11px;border-radius:999px;background:var(--paper);color:var(--ink);box-shadow:0 10px 24px -12px rgba(8,18,30,.6);opacity:0;transition:opacity .6s;pointer-events:none;will-change:transform}
+.hx-tagl.on{opacity:1}
+.hx-tagl.t1{background:var(--sun);color:#3a160a}
+.hx-tagl span{display:block;transition:opacity .45s}
+.hx-tagl .b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0}
+.hx-tagl.sw .a{opacity:0}.hx-tagl.sw .b{opacity:1}
+@media (min-width:901px){
+.hx-hero{min-height:calc(100svh - var(--top));display:flex;flex-direction:column}
+.hx-hero-in{gap:clamp(14px,2.6vh,30px);padding-block:clamp(16px,3.6vh,48px) 0}
+.hx-h1{font-size:clamp(52px,min(6.9vw,11.6vh),132px);line-height:.93;letter-spacing:-.028em;max-width:none}
+.hx-hero-sub{flex-direction:row;align-items:flex-end;justify-content:space-between;gap:clamp(28px,4vw,72px)}
+.hx-hero-sub .ld{max-width:33em}
+.hx-hero-sub .row{flex-wrap:nowrap;flex:none}
+.hx-lake{flex:1;height:auto;min-height:min(42vh,34vw);margin-top:clamp(-20px,-1.5vh,-6px)}
+.hx-tagl{font-size:12px;padding:9px 13px}
+}
+@media (max-width:900px){.hx-reeds{display:none}.hx-planes{height:clamp(300px,84vw,420px)}.hx-hero-sub .btn-line{border:0;min-height:0;padding:0 0 3px;border-radius:0;background:linear-gradient(var(--clay),var(--clay)) 0 100%/100% 1.5px no-repeat;align-self:center}.hx-hero-sub .btn-line:hover{background-color:transparent;color:var(--clay)}}
+
+/* 2 · under water: the problem */
+.hx-under{background:linear-gradient(var(--d3),var(--d4) 62%)}
+.hx-under-in{padding-block:clamp(64px,9vw,150px) clamp(64px,8vw,130px);display:grid;gap:clamp(40px,6vw,96px)}
+.hx-notes{display:grid;gap:14px}
+.hx-note>div{background:rgba(255,255,255,.06);border:1px solid var(--deep-line);border-radius:20px;padding:clamp(20px,2.4vw,34px);box-shadow:0 34px 60px -34px rgba(4,12,22,.75);display:flex;gap:16px;align-items:flex-start}
+.hx-note p{font:400 clamp(23px,2.5vw,36px)/1.14 var(--display);color:var(--on-deep);letter-spacing:-.005em}
+.hx-alone{max-width:21em;margin-top:clamp(28px,3vw,44px)}
+.hx-facts{display:grid;gap:26px}
+.hx-facts .stat{border-top-color:var(--on-deep)}
+.hx-facts .m{letter-spacing:.04em}
+.hx-gauge{display:none}
+@media (max-width:700px){
+.hx-facts .stat{display:grid;grid-template-columns:118px minmax(0,1fr);gap:4px 14px;align-items:start}
+.hx-facts .stat .n{font-size:64px;grid-row:1/3}
+.hx-facts .stat p{font-size:15.5px}
+}
+@media (min-width:901px){
+.hx-under-in{grid-template-columns:minmax(0,1fr) minmax(0,10.4fr);column-gap:clamp(24px,4vw,72px)}
+.hx-under-in>*{grid-column:2}
+.hx-gauge{display:flex;flex-direction:column;align-items:center;gap:16px;grid-column:1;grid-row:1/4;--k:1}
+.hx-gauge span{font:500 11px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--on-deep-3);writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap}
+.hx-gauge i{flex:1;width:1.5px;background:var(--deep-line);position:relative;display:block}
+.hx-gauge i::before{content:"";position:absolute;inset:0;background:var(--sun);transform-origin:top;transform:scaleY(var(--k))}
+.hx-gauge i::after{content:"";position:absolute;left:-5px;top:calc(var(--k)*100% - 6px);width:11.5px;height:11.5px;border-radius:50%;background:var(--sun)}
+.hx-notes{grid-template-columns:repeat(12,minmax(0,1fr));gap:0 20px;padding-bottom:20px}
+.hx-note:nth-child(1){grid-column:1/6}.hx-note:nth-child(1)>div{transform:rotate(-2deg)}
+.hx-note:nth-child(2){grid-column:7/12;margin-top:96px}.hx-note:nth-child(2)>div{transform:rotate(1.6deg)}
+.hx-note:nth-child(3){grid-column:3/9;margin-top:-4px}.hx-note:nth-child(3)>div{transform:rotate(-.8deg)}
+.hx-facts{grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,3vw,48px)}
+}
+
+/* 3 · the waterline: Cadence, in between. On a desktop the screen holds still while the three parts light up. */
+.hx-mid{position:relative;background:var(--paper)}
+.hx-mid .wline{display:none}
+.hx-mid-grid{display:flex;flex-direction:column;gap:14px;padding-block:56px}
+.hx-mid-grid .hx-h2{margin-bottom:14px}
+.hx-c{border-radius:20px;padding:22px;border:1px solid var(--line);background:var(--raised);display:flex;flex-direction:column;gap:14px;color:var(--body)}
+.hx-c.c1{background:var(--d2);border-color:transparent}
+.hx-who{font:500 11px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.hx-say{font:400 clamp(23px,2.25vw,33px)/1.16 var(--display);color:var(--ink);letter-spacing:-.005em;text-wrap:balance}
+.hx-red{display:grid;gap:9px;max-width:260px}
+.hx-red i{display:block;height:11px;border-radius:99px;background:rgba(240,244,248,.22);width:var(--w)}
+.hx-buoy{display:flex;align-items:center;gap:12px;font:400 26px/1 var(--display);color:var(--ink)}
+.hx-buoy svg{width:44px;height:44px;flex:none}
+.hx-bars{display:grid;gap:11px;max-width:330px}
+.hx-bars div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px 12px;font-size:14px;color:var(--ink)}
+.hx-bars em{font:500 12px/1.5 var(--mono);font-style:normal;color:var(--clay)}
+.hx-bars i{grid-column:1/-1;height:7px;border-radius:99px;background:var(--line);overflow:hidden;display:block}
+.hx-bars i::after{content:"";display:block;height:100%;width:var(--w);background:var(--clay);border-radius:99px;transform-origin:left;transition:transform 1.1s var(--ease) .15s}
+.hx-eg{font:500 10.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);border:1px solid var(--line-2);border-radius:999px;padding:6px 9px;align-self:flex-start}
+@media (min-width:901px) and (min-height:600px){
+.hx-mid[data-step]{height:290vh}
+.hx-mid-pin{position:sticky;top:var(--top);height:calc(100vh - var(--top));overflow:hidden}
+.hx-mid-pin::before{content:"";position:absolute;inset:50% 0 0 0;background:linear-gradient(var(--d2),var(--d3))}
+.hx-mid .wline{display:block;position:absolute;left:0;right:0;top:calc(50% - 7px);z-index:2}
+.hx-mid-grid{position:relative;z-index:3;height:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:minmax(0,1fr) minmax(0,1fr);gap:0 clamp(24px,3.4vw,56px);padding-block:0}
+.hx-mid-grid .hx-h2{grid-column:1/3;grid-row:1;align-self:start;padding-top:clamp(24px,6vh,76px);margin:0;font-size:clamp(40px,min(5vw,8.6vh),84px);max-width:9.5em}
+.hx-c{border:0;background:none;padding:0;border-radius:0;transition:opacity .7s var(--ease),transform .9s var(--ease)}
+.hx-c.c1{background:none;grid-column:1;grid-row:2;align-self:start;padding-top:clamp(28px,6vh,64px)}
+.hx-c.c2{grid-column:2;grid-row:1/3;align-self:center;background:var(--raised);border-radius:24px;padding:clamp(22px,2.2vw,32px);box-shadow:0 40px 80px -36px rgba(8,18,30,.55);border:1px solid var(--line)}
+.hx-c.c3{grid-column:3;grid-row:1;align-self:end;padding-bottom:clamp(28px,6vh,64px)}
+.hx-mid[data-step="1"] .c2,.hx-mid[data-step="1"] .c3,.hx-mid[data-step="2"] .c3{opacity:0}
+.hx-mid[data-step="1"] .c2{transform:translateY(90px) scale(.96)}
+.hx-mid[data-step="1"] .c3,.hx-mid[data-step="2"] .c3{transform:translateY(36px)}
+.hx-mid .hx-say{font-size:clamp(25px,min(2.5vw,4.4vh),40px)}
+.hx-bub{position:absolute;inset:50% 0 0 0;z-index:1;overflow:hidden}
+.mo .hx-bub i{position:absolute;bottom:-14px;width:var(--s);height:var(--s);border-radius:50%;border:1.5px solid rgba(240,244,248,.5);animation:hx-bub var(--t) linear infinite;animation-delay:var(--d)}
+@keyframes hx-bub{0%{transform:translate(0,0);opacity:0}12%{opacity:.8}80%{opacity:.5}100%{transform:translate(18px,-46vh);opacity:0}}
+.hx-mid[data-step="1"] .hx-bars i::after,.hx-mid[data-step="2"] .hx-bars i::after{transform:scaleX(0)}
+.hx-mid-dots{position:absolute;right:max(var(--gut),20px);bottom:22px;z-index:4;display:flex;gap:7px}
+.hx-mid-dots i{width:26px;height:3px;border-radius:9px;background:rgba(240,244,248,.28);transition:background .4s}
+.hx-mid[data-step="1"] .hx-mid-dots i:nth-child(1),.hx-mid[data-step="2"] .hx-mid-dots i:nth-child(-n+2),.hx-mid[data-step="3"] .hx-mid-dots i{background:var(--sun)}
+}
+@media not ((min-width:901px) and (min-height:600px)){.hx-mid-dots,.hx-bub{display:none}}
+
+/* 4 · how it works: the steps on the left, the Portfolio Pulse filling in on the right */
+.hx-how-grid{display:grid;gap:44px}
+.hx-steps{display:grid;gap:0;margin-top:clamp(28px,4vw,56px)}
+.hx-steps>li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:0 clamp(16px,2.4vw,36px);padding-block:clamp(26px,3.4vw,48px);border-top:1.5px solid var(--ink)}
+.hx-n{font:400 clamp(54px,6.4vw,104px)/.8 var(--display);color:var(--clay);letter-spacing:-.03em;min-width:.62em}
+.hx-steps .h3{font-size:clamp(26px,2.9vw,42px);line-height:1.08;margin-bottom:12px}
+.hx-steps p{max-width:30em}
+.hx-vis{margin-top:22px;max-width:520px}
+.hx-check{display:flex;align-items:center;gap:18px;background:var(--raised);border:1px solid var(--line);border-radius:18px;padding:18px 20px}
+.hx-check svg{width:64px;height:64px;flex:none}
+.hx-check b{display:block;font:400 22px/1.15 var(--display);color:var(--ink)}
+.hx-check span{font-size:14.5px;line-height:1.45;color:var(--body)}
+.hx-vis .photo{aspect-ratio:16/9}
+.hx-vis .photo.wide{aspect-ratio:2.2/1}
+.hx-pulse{display:flex;flex-direction:column;gap:22px}
+.hx-pulse .big{font-size:clamp(25px,2.5vw,36px);line-height:1.14}
+.hx-pulse .panel-box{transition:opacity .6s var(--ease),transform .7s var(--ease)}
+.hx-how[data-step] .panel-box:not(.on){opacity:.3;transform:translateY(8px)}
+.hx-how[data-step] .panel-box:not(.on) .bar i::after{transform:scaleX(0)}
+@media (min-width:1001px){
+.hx-how-grid{grid-template-columns:minmax(0,6.6fr) minmax(0,5.4fr);gap:clamp(40px,6vw,104px);align-items:start}
+.hx-pulse{position:sticky;top:calc(var(--top) + 28px)}
+}
+@media (max-width:700px){.hx-steps>li{grid-template-columns:minmax(0,1fr);gap:10px}.hx-n{font-size:56px}}
+
+/* 5 · one system: three layers that come apart as you reach them */
+.hx-sys{--ground:var(--panel);overflow:hidden;overflow:clip}
+.hx-sys-grid{display:grid;gap:26px;align-items:center}
+.hx-planes{position:relative;height:clamp(360px,96vw,480px);perspective:1500px;--k:1}
+.hx-pl{position:absolute;left:50%;top:50%;width:clamp(180px,48vw,300px);aspect-ratio:1;border-radius:26px;border:1.5px solid var(--pc);background:color-mix(in srgb,var(--pc) 12%,transparent);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);transform:translate(-50%,-50%) rotateX(57deg) rotateZ(-45deg) translateZ(calc((var(--n) - 1)*(.12 + .88*var(--k))*clamp(84px,13vw,165px)));transition:opacity .4s,border-color .4s;box-shadow:0 0 60px -10px color-mix(in srgb,var(--pc) 35%,transparent)}
+.hx-pl svg{position:absolute;inset:9%;width:82%;height:82%}
+.hx-pl.p1{--pc:var(--signal);--n:2}.hx-pl.p2{--pc:var(--sun);--n:1}.hx-pl.p3{--pc:var(--on-deep-3);--n:0}
+.hx-sys[data-hot="1"] .hx-pl:not(.p1),.hx-sys[data-hot="2"] .hx-pl:not(.p2),.hx-sys[data-hot="3"] .hx-pl:not(.p3){opacity:.22}
+.hx-parts{display:grid}
+.hx-parts li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px 18px;padding-block:clamp(20px,2.4vw,30px);border-top:1px solid var(--deep-line);cursor:default}
+.hx-parts li::before{content:"";width:14px;height:14px;border-radius:4px;border:1.5px solid var(--pc);background:color-mix(in srgb,var(--pc) 30%,transparent);margin-top:.55em;transform:rotate(45deg) scale(.86)}
+.hx-parts li:nth-child(1){--pc:var(--signal)}.hx-parts li:nth-child(2){--pc:var(--sun)}.hx-parts li:nth-child(3){--pc:var(--on-deep-3)}
+.hx-parts .h3{font-size:clamp(26px,2.6vw,38px)}
+.hx-parts p{grid-column:2;max-width:33em}
+.hx-three{margin-top:clamp(48px,7vw,112px);border-top:1px solid var(--deep-line);padding-top:clamp(28px,4vw,56px);font:400 clamp(34px,6.1vw,100px)/1 var(--display);letter-spacing:-.022em;color:var(--on-deep)}
+.hx-three span{display:block}
+.hx-three span:nth-child(1){color:var(--signal)}.hx-three span:nth-child(2){color:var(--sun)}
+@media (min-width:1001px){
+.hx-sys-grid{grid-template-columns:minmax(0,5.4fr) minmax(0,6.6fr);gap:clamp(32px,5vw,88px)}
+.hx-planes{height:clamp(520px,46vw,680px)}
+.hx-pl{width:clamp(240px,23vw,340px)}
+.hx-three span:nth-child(2){padding-left:1.1em}.hx-three span:nth-child(3){padding-left:2.2em}
+}
+
+/* 6 · what your fund gets */
+.hx-gets>li{display:grid;gap:10px;padding-block:clamp(24px,3.2vw,48px);border-top:1.5px solid var(--ink)}
+.hx-gets .h3{font-size:clamp(30px,4vw,62px);line-height:1;letter-spacing:-.015em}
+@media (min-width:901px){.hx-gets>li{grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(32px,6vw,104px);align-items:baseline}}
+
+/* 7 · the pattern, never the person */
+.hx-veil{border-radius:24px;overflow:hidden;box-shadow:0 40px 80px -40px rgba(8,18,30,.5);border:1px solid var(--line)}
+.hx-veil-up{background:var(--raised);padding:clamp(20px,2.4vw,32px);display:flex;flex-direction:column;gap:16px}
+.hx-veil-up .hx-bars{max-width:none}
+.hx-veil-up .hx-bars .lt em{color:var(--mute)}
+.hx-veil-up .hx-bars .lt i::after{background:repeating-linear-gradient(90deg,var(--line-2) 0 4px,transparent 4px 9px)}
+.hx-veil .wline{background:var(--d2);margin-top:-1px;color:var(--ink)}
+.hx-veil .wline svg{background:linear-gradient(var(--raised) 50%,transparent 50%)}
+.hx-veil-down{background:linear-gradient(var(--d2),var(--d3));padding:clamp(20px,2.4vw,32px);display:flex;flex-direction:column;gap:16px}
+.hx-veil-down .hx-red{max-width:none}
+.hx-veil-down p{font:400 clamp(21px,1.9vw,27px)/1.2 var(--display);color:var(--on-deep)}
+.hx-vlab{font:500 11px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);display:flex;justify-content:space-between;gap:12px;align-items:center}
+.hx-veil-down .hx-vlab{color:var(--on-deep-3)}
+.hx-vlab .hx-eg{align-self:auto}
+
+/* 8 · start free */
+.hx-path{display:grid;gap:0;position:relative;--k:1;margin-top:clamp(32px,4.4vw,64px)}
+.hx-path li{position:relative;padding:0 0 26px 34px}
+.hx-path li::before{content:"";position:absolute;left:0;top:5px;width:13px;height:13px;border-radius:50%;border:1.5px solid var(--clay);background:var(--ground)}
+.hx-path li:last-child::before{border-color:var(--ink)}
+.hx-path li::after{content:"";position:absolute;left:6px;top:22px;bottom:-2px;width:1.5px;background:var(--line)}
+.hx-path li:last-child::after{display:none}
+.hx-path b{display:block;font:500 11px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--clay);margin-bottom:6px}
+.hx-path li:last-child b{color:var(--ink)}
+.hx-path p{font:400 clamp(21px,1.75vw,26px)/1.2 var(--display);color:var(--ink);max-width:15em}
+.hx-start-foot{display:flex;flex-wrap:wrap;gap:18px 32px;align-items:center;margin-top:clamp(20px,3vw,44px)}
+.hx-start-foot p{font:400 clamp(21px,1.75vw,26px)/1.2 var(--display);color:var(--ink)}
+@media (min-width:901px){
+.hx-path{grid-template-columns:repeat(5,minmax(0,1fr));gap:0 clamp(16px,2vw,32px);padding-top:46px}
+.hx-path::before,.hx-path::after{content:"";position:absolute;left:0;right:0;top:6px;height:1.5px;background:var(--line)}
+.hx-path::after{background:var(--clay);right:20%;transform:scaleX(var(--k));transform-origin:left}
+.hx-path li{padding:0}
+.hx-path li::before{top:-46px;z-index:1}
+.hx-path li::after{display:none}
+.hx-path b{min-height:1.4em}
+}
+
+/* 9 · who is behind it */
+.hx-people{display:grid;gap:clamp(28px,4vw,64px)}
+.hx-person{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px clamp(16px,2.2vw,32px);align-items:start;border-top:1.5px solid var(--ink);padding-top:clamp(20px,2.4vw,32px)}
+.hx-person img{width:clamp(72px,9vw,132px);height:clamp(72px,9vw,132px);border-radius:50%;object-fit:cover}
+.hx-person blockquote{font:400 clamp(26px,3vw,46px)/1.1 var(--display);color:var(--ink);letter-spacing:-.012em;margin-top:18px;text-wrap:balance}
+.hx-person p{max-width:30em}
+.hx-person p b{color:var(--ink);font-weight:600}
+@media (min-width:1001px){.hx-people{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}}
+@media (max-width:560px){.hx-person.q{grid-template-columns:minmax(0,1fr)}}
+
+/* 10 · closing */
+.hx-end{padding-block:clamp(72px,11vw,180px) clamp(56px,8vw,120px)}
+.hx-endh{font:400 clamp(42px,8vw,136px)/.95 var(--display);letter-spacing:-.028em;color:var(--ink);text-wrap:balance;max-width:11em}
+.hx-endh span{display:block;color:var(--clay);font-style:italic}
+.hx-end .row{margin-top:clamp(28px,4vw,56px)}
+.hx-end .lk{display:inline-block;margin-top:26px}
+.hx-end+.wline{background:var(--paper);color:var(--ink)}
+.hx-end+.wline svg{background:linear-gradient(transparent 50%,var(--d4) 50%)}
+</style>
 </head>
 <body>
-<script>try{if(sessionStorage.getItem('tide'))document.documentElement.classList.add('arrive')}catch(e){}</script><div class="page" data-page="home"><header class="top"><a class="skip" href="#main">Skip to content</a><div class="wrap top-in"><a class="brand" href="index.html" aria-label="Cadence, home"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M28 66 A32 32 0 0 1 92 66 Z" fill="var(--clay)"/><line x1="16" y1="76" x2="104" y2="76" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><line x1="30" y1="90" x2="90" y2="90" stroke="var(--water)" stroke-width="6" stroke-linecap="round"/><line x1="46" y1="104" x2="74" y2="104" stroke="var(--water)" stroke-width="6" stroke-linecap="round"/></svg>Cadence</a><nav class="nav" aria-label="Site"><a href="index.html" aria-current="page">For funds</a><a href="founders.html">For founders</a><a href="method.html">The method</a><a href="weekend.html">The weekend</a><a href="trust.html">Trust</a><a href="about.html">About</a></nav><a class="btn btn-clay btn-sm" href="pulse.html">Start a free Portfolio Pulse</a><button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span></button></div><div class="top-prog" aria-hidden="true"><i></i><svg class="top-boat" viewBox="0 0 26 14"><path d="M1 5 H25 L21 13 H5 Z" fill="currentColor"/><circle cx="10" cy="3" r="2.4" fill="currentColor"/><circle cx="16" cy="3" r="2.4" fill="currentColor"/></svg></div></header><div class="sheet"><nav aria-label="Menu"><a href="index.html" aria-current="page">For funds</a><a href="founders.html">For founders</a><a href="method.html">The method</a><a href="weekend.html">The weekend</a><a href="trust.html">Trust</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav><a class="btn btn-clay" href="pulse.html">Start a free Portfolio Pulse</a><p>The pattern, never the person.</p></div><main id="main"><section class="band hero">
-  <div class="wrap hero-in">
-    <p class="eb">For funds · The independent development arm for VC portfolios</p>
-    <h1 class="h1">Help every founding team solve the problem that is <em>holding it back.</em></h1>
-    <div class="hero-sub">
-      <p class="ld">Each founder finds their real problem in a private 15-minute Check. Then the team works on it for six to eight weeks, with an expert who has solved it before.</p>
-      <div class="stack">
-        <div class="row"><a class="btn btn-clay" href="pulse.html">Start a free Portfolio Pulse <i>→</i></a><a class="btn btn-line" href="#how">See how it works</a></div>
-        <p><a class="lk" href="founders.html">Are you a founder? →</a></p>
-      </div>
+<script>try{if(sessionStorage.getItem('tide'))document.documentElement.classList.add('arrive')}catch(e){}</script><div class="page" data-page="home"><header class="top"><a class="skip" href="#main">Skip to content</a><div class="wrap top-in"><a class="brand" href="index.html" aria-label="Cadence, home"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M28 66 A32 32 0 0 1 92 66 Z" fill="var(--clay)"/><line x1="16" y1="76" x2="104" y2="76" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><line x1="30" y1="90" x2="90" y2="90" stroke="var(--water)" stroke-width="6" stroke-linecap="round"/><line x1="46" y1="104" x2="74" y2="104" stroke="var(--water)" stroke-width="6" stroke-linecap="round"/></svg>Cadence</a><nav class="nav" aria-label="Site"><a href="index.html" aria-current="page">For funds</a><a href="founders.html">For founders</a><a href="method.html">The method</a><a href="weekend.html">The weekend</a><a href="trust.html">Trust</a><a href="about.html">About</a></nav><a class="btn btn-clay btn-sm" href="pulse.html">Start a free Portfolio Pulse</a><button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span></button></div><div class="top-prog" aria-hidden="true"><i></i><svg class="top-boat" viewBox="0 0 26 14"><path d="M1 5 H25 L21 13 H5 Z" fill="currentColor"/><circle cx="10" cy="3" r="2.4" fill="currentColor"/><circle cx="16" cy="3" r="2.4" fill="currentColor"/></svg></div></header><div class="sheet"><nav aria-label="Menu"><a href="index.html" aria-current="page">For funds</a><a href="founders.html">For founders</a><a href="method.html">The method</a><a href="weekend.html">The weekend</a><a href="trust.html">Trust</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav><a class="btn btn-clay" href="pulse.html">Start a free Portfolio Pulse</a><p>The pattern, never the person.</p></div><main id="main"><section class="band hx-hero" id="top">
+  <div class="wrap hx-hero-in">
+    <h1 class="h1 hx-h1">Only one in ten founders calls their investor when it gets hard.</h1>
+    <div class="hx-hero-sub">
+      <p class="ld">Cadence is where the other nine go. Founders tell us what is really going on, in private. We help them solve it. You see the pattern across your portfolio, never a team.</p>
+      <div class="row"><a class="btn btn-clay" href="pulse.html">Start a free Portfolio Pulse <i>→</i></a><a class="btn btn-line" href="#how">See how it works</a></div>
     </div>
   </div>
-  <div class="scene">
-    <svg viewBox="-480 0 2400 560" preserveAspectRatio="xMidYMin slice" role="img" aria-label="A lake. Above the waterline: a lakehouse on the far shore, a large sun, two founders rowing one boat, and three more boats in the distance. Below the waterline the water gets deeper.">
-      <defs><clipPath id="above"><rect x="-480" y="0" width="2400" height="230"/></clipPath></defs>
-      <g clip-path="url(#above)"><g data-mv="0,170"><g class="a-br"><circle cx="960" cy="230" r="150" fill="var(--clay)"/></g></g></g>
-      <g data-mv="-40,0">
-        <path d="M-480 230 V200 C-300 176 -120 172 20 196 C140 160 300 150 420 188 C560 204 700 180 820 192 C980 160 1180 152 1380 186 C1560 170 1740 176 1920 198 V230 Z" fill="var(--water-soft)" opacity=".6"/>
-        <g transform="translate(62 81) scale(.65)">
-          <line x1="62" y1="177" x2="452" y2="177" stroke="var(--ink)" stroke-width="10" stroke-linecap="round"/>
-          <rect x="82" y="120" width="223" height="54" fill="var(--house)"/>
-          <path d="M100 88 H285 L325 122 H62 Z" fill="var(--clay)"/>
-          <rect x="100" y="136" width="30" height="26" fill="var(--ink)"/><rect x="145" y="136" width="30" height="26" fill="var(--ink)"/><rect x="240" y="136" width="47" height="26" fill="var(--ink)"/>
-          <path d="M195 174 V147 a12.5 12.5 0 0 1 25 0 V174 Z" fill="var(--ink)"/>
-          <circle cx="352" cy="98" r="22" fill="var(--leaf)"/><circle cx="379" cy="88" r="25" fill="var(--leaf)"/><circle cx="406" cy="96" r="22" fill="var(--leaf)"/><circle cx="423" cy="113" r="16" fill="var(--leaf)"/><circle cx="338" cy="112" r="14" fill="var(--leaf)"/><circle cx="382" cy="112" r="20" fill="var(--leaf)"/>
-          <circle cx="349" cy="100" r="8" fill="var(--leaf-soft)"/><circle cx="383" cy="106" r="13" fill="var(--leaf-soft)"/>
-          <path d="M360 174 C367 158 363 141 350 123 L360 116 C366 127 371 134 374 141 C378 131 386 121 395 112 L404 120 C393 135 388 153 392 174 Z" fill="var(--ink)"/>
-          <ellipse cx="374" cy="160" rx="3.5" ry="7" fill="var(--house)"/>
-        </g>
+  <div class="hx-lake">
+    <svg class="hx-scene" id="hxScene" viewBox="0 0 1600 520" preserveAspectRatio="xMidYMax slice" role="img" aria-label="A lake with ten rowing boats, two founders in each. One boat rows to the investor’s house on the shore. The other nine gather where the sun meets the water.">
+      <defs>
+        <linearGradient id="hxW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--d1)"/><stop offset=".5" stop-color="var(--d2)"/><stop offset="1" stop-color="var(--d3)"/></linearGradient>
+        <radialGradient id="hxGlow"><stop offset="0" stop-color="var(--sun)" stop-opacity=".55"/><stop offset=".45" stop-color="var(--sun)" stop-opacity=".16"/><stop offset="1" stop-color="var(--sun)" stop-opacity="0"/></radialGradient>
+        <radialGradient id="hxSheen"><stop offset="0" stop-color="var(--sun)" stop-opacity=".34"/><stop offset="1" stop-color="var(--sun)" stop-opacity="0"/></radialGradient>
+        <linearGradient id="hxMist" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--paper)" stop-opacity="0"/><stop offset="1" stop-color="var(--paper)" stop-opacity=".4"/></linearGradient>
+        <linearGradient id="hxDeep" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--d3)" stop-opacity="0"/><stop offset="1" stop-color="var(--d3)"/></linearGradient>
+        <clipPath id="hxSky"><rect x="-1600" y="-600" width="4800" height="800"/></clipPath>
+      </defs>
+      <g class="hx-sun" transform="translate(1120 0)"><g clip-path="url(#hxSky)"><circle cx="0" cy="200" r="400" fill="url(#hxGlow)"/><circle class="hx-sunc" cx="0" cy="200" r="118" fill="var(--clay)"/></g></g>
+      <g class="hx-hills">
+        <path d="M-1600 200 V170 C-1300 150 -1000 156 -800 168 C-560 140 -380 150 -200 172 C-40 138 160 128 330 164 C500 182 640 150 800 166 C980 132 1180 126 1380 160 C1600 144 1900 150 2400 172 C2700 156 2900 160 3200 174 V200 Z" fill="var(--water-soft)" opacity=".55"/>
+        <path d="M-1600 200 V188 C-1200 176 -900 182 -620 190 C-380 170 -150 172 60 188 C300 176 520 180 760 190 C1000 172 1240 174 1500 188 C1800 178 2200 180 3200 190 V200 Z" fill="var(--water)" opacity=".3"/>
+        <rect x="-1600" y="120" width="4800" height="80" fill="url(#hxMist)"/>
       </g>
-      <rect x="-480" y="230" width="2400" height="330" fill="var(--d2)"/>
-      <rect x="-480" y="330" width="2400" height="230" fill="var(--d3)"/>
-      <rect x="-480" y="450" width="2400" height="110" fill="var(--d4)"/>
-      <g class="a-dr" stroke-linecap="round" stroke-width="6" stroke="var(--sun)">
-        <line x1="850" y1="262" x2="1070" y2="262"/><line x1="890" y1="294" x2="1030" y2="294" opacity=".7"/><line x1="925" y1="326" x2="995" y2="326" opacity=".45"/>
+      <g class="hx-house" transform="translate(40 90) scale(.62)">
+        <line x1="62" y1="177" x2="452" y2="177" stroke="var(--ink)" stroke-width="10" stroke-linecap="round"/>
+        <rect x="82" y="120" width="223" height="54" fill="var(--house)"/>
+        <path d="M100 88 H285 L325 122 H62 Z" fill="var(--clay)"/>
+        <rect x="100" y="136" width="30" height="26" fill="var(--ink)"/><rect x="145" y="136" width="30" height="26" fill="var(--ink)"/><rect x="240" y="136" width="47" height="26" fill="var(--ink)"/>
+        <path d="M195 174 V147 a12.5 12.5 0 0 1 25 0 V174 Z" fill="var(--ink)"/>
+        <circle cx="352" cy="98" r="22" fill="var(--leaf)"/><circle cx="379" cy="88" r="25" fill="var(--leaf)"/><circle cx="406" cy="96" r="22" fill="var(--leaf)"/><circle cx="423" cy="113" r="16" fill="var(--leaf)"/><circle cx="338" cy="112" r="14" fill="var(--leaf)"/><circle cx="382" cy="112" r="20" fill="var(--leaf)"/>
+        <circle cx="349" cy="100" r="8" fill="var(--leaf-soft)"/><circle cx="383" cy="106" r="13" fill="var(--leaf-soft)"/>
+        <path d="M360 174 C367 158 363 141 350 123 L360 116 C366 127 371 134 374 141 C378 131 386 121 395 112 L404 120 C393 135 388 153 392 174 Z" fill="var(--ink)"/>
       </g>
-      <g data-mv="90,0"><g transform="translate(505 230) scale(.5)" opacity=".8"><g class="a-bob" style="animation-delay:-1.2s"><circle cx="-17" cy="-52" r="9" fill="var(--ink)"/><path d="M-33 -24 A16 16 0 0 1 -1 -24 Z" fill="var(--ink)"/><circle cx="17" cy="-52" r="9" fill="var(--water)"/><path d="M1 -24 A16 16 0 0 1 33 -24 Z" fill="var(--water)"/><path d="M-62 -24 H62 L46 -1 H-46 Z" fill="var(--ink)"/></g></g><g transform="translate(1235 230) scale(.62)" opacity=".8"><g class="a-bob" style="animation-delay:-2.6s"><circle cx="-17" cy="-52" r="9" fill="var(--ink)"/><path d="M-33 -24 A16 16 0 0 1 -1 -24 Z" fill="var(--ink)"/><circle cx="17" cy="-52" r="9" fill="var(--water)"/><path d="M1 -24 A16 16 0 0 1 33 -24 Z" fill="var(--water)"/><path d="M-62 -24 H62 L46 -1 H-46 Z" fill="var(--ink)"/></g></g><g transform="translate(1400 230) scale(.42)" opacity=".8"><g class="a-bob" style="animation-delay:-3.9s"><circle cx="-17" cy="-52" r="9" fill="var(--ink)"/><path d="M-33 -24 A16 16 0 0 1 -1 -24 Z" fill="var(--ink)"/><circle cx="17" cy="-52" r="9" fill="var(--water)"/><path d="M1 -24 A16 16 0 0 1 33 -24 Z" fill="var(--water)"/><path d="M-62 -24 H62 L46 -1 H-46 Z" fill="var(--ink)"/></g></g></g>
-      <g data-mv="220,0"><g class="a-bob">
-        <circle cx="610" cy="142" r="14" fill="var(--ink)"/><path d="M585.5 186 A24.5 24.5 0 0 1 634.5 186 Z" fill="var(--ink)"/>
-        <circle cx="680" cy="142" r="14" fill="var(--water)"/><path d="M655.5 186 A24.5 24.5 0 0 1 704.5 186 Z" fill="var(--water)"/>
-        <line x1="596" y1="178" x2="572" y2="230" stroke="var(--ink)" stroke-width="5" stroke-linecap="round"/><line x1="572" y1="230" x2="554" y2="268" stroke="var(--on-deep-3)" stroke-width="5" stroke-linecap="round"/>
-        <line x1="694" y1="178" x2="718" y2="230" stroke="var(--ink)" stroke-width="5" stroke-linecap="round"/><line x1="718" y1="230" x2="736" y2="268" stroke="var(--on-deep-3)" stroke-width="5" stroke-linecap="round"/>
-        <path d="M536 190 H754 L728 228 H562 Z" fill="var(--ink)"/>
-      </g></g>
-      <g class="a-dr2" stroke-linecap="round" stroke-width="4" stroke="var(--on-deep-3)" opacity=".7">
-        <line x1="430" y1="258" x2="800" y2="258"/><line x1="500" y1="284" x2="720" y2="284" opacity=".6"/>
+      <rect x="-1600" y="200" width="4800" height="340" fill="url(#hxW)"/>
+      <g class="a-dr2" stroke="var(--on-deep)" stroke-width="2" stroke-linecap="round" opacity=".13">
+        <line x1="-300" y1="246" x2="260" y2="246"/><line x1="520" y1="282" x2="930" y2="282"/><line x1="1240" y1="252" x2="1820" y2="252"/><line x1="80" y1="352" x2="640" y2="352"/><line x1="980" y1="402" x2="1560" y2="402"/><line x1="-200" y1="452" x2="420" y2="452"/>
       </g>
-      <line x1="-480" y1="230" x2="1920" y2="230" stroke="var(--ink)" stroke-width="5"/>
+      <g class="hx-refl" transform="translate(1120 0)"><ellipse cx="0" cy="214" rx="430" ry="150" fill="url(#hxSheen)"/><g class="a-dr2" stroke="var(--sun)" stroke-width="4" stroke-linecap="round"><line x1="-33" y1="318" x2="19" y2="318" opacity="0.30"/><line x1="-50" y1="346" x2="54" y2="346" opacity="0.24"/><line x1="-40" y1="374" x2="15" y2="374" opacity="0.20"/><line x1="-48" y1="404" x2="63" y2="404" opacity="0.16"/><line x1="-46" y1="436" x2="32" y2="436" opacity="0.13"/><line x1="-66" y1="468" x2="57" y2="468" opacity="0.10"/><line x1="-43" y1="498" x2="37" y2="498" opacity="0.08"/></g><g class="a-dr" stroke="var(--sun)" stroke-width="7" stroke-linecap="round"><line x1="-112" y1="228" x2="112" y2="228"/><line x1="-70" y1="258" x2="70" y2="258" opacity=".7"/><line x1="-34" y1="288" x2="34" y2="288" opacity=".45"/></g></g>
+      <line class="hx-course" x1="0" y1="0" x2="0" y2="0" stroke="var(--sun)" stroke-width="2.5" stroke-dasharray="2 9" stroke-linecap="round" opacity="0"/>
+      <g id="hxBoats"><g class="hx-b" data-i="2" transform="translate(720 258) scale(0.45)"><g class="a-bob" style="animation-delay:-2.6s"><path d="M-62 -24 H62 L46 -1 H-46 Z" fill="var(--bh)"/><circle cx="-17" cy="-52" r="9" fill="var(--bh)"/><path d="M-33 -24 A16 16 0 0 1 -1 -24 Z" fill="var(--bh)"/><circle cx="17" cy="-52" r="9" fill="var(--b2)"/><path d="M1 -24 A16 16 0 0 1 33 -24 Z" fill="var(--b2)"/><line x1="-66" y1="9" x2="66" y2="9" stroke="var(--bh)" stroke-width="3" stroke-linecap="round" opacity=".28"/><line x1="-36" y1="20" x2="36" y2="20" stroke="var(--bh)" stroke-width="3" stroke-linecap="round" opacity=".15"/></g></g><g class="hx-b one" data-i="0" transform="translate(320 263) scale(0.46)"><g class="a-bob" style="animation-delay:-0.0s"><path d="M-62 -24 H62 L46 -1 H-46 Z" fill="var(--bh)"/><circle cx="-17" cy="-52" r="9" fill="var(--bh)"/><path d="M-33 -24 A16 16 0 0 1 -1 -24 Z" fill="var(--bh)"/><circle cx="17" cy="-52" r="9" fill="var(--b2)"/><path d="M1 -24 A16 16 0 0 1 33 -24 Z" fill="var(--b2)"/><line x1="-66" y1="9" x2="66" y2="9" stroke="var(--bh)" stroke-width="3" stroke-linecap="round" opacity=".28"/><line x1="-36" y1="20" x2="36" y2="20" stroke="var(--bh)" stroke-width="3" stroke-linecap="round" opacity=".15"/></g></g><g class="hx-b" data-i="6" transform="translate(1328 263) scale(0.46)"><g class="a-bob" style="animation-delay:-2.3s"><path d="M-62 -24 H62 L46 -1 H-46 Z" fill="var(--bh)"/><circle cx="-17" cy="-52" r="9" fill="var(--bh)"/><path d="M-33 -24 A16 16 0 0 1 -1 -24 Z" fill="var(--bh)"/><circle cx="17" cy="-52" r="9" fill="var(--b2)"/><path d="M1 -24 A16 16 0 0 1 33 -24 Z" fill="var(--b2)"/><line x1="-66" y1="9" x2="66" y2="9" stroke="var(--bh)" stroke-width="3" stroke-linecap="round" opacity=".28"/><line x1="-36" y1="20" x2="36" y2="20" stroke="var(--bh)" stroke-width="3" stroke-linecap="round" opacity=".15"/></g></g><g class="hx-b" data-i="4" transform="translate(960 309) scale(0.59)"><g class="a-bob" style="animation-delay:-5.2s"><path d="M-62 -24 H62 L46 -1 H-46 Z" fill="var(--bh)"/><circle cx="-17" cy="-52" r="9" fill="var(--bh)"/><path d="M-33 -24 A16 16 0 0 1 -1 -24 Z" fill="var(--bh)"/><circle cx="17" cy="-52" r="9" fill="var(--b2)"/><path d="M1 -24 A16 16 0 0 1 33 -24 Z" fill="var(--b2)"/><line x1="-66" y1="9" x2="66" y2="9" stroke="var(--bh)" stroke-width="3" stroke-linecap="round" opacity=".28"/><line x1="-36" y1="20" x2="36" y2="20" stroke="var(--bh)" stroke-width="3" stroke-linecap="round" opacity=".15"/></g></g><g class="hx-b" data-i="7" transform="translate(1472 336) scale(0.67)"><g class="a-bob" style="animation-delay:-3.6s"><path d="M-62 -24 H62 L46 -1 H-46 Z" fill="var(--bh)"/><circle cx="-17" cy="-52" r="9" fill="var(--bh)"/><path d="M-33 -24 A16 16 0 0 1 -1 -24 Z" fill="var(--bh)"/><circle cx="17" cy="-52" r="9" fill="var(--b2)"/><path d="M1 -24 A16 16 0 0 1 33 -24 Z" fill="var(--b2)"/><line x1="-66" y1="9" x2="66" y2="9" stroke="var(--bh)" stroke-width="3" stroke-linecap="round" opacity=".28"/><line x1="-36" y1="20" x2="36" y2="20" stroke="var(--bh)" stroke-width="3" stroke-linecap="round" opacity=".15"/></g></g><g class="hx-b" data-i="1" transform="translate(528 364) scale(0.74)"><g class="a-bob" style="animation-delay:-1.3s"><path d="M-62 -24 H62 L46 -1 H-46 Z" fill="var(--bh)"/><circle cx="-17" cy="-52" r="9" fill="var(--bh)"/><path d="M-33 -24 A16 16 0 0 1 -1 -24 Z" fill="var(--bh)"/><circle cx="17" cy="-52" r="9" fill="var(--b2)"/><path d="M1 -24 A16 16 0 0 1 33 -24 Z" fill="var(--b2)"/><line x1="-66" y1="9" x2="66" y2="9" stroke="var(--bh)" stroke-width="3" stroke-linecap="round" opacity=".28"/><line x1="-36" y1="20" x2="36" y2="20" stroke="var(--bh)" stroke-width="3" stroke-linecap="round" opacity=".15"/></g></g><g class="hx-b" data-i="5" transform="translate(1184 392) scale(0.82)"><g class="a-bob" style="animation-delay:-1.0s"><path d="M-62 -24 H62 L46 -1 H-46 Z" fill="var(--bh)"/><circle cx="-17" cy="-52" r="9" fill="var(--bh)"/><path d="M-33 -24 A16 16 0 0 1 -1 -24 Z" fill="var(--bh)"/><circle cx="17" cy="-52" r="9" fill="var(--b2)"/><path d="M1 -24 A16 16 0 0 1 33 -24 Z" fill="var(--b2)"/><line x1="-66" y1="9" x2="66" y2="9" stroke="var(--bh)" stroke-width="3" stroke-linecap="round" opacity=".28"/><line x1="-36" y1="20" x2="36" y2="20" stroke="var(--bh)" stroke-width="3" stroke-linecap="round" opacity=".15"/></g></g><g class="hx-b" data-i="9" transform="translate(128 405) scale(0.86)"><g class="a-bob" style="animation-delay:-0.7s"><path d="M-62 -24 H62 L46 -1 H-46 Z" fill="var(--bh)"/><circle cx="-17" cy="-52" r="9" fill="var(--bh)"/><path d="M-33 -24 A16 16 0 0 1 -1 -24 Z" fill="var(--bh)"/><circle cx="17" cy="-52" r="9" fill="var(--b2)"/><path d="M1 -24 A16 16 0 0 1 33 -24 Z" fill="var(--b2)"/><line x1="-66" y1="9" x2="66" y2="9" stroke="var(--bh)" stroke-width="3" stroke-linecap="round" opacity=".28"/><line x1="-36" y1="20" x2="36" y2="20" stroke="var(--bh)" stroke-width="3" stroke-linecap="round" opacity=".15"/></g></g><g class="hx-b" data-i="8" transform="translate(1560 433) scale(0.94)"><g class="a-bob" style="animation-delay:-4.9s"><path d="M-62 -24 H62 L46 -1 H-46 Z" fill="var(--bh)"/><circle cx="-17" cy="-52" r="9" fill="var(--bh)"/><path d="M-33 -24 A16 16 0 0 1 -1 -24 Z" fill="var(--bh)"/><circle cx="17" cy="-52" r="9" fill="var(--b2)"/><path d="M1 -24 A16 16 0 0 1 33 -24 Z" fill="var(--b2)"/><line x1="-66" y1="9" x2="66" y2="9" stroke="var(--bh)" stroke-width="3" stroke-linecap="round" opacity=".28"/><line x1="-36" y1="20" x2="36" y2="20" stroke="var(--bh)" stroke-width="3" stroke-linecap="round" opacity=".15"/></g></g><g class="hx-b" data-i="3" transform="translate(848 438) scale(0.95)"><g class="a-bob" style="animation-delay:-3.9s"><path d="M-62 -24 H62 L46 -1 H-46 Z" fill="var(--bh)"/><circle cx="-17" cy="-52" r="9" fill="var(--bh)"/><path d="M-33 -24 A16 16 0 0 1 -1 -24 Z" fill="var(--bh)"/><circle cx="17" cy="-52" r="9" fill="var(--b2)"/><path d="M1 -24 A16 16 0 0 1 33 -24 Z" fill="var(--b2)"/><line x1="-66" y1="9" x2="66" y2="9" stroke="var(--bh)" stroke-width="3" stroke-linecap="round" opacity=".28"/><line x1="-36" y1="20" x2="36" y2="20" stroke="var(--bh)" stroke-width="3" stroke-linecap="round" opacity=".15"/></g></g></g>
+      <line x1="-1600" y1="200" x2="3200" y2="200" stroke="var(--ink)" stroke-width="4"/>
+      <rect x="-1600" y="440" width="4800" height="100" fill="url(#hxDeep)"/>
+      <g class="hx-reeds l"><path d="M9 540 Q9 472 10 428" /><ellipse cx="10" cy="420" rx="4.500" ry="15" transform="rotate(0 10 428)" class="hd"/><path d="M107 540 Q104 475 96 433" /><ellipse cx="96" cy="425" rx="4.500" ry="15" transform="rotate(-5 96 433)" class="hd"/><path d="M23 540 Q18 421 0 342" /><ellipse cx="0" cy="334" rx="4.500" ry="15" transform="rotate(-11 0 342)" class="hd"/><path d="M211 540 Q217 467 245 419" /><ellipse cx="245" cy="411" rx="4.500" ry="15" transform="rotate(17 245 419)" class="hd"/><path d="M57 540 Q59 477 67 435" /><ellipse cx="67" cy="427" rx="4.500" ry="15" transform="rotate(5 67 435)" class="hd"/><path d="M149 540 Q144 425 126 349" /><ellipse cx="126" cy="341" rx="4.500" ry="15" transform="rotate(-11 126 349)" class="hd"/><path d="M249 540 Q244 452 225 394" /><ellipse cx="225" cy="386" rx="4.500" ry="15" transform="rotate(-12 225 394)" class="hd"/><path d="M142 540 Q140 465 134 416" /><ellipse cx="134" cy="408" rx="4.500" ry="15" transform="rotate(-4 134 416)" class="hd"/><path d="M107 540 Q108 464 115 414" /><ellipse cx="115" cy="406" rx="4.500" ry="15" transform="rotate(4 115 414)" class="hd"/><path d="M30 540 Q31 439 39 372" /><ellipse cx="39" cy="364" rx="4.500" ry="15" transform="rotate(4 39 372)" class="hd"/><path d="M208 540 Q204 458 188 404" /><ellipse cx="188" cy="396" rx="4.500" ry="15" transform="rotate(-10 188 404)" class="hd"/><path d="M148 540 Q147 457 145 402" /><ellipse cx="145" cy="394" rx="4.500" ry="15" transform="rotate(-1 145 402)" class="hd"/><path d="M24 540 Q27 402 43 310" /><ellipse cx="43" cy="302" rx="4.500" ry="15" transform="rotate(9 43 310)" class="hd"/></g>
+      <g class="hx-reeds r"><path d="M16 540 Q18 477 29 435" /><ellipse cx="29" cy="427" rx="4.500" ry="15" transform="rotate(6 29 435)" class="hd"/><path d="M52 540 Q55 409 69 323" /><ellipse cx="69" cy="315" rx="4.500" ry="15" transform="rotate(8 69 323)" class="hd"/><path d="M136 540 Q140 420 159 341" /><ellipse cx="159" cy="333" rx="4.500" ry="15" transform="rotate(11 159 341)" class="hd"/><path d="M80 540 Q82 414 91 331" /><ellipse cx="91" cy="323" rx="4.500" ry="15" transform="rotate(5 91 331)" class="hd"/><path d="M236 540 Q235 416 233 334" /><ellipse cx="233" cy="326" rx="4.500" ry="15" transform="rotate(-1 233 334)" class="hd"/><path d="M76 540 Q80 448 100 387" /><ellipse cx="100" cy="379" rx="4.500" ry="15" transform="rotate(12 100 387)" class="hd"/><path d="M46 540 Q41 448 25 388" /><ellipse cx="25" cy="380" rx="4.500" ry="15" transform="rotate(-10 25 388)" class="hd"/><path d="M147 540 Q148 440 154 374" /><ellipse cx="154" cy="366" rx="4.500" ry="15" transform="rotate(3 154 374)" class="hd"/><path d="M126 540 Q130 433 146 363" /><ellipse cx="146" cy="355" rx="4.500" ry="15" transform="rotate(10 146 363)" class="hd"/><path d="M114 540 Q116 442 126 377" /><ellipse cx="126" cy="369" rx="4.500" ry="15" transform="rotate(6 126 377)" class="hd"/><path d="M250 540 Q246 475 231 432" /><ellipse cx="231" cy="424" rx="4.500" ry="15" transform="rotate(-9 231 432)" class="hd"/><path d="M131 540 Q127 421 115 343" /><ellipse cx="115" cy="335" rx="4.500" ry="15" transform="rotate(-8 115 343)" class="hd"/><path d="M193 540 Q189 433 176 363" /><ellipse cx="176" cy="355" rx="4.500" ry="15" transform="rotate(-8 176 363)" class="hd"/></g>
     </svg>
-    <div class="scene-top"><div class="wrap"><span class="m">Above the waterline · what you see</span></div></div>
-    <div class="scene-w water deep">
-      <div class="wrap">
-        <span class="m">Below · what stays with the founders</span>
-        <p class="scene-say">The pattern, never the person.</p>
-      </div>
-    </div>
+    <span class="hx-tagl t1" aria-hidden="true">1 in 10 calls the investor</span>
+    <span class="hx-tagl t2" aria-hidden="true"><span class="a">The other nine handle it alone</span><span class="b">Cadence: where the other nine go</span></span>
   </div>
 </section>
 
-<section class="band sec" id="gap">
-  <div class="wrap">
-    <header class="hd"><p class="ix"><b>01</b>The gap</p><h2 class="h2" data-rv>Every fund says it adds value. <em>Founders don't feel it.</em></h2></header>
-    <div class="g4" data-rv-kids>
-      <div class="stat rule"><p class="n"><span data-count="92">92</span><u>%</u></p><p>of VCs say they add value beyond capital.</p></div>
-      <div class="stat rule"><p class="n"><span data-count="5.2" data-dec="1">5.2</span><small>/ 10</small></p><p>is how founders rate their investors' impact. Investors give themselves 7.1.</p>
-        <div class="vs" data-rv><span>Founders</span><i style="--w:52%"></i><span>Investors</span><i class="b" style="--w:71%"></i></div></div>
-      <div class="stat rule"><p class="n"><span data-count="47">47</span><u>%</u></p><p>of founders say value-add matters more than a fund's brand and portfolio.</p></div>
-      <div class="stat rule"><p class="n"><span data-count="92">92</span><u>%</u></p><p>of VCs name the team as an important factor when an investment fails.</p></div>
-    </div>
-    <p class="big gap-line" data-rv>The help founders need most is about how the team works together. <em>It is the last thing they ask their investor for.</em></p>
-    <p class="m">Forward Partners &amp; Landscape VC · Creandum, Newfund &amp; Kauffman Fellows · Gompers et al. (885 VCs)</p>
-  </div>
-</section>
-
-<section class="wl" id="how">
-  <div class="band tint">
-    <div class="wrap wl-head">
-      <header class="hd"><p class="ix"><b>02</b>How it works, and for whom</p><h2 class="h2" data-rv>Founders do the work in private. You see that it is happening.</h2></header>
-      <span class="wl-lab">Above the waterline · for you, the fund</span>
-      <div class="wl-cells wl-up" data-rv-kids>
-        <p data-n="1">You send one link. Nothing else to organise.</p>
-        <p data-n="2">Nothing. This stays between the two of them.</p>
-        <p data-n="3">You see how many teams asked for a Sprint, started one and finished one.</p>
-        <p data-n="4">You see what your teams name as hardest, and how many did their check-in.</p>
-      </div>
-    </div>
-  </div>
-  <div class="wl-mid"><span class="wline" aria-hidden="true"><svg viewBox="0 0 1680 14" preserveAspectRatio="none" class="a-wave"><path d="M0 7 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg></span><div class="wrap"><div class="wl-cells"><span class="buoy">1</span><span class="buoy">2</span><span class="buoy">3</span><span class="buoy">4</span></div></div></div>
-  <div class="band deep d2 water">
-    <div class="wrap wl-down">
-      <div class="wl-cells" data-rv-kids>
-        <div data-n="1"><h3 class="h3">Find it</h3><p>Emma, our AI interviewer, sets the base across your portfolio. A deep dive with a specialist builds the full scope.</p></div>
-        <div data-n="2"><h3 class="h3">See it together</h3><p>With both saying yes, they see where they agree and differ.</p></div>
-        <div data-n="3"><h3 class="h3">Solve it</h3><p>A Cadence Sprint: six to eight weeks on one problem.</p></div>
-        <div data-n="4"><h3 class="h3">Keep it moving</h3><p>A check-in, and for a few teams the weekend.</p></div>
-      </div>
-      <div class="wl-foot"><span class="wl-lab">Below the waterline · for the founding team</span><a class="lk" href="method.html">See the method →</a></div>
-    </div>
-  </div>
-</section>
-
-<section class="band deep d3 sec water" id="sprint">
-  <div class="wrap">
-    <header class="hd"><p class="ix"><b>03</b>The Sprint</p><h2 class="h2" data-rv>Six to eight weeks on one problem. <em>A start, an end and a result.</em></h2></header>
-    <div class="course-scroll">
-      <svg class="course" viewBox="0 0 1280 300" role="img" aria-label="A course across the water with eight buoys, one for each week. A boat with two founders follows it from the start to the result.">
-        <path class="route" d="M40 210 C105 210 105 150 170 150 C240 150 240 200 310 200 C380 200 380 130 450 130 C520 130 520 190 590 190 C660 190 660 110 730 110 C800 110 800 170 870 170 C940 170 940 100 1010 100 C1080 100 1080 150 1150 150 C1193 150 1193 96 1236 96" fill="none" stroke="var(--on-deep-3)" stroke-width="2" stroke-dasharray="2 9" stroke-linecap="round"/>
-        <path class="trail" d="M40 210 C105 210 105 150 170 150 C240 150 240 200 310 200 C380 200 380 130 450 130 C520 130 520 190 590 190 C660 190 660 110 730 110 C800 110 800 170 870 170 C940 170 940 100 1010 100 C1080 100 1080 150 1150 150 C1193 150 1193 96 1236 96" fill="none" stroke="var(--sun)" stroke-width="3.5" stroke-linecap="round"/>
-        <g font-family="JetBrains Mono, monospace" font-size="11" text-anchor="middle" fill="var(--on-deep-3)">
-          <g class="by" data-xy="170,150"><circle cx="170" cy="150" r="15" fill="var(--d3)" stroke="var(--on-deep-3)" stroke-width="2"/><text x="170" y="154">W1</text></g>
-          <g class="by" data-xy="310,200"><circle cx="310" cy="200" r="15" fill="var(--d3)" stroke="var(--on-deep-3)" stroke-width="2"/><text x="310" y="204">W2</text></g>
-          <g class="by" data-xy="450,130"><circle cx="450" cy="130" r="15" fill="var(--d3)" stroke="var(--on-deep-3)" stroke-width="2"/><text x="450" y="134">W3</text></g>
-          <g class="by" data-xy="590,190"><circle cx="590" cy="190" r="15" fill="var(--d3)" stroke="var(--on-deep-3)" stroke-width="2"/><text x="590" y="194">W4</text></g>
-          <g class="by" data-xy="730,110"><circle cx="730" cy="110" r="15" fill="var(--d3)" stroke="var(--on-deep-3)" stroke-width="2"/><text x="730" y="114">W5</text></g>
-          <g class="by" data-xy="870,170"><circle cx="870" cy="170" r="15" fill="var(--d3)" stroke="var(--on-deep-3)" stroke-width="2"/><text x="870" y="174">W6</text></g>
-          <g class="by" data-xy="1010,100"><circle cx="1010" cy="100" r="15" fill="var(--d3)" stroke="var(--on-deep-3)" stroke-width="2"/><text x="1010" y="104">W7</text></g>
-          <g class="by" data-xy="1150,150"><circle cx="1150" cy="150" r="15" fill="var(--d3)" stroke="var(--on-deep-3)" stroke-width="2"/><text x="1150" y="154">W8</text></g>
-          <text x="40" y="250" text-anchor="start" letter-spacing="1.4">START · ONE GOAL, ONE NUMBER</text>
-          <text x="1240" y="50" text-anchor="end" letter-spacing="1.4">THE RESULT</text>
-        </g>
-        <path d="M1208 96 A28 28 0 0 1 1264 96 Z" fill="var(--sun)"/><line x1="1196" y1="96" x2="1276" y2="96" stroke="var(--on-deep)" stroke-width="3" stroke-linecap="round"/>
-        <g class="cboat" transform="translate(40,210)"><path d="M-24 -4 H24 L16 9 H-16 Z" fill="var(--on-deep)"/><circle cx="-7" cy="-10" r="5" fill="var(--on-deep)"/><circle cx="7" cy="-10" r="5" fill="var(--sun)"/></g>
-      </svg>
-    </div>
-    <ol class="g5 sprint-list" data-rv-kids><li class="rule-s"><svg class="sp-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><b class="t">One goal and one number,</b><span class="s">in the founders' own words.</span></li><li class="rule-s"><svg class="sp-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.9 6.8 19.6l1-5.8L3.5 9.7l5.9-.8z"/></svg><b class="t">A coach or an expert who has solved it,</b><span class="s">like a fractional CFO or a sales lead.</span></li><li class="rule-s"><svg class="sp-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4" r="2"/><circle cx="19" cy="8" r="2"/><circle cx="19" cy="16" r="2"/><circle cx="12" cy="20" r="2"/><circle cx="5" cy="16" r="2"/><circle cx="5" cy="8" r="2"/></svg><b class="t">A small circle of founders</b><span class="s">working on the same problem.</span></li><li class="rule-s"><svg class="sp-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><b class="t">Five minutes a week</b><span class="s">to say what happened and what comes next.</span></li><li class="rule-s"><svg class="sp-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></svg><b class="t">A last week to measure:</b><span class="s">where the number stands, and what they keep doing.</span></li></ol>
-    <p class="sp-tech" data-rv><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M12 78 A22 22 0 0 1 56 78 Z" fill="var(--sun)"/><path d="M8 78 H56 L66 46 L78 108 L88 78 H112" fill="none" stroke="var(--signal)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg>Cadence Intelligence · the technology that connects the Check, the Sprint and the check-in</p>
-    <div class="sprint-foot" data-rv><p class="big">A Sprint starts every month. A team asks for one itself, <em>so you only pay for help that is wanted.</em></p><a class="lk" href="method.html#solve">How a Sprint runs →</a></div>
-  </div>
-</section>
-
-<section class="band sec" id="who">
-  <div class="wrap">
-    <header class="hd"><p class="ix"><b>04</b>Who sees what</p><h2 class="h2" data-rv>Founders are honest because you cannot see them. <em>That is what makes your picture true.</em></h2></header>
-    <div class="who-tabs" data-for="who-home" role="group" aria-label="Choose who is looking">
-      <button type="button" data-v="a" aria-pressed="false">The founder</button><button type="button" data-v="b" aria-pressed="false">Their co-founder</button><button type="button" data-v="c" aria-pressed="true">You, the fund</button><button type="button" data-v="d" aria-pressed="false">Cadence</button>
-    </div>
-    <div class="who" id="who-home" data-view="c" data-rv>
-      <div class="who-above">
-        <div class="who-r who-h"><span>Above the waterline</span><span>The founder</span><span>Their co-founder</span><span>You, the fund</span><span>Cadence</span></div>
-        <div class="who-r"><span>Patterns and counts across five teams or more</span><span data-v="a"><b class="no">No</b></span><span data-v="b"><b class="no">No</b></span><span data-v="c"><b class="yes">Yes</b></span><span data-v="d"><b class="yes">Yes</b></span></div>
-      </div>
-      <div class="who-wl"><span class="wline" aria-hidden="true"><svg viewBox="0 0 1680 14" preserveAspectRatio="none" class="a-wave"><path d="M0 7 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg></span></div>
-      <div class="who-below">
-        <div class="who-r who-h"><span>Below the waterline</span><span></span><span></span><span></span><span></span></div>
-        <div class="who-r"><span>What a founder says and writes</span><span data-v="a"><b class="yes">Yes</b></span><span data-v="b">Only what both agree to share</span><span data-v="c"><b class="nev">Never</b></span><span data-v="d">Only to run the service</span></div>
-        <div class="who-r"><span>Their Sprint: the goal, the number, the weekly notes</span><span data-v="a"><b class="yes">Yes</b></span><span data-v="b">Only what they tell each other</span><span data-v="c"><b class="nev">Never</b></span><span data-v="d">Where it stands, not the words</span></div>
-      </div>
-    </div>
-    <div class="split indep" data-rv>
-      <h3 class="h3">Independent, so it means something.</h3>
-      <div class="stack"><p><a class="lk" href="trust.html">How we keep it that way →</a></p></div>
-    </div>
-  </div>
-</section>
-
-<section class="band tint sec" id="pulse">
-  <div class="wrap split w57">
-    <div class="stack-l">
-      <header class="hd" style="margin-bottom:0"><p class="ix"><b>05</b>The Portfolio Pulse</p><h2 class="h2" data-rv>See what your founding teams are dealing with, and what they do about it.</h2></header>
-      <ul class="plist" data-rv-kids>
-        <li class="rule-s"><b class="t">What is hardest right now</b></li>
-        <li class="rule-s"><b class="t">Who wants help</b></li>
-        <li class="rule-s"><b class="t">What they did</b></li>
-        <li class="rule-s"><b class="t">How founding pairs decide</b></li>
+<section class="band deep hx-under water" id="problem">
+  <div class="wrap hx-under-in">
+    <div class="hx-gauge" data-draw aria-hidden="true"><span>The numbers you see</span><i></i><span>Where it started, a year earlier</span></div>
+    <h2 class="h2 hx-h2" data-rv>You invested in the team. But after the deal, you only see the numbers.</h2>
+    <div>
+      <ul class="hx-notes">
+        <li class="hx-note" data-par="-46"><div><p>A co-founder who stopped agreeing on the plan.</p></div></li>
+        <li class="hx-note" data-par="38"><div><p>A sales lead who isn’t working out.</p></div></li>
+        <li class="hx-note" data-par="-84"><div><p>Runway nobody wants to talk about yet.</p></div></li>
       </ul>
-      <div class="row"><a class="btn btn-line" href="pulse.html#sample">See a sample Portfolio Pulse <i>→</i></a></div>
+      <p class="big hx-alone" data-rv>Founders handle it alone, because telling their investor feels risky. By the time it shows up in the numbers, it started a year ago.</p>
     </div>
-    <div class="panel sticky" data-rv>
-      <div class="panel-h"><b><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M28 66 A32 32 0 0 1 92 66 Z" fill="var(--sun)"/><line x1="16" y1="76" x2="104" y2="76" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><line x1="30" y1="90" x2="90" y2="90" stroke="var(--panel-mute)" stroke-width="6" stroke-linecap="round"/><line x1="46" y1="104" x2="74" y2="104" stroke="var(--panel-mute)" stroke-width="6" stroke-linecap="round"/></svg>Portfolio Pulse</b><span class="tag">Example data</span></div>
-      <div class="stack" style="gap:10px">
-        <div class="lakes" aria-hidden="true"><span class="on" style="--k:0"></span><span class="on" style="--k:1"></span><span class="on" style="--k:2"></span><span class="on" style="--k:3"></span><span class="on" style="--k:4"></span><span class="may"></span><span class="may"></span><span class="may"></span><span class="may"></span><span></span><span></span><span></span></div>
-        <span class="lab">Took part: 5–9 teams · shown as a range, no names</span>
-      </div>
-      <div class="panel-box"><span class="lab">What is hardest right now</span>
-        <div class="bar"><span>Hiring the senior team</span><em>7 teams</em><i style="--w:70%"></i></div>
-        <div class="bar"><span>Runway</span><em class="lt">fewer than 5</em><i class="lt" style="--w:34%"></i></div>
-      </div>
-      <div class="panel-box"><span class="lab">Cadence Sprints</span>
-        <div class="bar"><span>Asked for a Sprint</span><em>6 teams</em><i style="--w:60%"></i></div>
-        <div class="bar"><span>Built a plan</span><em>5 teams</em><i style="--w:50%"></i></div>
-        <div class="bar"><span>Finished</span><em class="lt">fewer than 5</em><i class="lt" style="--w:34%"></i></div>
-      </div>
-      <p class="panel-f">Patterns only, never names · groups of five or more</p>
-    </div>
-  </div>
-</section>
-
-<section class="band sec-s" id="people">
-  <div class="wrap">
-    <header class="hd hd-row"><div><p class="ix"><b>06</b>Who's behind it</p><h2 class="h3 people-tag" data-rv>Built by founders who needed it themselves.</h2></div><a class="lk" href="about.html">About →</a></header>
-    <ul class="faces" data-rv-kids>
-      <li><img src="img/rodin.jpg" alt="Rodin Affourtit" width="300" height="300" loading="lazy"><div><p class="fq">"My co-founder and I drifted apart, slowly. Most of it could have been talked about much earlier. Cadence is what I wish we'd had."</p><p class="fw"><b>Rodin Affourtit</b> · seven years co-founder and co-CEO of a VC-backed company</p></div></li>
-      <li><img src="img/stefan.jpg" alt="Stefan van Eerde" width="440" height="440" loading="lazy"><div><p class="fq">"I started my company with a co-founder who left in the early days. With better advisers around us, it need not have happened."</p><p class="fw"><b>Stefan van Eerde</b> · built and sold his own company, now leads Shadow Leaders, a network of senior experts</p></div></li>
+    <ul class="hx-facts" data-rv-kids>
+      <li class="stat rule"><p class="n"><span data-count="23">23</span><u>%</u></p><p>of VC-backed founding teams lose a co-founder within three years.</p><p class="m">Carta, 22,352 founders, 2025</p></li>
+      <li class="stat rule"><p class="n"><span data-count="92">92</span><u>%</u></p><p>of VCs name the team when an investment fails.</p><p class="m">Gompers et al., 885 VCs, 2020</p></li>
+      <li class="stat rule"><p class="n"><span data-count="10">10</span><u>%</u></p><p>of founders under stress turn to their investors.</p><p class="m">Startup Snapshot, 400+ founders, 2023</p></li>
     </ul>
   </div>
 </section>
 
-<section class="band lakeband">
-  <div class="photo par"><img src="img/lake-wide.jpg" alt="Lake Banyoles in Catalonia: still water, a white boathouse and rowers in the distance." loading="lazy"><span class="cap">Lake Banyoles, Catalonia</span></div>
-  <div class="wrap"><a class="card lakecard" href="founders.html" data-rv><span class="eb">Are you a founder?</span><span class="h3">See what Cadence does for you and your co-founder.</span><span class="lk">For founders →</span></a></div>
+<section class="hx-mid" id="cadence">
+  <div class="hx-mid-pin">
+    <span class="wline" aria-hidden="true"><svg viewBox="0 0 1680 14" preserveAspectRatio="none" class="a-wave"><path d="M0 7 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg></span>
+    <div class="wrap hx-mid-grid">
+      <h2 class="h2 hx-h2">Cadence is the neutral place in between.</h2>
+      <div class="hx-c c1 deep">
+        <span class="hx-who">Below the waterline · your founders</span>
+        <p class="hx-say">Founders talk to us because you can’t see their answers.</p>
+        <div class="hx-red" aria-hidden="true"><i style="--w:100%"></i><i style="--w:82%"></i><i style="--w:58%"></i></div>
+      </div>
+      <div class="hx-c c2">
+        <div class="hx-buoy"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M28 66 A32 32 0 0 1 92 66 Z" fill="var(--clay)"/><line x1="16" y1="76" x2="104" y2="76" stroke="var(--ink)" stroke-width="6" stroke-linecap="round"/><line x1="30" y1="90" x2="90" y2="90" stroke="var(--water)" stroke-width="6" stroke-linecap="round"/><line x1="46" y1="104" x2="74" y2="104" stroke="var(--water)" stroke-width="6" stroke-linecap="round"/></svg>Cadence</div>
+        <p class="hx-say">We help the teams that want it, with people who have solved the same problem.</p>
+      </div>
+      <div class="hx-c c3">
+        <span class="hx-who">Above the waterline · you</span>
+        <p class="hx-say">And you finally see what your portfolio struggles with, in numbers, without a single name.</p>
+        <div class="hx-bars" aria-hidden="true"><div><span>Hiring the senior team</span><em>7 teams</em><i style="--w:70%"></i></div><div><span>How the founders decide</span><em>6 teams</em><i style="--w:60%"></i></div></div>
+        <span class="hx-eg">Example data</span>
+      </div>
+    </div>
+    <div class="hx-bub" aria-hidden="true"><i style="left:57%;--s:10px;--t:6.2s;--d:-8.0s"></i><i style="left:74%;--s:9px;--t:8.0s;--d:-4.2s"></i><i style="left:57%;--s:11px;--t:6.4s;--d:-1.1s"></i><i style="left:43%;--s:11px;--t:10.2s;--d:-0.8s"></i><i style="left:72%;--s:8px;--t:9.9s;--d:-11.9s"></i><i style="left:54%;--s:8px;--t:10.3s;--d:-10.6s"></i><i style="left:48%;--s:4px;--t:11.6s;--d:-4.3s"></i><i style="left:65%;--s:5px;--t:9.0s;--d:-2.6s"></i><i style="left:44%;--s:6px;--t:10.4s;--d:-4.8s"></i><i style="left:57%;--s:5px;--t:7.0s;--d:-4.8s"></i><i style="left:43%;--s:6px;--t:10.9s;--d:-10.4s"></i><i style="left:43%;--s:10px;--t:11.9s;--d:-8.2s"></i><i style="left:50%;--s:7px;--t:6.9s;--d:-2.1s"></i><i style="left:40%;--s:7px;--t:6.1s;--d:-10.0s"></i><i style="left:37%;--s:8px;--t:7.7s;--d:-1.7s"></i><i style="left:60%;--s:9px;--t:9.7s;--d:-3.8s"></i></div>
+    <div class="hx-mid-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+  </div>
+</section>
+
+<section class="band sec hx-how" id="how">
+  <div class="wrap hx-how-grid">
+    <div>
+      <h2 class="h2 hx-h2" data-rv>How it works, in three steps.</h2>
+      <ol class="hx-steps">
+        <li data-rv><span class="hx-n" aria-hidden="true">1</span><div>
+          <h3 class="h3">Every founder does a private Check.</h3>
+          <p class="hx-body">Fifteen minutes with our AI interviewer, then a free conversation with a person.</p>
+          <div class="hx-vis hx-check"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="var(--line)" stroke-width="5"/><path d="M32 5 A27 27 0 0 1 59 32" fill="none" stroke="var(--clay)" stroke-width="5" stroke-linecap="round"/><text x="32" y="38" text-anchor="middle" font-family="Instrument Serif, serif" font-size="21" fill="var(--ink)">15</text></svg><div><b>Fifteen minutes, alone.</b><span>The fund never sees a founder’s answers.</span></div></div>
+        </div></li>
+        <li data-rv><span class="hx-n" aria-hidden="true">2</span><div>
+          <h3 class="h3">The teams that want help get a Sprint.</h3>
+          <p class="hx-body">A few weeks on one problem, with one goal and one number, measured at the start and the end.</p>
+          <div class="hx-vis"><div class="photo par"><img src="img/weekend/lakewalk.jpg" alt="A coach walks along the lake shore with two founders, a notebook open in his hands." width="1800" height="1004" loading="lazy"></div></div>
+        </div></li>
+        <li data-rv><span class="hx-n" aria-hidden="true">3</span><div>
+          <h3 class="h3">Once a year, a few pairs go deep together at the lake.</h3>
+          <div class="hx-vis"><div class="photo par wide"><img src="img/lake-wide.jpg" alt="Lake Banyoles in Catalonia: still water, a white boathouse and rowers in the distance." width="1400" height="586" loading="lazy"><span class="cap">Lake Banyoles, Catalonia</span></div></div>
+        </div></li>
+      </ol>
+      <div class="row" style="margin-top:clamp(20px,3vw,40px)"><a class="btn btn-line" href="method.html">See how the method works</a></div>
+    </div>
+    <aside class="hx-pulse" data-rv>
+      <p class="big">And all year, you see the Portfolio Pulse: what your teams struggle with, who asked for help, and what moved.</p>
+      <div class="panel">
+        <div class="panel-h"><b><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M28 66 A32 32 0 0 1 92 66 Z" fill="var(--sun)"/><line x1="16" y1="76" x2="104" y2="76" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><line x1="30" y1="90" x2="90" y2="90" stroke="var(--panel-mute)" stroke-width="6" stroke-linecap="round"/><line x1="46" y1="104" x2="74" y2="104" stroke="var(--panel-mute)" stroke-width="6" stroke-linecap="round"/></svg>Portfolio Pulse</b><span class="tag">Example data</span></div>
+        <div class="panel-box" data-at="1"><span class="lab">What your teams struggle with</span>
+          <div class="bar"><span>Hiring the senior team</span><em>7 teams</em><i style="--w:70%"></i></div>
+          <div class="bar"><span>How the founders decide</span><em>6 teams</em><i style="--w:60%"></i></div>
+          <div class="bar"><span>Runway</span><em class="lt">fewer than 5</em><i class="lt" style="--w:34%"></i></div>
+        </div>
+        <div class="panel-box" data-at="2"><span class="lab">Who asked for help</span>
+          <div class="bar"><span>Asked for a Sprint</span><em>6 teams</em><i style="--w:60%"></i></div>
+        </div>
+        <div class="panel-box" data-at="2"><span class="lab">What moved</span>
+          <div class="bar"><span>Finished a Sprint</span><em>5 teams</em><i style="--w:50%"></i></div>
+          <div class="bar"><span>Moved their number</span><em>5 teams</em><i style="--w:50%"></i></div>
+        </div>
+        <p class="panel-f">Counts across five teams or more · never a team</p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section class="band deep sec hx-sys" id="system">
+  <div class="wrap">
+    <header class="hd"><h2 class="h2 hx-h2" data-rv>Not just coaching. One system.</h2><p class="ld" data-rv>Cadence has three parts that work together.</p></header>
+    <div class="hx-sys-grid">
+      <div class="hx-planes" data-draw aria-hidden="true">
+        <div class="hx-pl p3"><svg viewBox="0 0 200 200"><circle cx="19" cy="37" r="4.2" fill="var(--on-deep-3)"/><circle cx="37" cy="37" r="4.2" fill="var(--on-deep-3)"/><circle cx="55" cy="37" r="4.2" fill="var(--on-deep-3)"/><circle cx="73" cy="37" r="4.2" fill="var(--on-deep-3)"/><circle cx="91" cy="37" r="4.2" fill="var(--on-deep-3)"/><circle cx="109" cy="37" r="4.2" fill="var(--on-deep-3)"/><circle cx="127" cy="37" r="4.2" fill="var(--on-deep-3)"/><circle cx="145" cy="37" r="4.2" fill="var(--on-deep-3)"/><circle cx="163" cy="37" r="4.2" fill="var(--on-deep-3)"/><circle cx="181" cy="37" r="4.2" fill="var(--on-deep-3)"/><circle cx="19" cy="55" r="4.2" fill="var(--on-deep-3)"/><circle cx="37" cy="55" r="4.2" fill="var(--on-deep-3)"/><circle cx="55" cy="55" r="4.2" fill="var(--on-deep-3)"/><circle cx="73" cy="55" r="4.2" fill="var(--on-deep-3)"/><circle cx="91" cy="55" r="4.2" fill="var(--on-deep-3)"/><circle cx="109" cy="55" r="4.2" fill="var(--on-deep-3)"/><circle cx="127" cy="55" r="4.2" fill="var(--on-deep-3)"/><circle cx="145" cy="55" r="4.2" fill="var(--on-deep-3)"/><circle cx="163" cy="55" r="4.2" fill="var(--on-deep-3)"/><circle cx="181" cy="55" r="4.2" fill="var(--on-deep-3)"/><circle cx="19" cy="73" r="4.2" fill="var(--on-deep-3)"/><circle cx="37" cy="73" r="4.2" fill="var(--on-deep-3)"/><circle cx="55" cy="73" r="4.2" fill="var(--on-deep-3)"/><circle cx="73" cy="73" r="4.2" fill="var(--on-deep-3)"/><circle cx="91" cy="73" r="4.2" fill="var(--on-deep-3)"/><circle cx="109" cy="73" r="4.2" fill="var(--on-deep-3)"/><circle cx="127" cy="73" r="4.2" fill="var(--on-deep-3)"/><circle cx="145" cy="73" r="4.2" fill="var(--on-deep-3)"/><circle cx="163" cy="73" r="4.2" fill="var(--on-deep-3)"/><circle cx="181" cy="73" r="4.2" fill="var(--on-deep-3)"/><circle cx="19" cy="91" r="4.2" fill="var(--on-deep-3)"/><circle cx="37" cy="91" r="4.2" fill="var(--on-deep-3)"/><circle cx="55" cy="91" r="4.2" fill="var(--on-deep-3)"/><circle cx="73" cy="91" r="4.2" fill="var(--on-deep-3)"/><circle cx="91" cy="91" r="4.2" fill="var(--on-deep-3)"/><circle cx="109" cy="91" r="4.2" fill="var(--on-deep-3)"/><circle cx="127" cy="91" r="4.2" fill="var(--on-deep-3)"/><circle cx="145" cy="91" r="4.2" fill="var(--on-deep-3)"/><circle cx="163" cy="91" r="4.2" fill="var(--on-deep-3)"/><circle cx="181" cy="91" r="4.2" fill="var(--on-deep-3)"/><circle cx="19" cy="109" r="4.2" fill="var(--on-deep-3)"/><circle cx="37" cy="109" r="4.2" fill="var(--on-deep-3)"/><circle cx="55" cy="109" r="4.2" fill="var(--on-deep-3)"/><circle cx="73" cy="109" r="4.2" fill="var(--on-deep-3)"/><circle cx="91" cy="109" r="4.2" fill="var(--on-deep-3)"/><circle cx="109" cy="109" r="4.2" fill="var(--on-deep-3)"/><circle cx="127" cy="109" r="4.2" fill="var(--on-deep-3)"/><circle cx="145" cy="109" r="4.2" fill="var(--on-deep-3)"/><circle cx="163" cy="109" r="4.2" fill="var(--on-deep-3)"/><circle cx="181" cy="109" r="4.2" fill="var(--on-deep-3)"/><circle cx="19" cy="127" r="4.2" fill="var(--on-deep-3)"/><circle cx="37" cy="127" r="4.2" fill="var(--on-deep-3)"/><circle cx="55" cy="127" r="4.2" fill="var(--on-deep-3)"/><circle cx="73" cy="127" r="4.2" fill="var(--on-deep-3)"/><circle cx="91" cy="127" r="4.2" fill="var(--on-deep-3)"/><circle cx="109" cy="127" r="4.2" fill="var(--on-deep-3)"/><circle cx="127" cy="127" r="4.2" fill="var(--on-deep-3)"/><circle cx="145" cy="127" r="4.2" fill="var(--on-deep-3)"/><circle cx="163" cy="127" r="4.2" fill="var(--on-deep-3)"/><circle cx="181" cy="127" r="4.2" fill="var(--on-deep-3)"/><circle cx="19" cy="145" r="4.2" fill="var(--on-deep-3)"/><circle cx="37" cy="145" r="4.2" fill="var(--on-deep-3)"/><circle cx="55" cy="145" r="4.2" fill="var(--on-deep-3)"/><circle cx="73" cy="145" r="4.2" fill="var(--on-deep-3)"/><circle cx="91" cy="145" r="4.2" fill="var(--on-deep-3)"/><circle cx="109" cy="145" r="4.2" fill="var(--on-deep-3)"/><circle cx="127" cy="145" r="4.2" fill="var(--on-deep-3)"/><circle cx="145" cy="145" r="4.2" fill="var(--on-deep-3)"/><circle cx="163" cy="145" r="4.2" fill="var(--on-deep-3)"/><circle cx="181" cy="145" r="4.2" fill="var(--on-deep-3)"/><circle cx="19" cy="163" r="4.2" fill="var(--on-deep-3)"/><circle cx="37" cy="163" r="4.2" fill="var(--on-deep-3)"/><circle cx="55" cy="163" r="4.2" fill="var(--on-deep-3)"/><circle cx="73" cy="163" r="4.2" fill="var(--on-deep-3)"/><circle cx="91" cy="163" r="4.2" fill="var(--on-deep-3)"/><circle cx="109" cy="163" r="4.2" fill="var(--on-deep-3)"/><circle cx="127" cy="163" r="4.2" fill="var(--on-deep-3)"/><circle cx="145" cy="163" r="4.2" fill="var(--on-deep-3)"/><circle cx="163" cy="163" r="4.2" fill="var(--on-deep-3)"/><circle cx="181" cy="163" r="4.2" fill="var(--on-deep-3)"/></svg></div>
+        <div class="hx-pl p2"><svg viewBox="0 0 200 200" fill="none" stroke="var(--sun)" stroke-width="3"><circle cx="78" cy="100" r="42"/><circle cx="122" cy="100" r="42"/><circle cx="100" cy="100" r="5" fill="var(--sun)" stroke="none"/></svg></div>
+        <div class="hx-pl p1"><svg viewBox="0 0 200 200" fill="none" stroke="var(--signal)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 112 H62 L80 62 L104 152 L122 112 H186"/><circle cx="14" cy="112" r="5" fill="var(--signal)" stroke="none"/><circle cx="186" cy="112" r="5" fill="var(--signal)" stroke="none"/></svg></div>
+      </div>
+      <ul class="hx-parts" data-rv-kids>
+        <li data-hot="1"><h3 class="h3">Cadence Intelligence</h3><p class="hx-body">runs the Check, the weekly check-ins and the short exercises founders do between sessions. It turns what founders say into the patterns you see, and it matches every problem to the right person.</p></li>
+        <li data-hot="2"><h3 class="h3">Founder coaches</h3><p class="hx-body">work on what happens between the co-founders: how they decide, who does what, where they want to go.</p></li>
+        <li data-hot="3"><h3 class="h3">The Shadow Leaders network</h3><p class="hx-body">brings about 80 senior experts who have built, scaled and sold companies, for what happens in the company itself.</p></li>
+      </ul>
+    </div>
+    <p class="hx-three" data-rv-kids><span>The system finds the problem.</span><span>The people solve it.</span><span>You see what moved.</span></p>
+  </div>
+</section>
+
+<section class="band sec" id="gets">
+  <div class="wrap">
+    <header class="hd"><h2 class="h2 hx-h2" data-rv>What your fund gets</h2></header>
+    <ul class="hx-gets" data-rv-kids>
+      <li><h3 class="h3">Early warning.</h3><p class="hx-body">You see what your portfolio struggles with before it reaches the numbers.</p></li>
+      <li><h3 class="h3">Help that is actually used.</h3><p class="hx-body">Founders ask for it themselves, so you only pay for support a team wants.</p></li>
+      <li><h3 class="h3">Proof that you are smart capital.</h3><p class="hx-body">How many teams got help, and how many moved their number. Something to show your founders, your LPs and the founders you want to back next.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section class="band tint sec" id="pattern">
+  <div class="wrap split mid">
+    <div class="stack-l">
+      <h2 class="h2 hx-h2" data-rv>See the pattern, never the person</h2>
+      <p class="hx-body" data-rv>Founders are honest with Cadence because the fund cannot see their answers. That honesty is what makes your picture true, so we protect it. You see counts across five teams or more. You never see which team said what.</p>
+      <p data-rv><a class="lk" href="trust.html">How we handle data</a></p>
+    </div>
+    <div class="hx-veil" data-rv>
+      <div class="hx-veil-up">
+        <span class="hx-vlab">What you see <span class="hx-eg">Example data</span></span>
+        <div class="hx-bars"><div><span>Hiring the senior team</span><em>7 teams</em><i style="--w:70%"></i></div><div><span>How the founders decide</span><em>5 teams</em><i style="--w:50%"></i></div><div class="lt"><span>Runway</span><em>fewer than 5 · not shown</em><i style="--w:34%"></i></div></div>
+      </div>
+      <span class="wline" aria-hidden="true"><svg viewBox="0 0 1680 14" preserveAspectRatio="none" class="a-wave"><path d="M0 7 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg></span>
+      <div class="hx-veil-down deep water">
+        <span class="hx-vlab">What stays with the founders</span>
+        <p>Which team said what.</p>
+        <div class="hx-red" aria-hidden="true"><i style="--w:92%"></i><i style="--w:100%"></i><i style="--w:64%"></i></div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section class="band sec" id="start">
   <div class="wrap">
-    <header class="hd"><p class="ix"><b>07</b>Start</p><h2 class="h2" data-rv>Start small. <em>Grow into it.</em></h2></header>
-    <ol class="steps" data-rv-kids>
-      <li class="card"><span class="eb">1 · Free</span><svg class="st-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10M12 20V4M19 20v-7"/></svg><h3 class="h3">A free Portfolio Pulse.</h3><p>Your founders do the Cadence Check. In about four weeks you see what your teams are dealing with and how many want help.</p><a class="lk" href="pulse.html#sample">See a sample Portfolio Pulse →</a></li>
-      <li class="card"><span class="eb">2</span><svg class="st-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg><h3 class="h3">Sprints for the teams that ask.</h3><p>You pay per Sprint. No package and no yearly contract to begin with.</p><a class="lk" href="method.html#solve">How a Sprint runs →</a></li>
-      <li class="card"><span class="eb">3</span><svg class="st-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><h3 class="h3">The whole year.</h3><p>Checks and check-ins for every team, a set of Sprints, and a private weekend for your own portfolio.</p><a class="lk" href="weekend.html">The weekend →</a></li>
+    <h2 class="h2 hx-h2" data-rv>Start free, and decide after you see it</h2>
+    <ol class="hx-path" data-draw data-rv-kids>
+      <li><b>Free</b><p>You send one message to your founders.</p></li>
+      <li><b>&nbsp;</b><p>They do the Check.</p></li>
+      <li><b>&nbsp;</b><p>You get a thirty-minute readout of your portfolio.</p></li>
+      <li><b>&nbsp;</b><p>Every team that wants it gets a free conversation.</p></li>
+      <li><b>Your decision</b><p>Only when teams ask for help do you buy Sprints, starting small.</p></li>
     </ol>
-    <div class="row" style="margin-top:40px"><a class="btn btn-clay" href="pulse.html">Start a free Portfolio Pulse <i>→</i></a><a class="btn btn-line" href="https://cal.com/founderscadence/30min-cadence" target="_blank" rel="noopener">Book a 30-minute call</a></div>
+    <div class="hx-start-foot" data-rv><a class="btn btn-clay" href="pulse.html">Start a free Portfolio Pulse <i>→</i></a><p>We share prices in person.</p></div>
   </div>
 </section>
+
+<section class="band raised sec" id="people">
+  <div class="wrap">
+    <header class="hd hd-row"><h2 class="h2 hx-h2" data-rv>Who is behind it</h2><a class="lk" href="about.html">About</a></header>
+    <div class="hx-people">
+      <div class="hx-person q" data-rv>
+        <img src="img/rodin.jpg" alt="Rodin Affourtit" width="300" height="300" loading="lazy">
+        <div>
+          <p class="hx-body"><b>Rodin Affourtit</b> ran a VC-backed company as co-founder and co-CEO for seven years, through a long co-founder dispute.</p>
+          <blockquote>“Most of it could have been talked about much earlier. Our investors wanted to help, but they couldn’t see it.”</blockquote>
+        </div>
+      </div>
+      <div class="hx-person" data-rv>
+        <img src="img/stefan.jpg" alt="Stefan van Eerde" width="440" height="440" loading="lazy">
+        <p class="hx-body"><b>Stefan van Eerde</b> leads Shadow Leaders, a network of senior experts who have built, scaled and sold companies.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band hx-end" id="go">
+  <div class="wrap">
+    <h2 class="hx-endh" data-rv>Find out what your founders aren’t telling you. <span>Without asking them to.</span></h2>
+    <div class="row" data-rv><a class="btn btn-clay" href="pulse.html">Start a free Portfolio Pulse <i>→</i></a><a class="btn btn-line" href="https://cal.com/founderscadence/30min-cadence" target="_blank" rel="noopener">Book a thirty-minute call</a></div>
+    <p data-rv><a class="lk" href="founders.html">Are you a founder?</a></p>
+  </div>
+</section>
+<span class="wline" aria-hidden="true"><svg viewBox="0 0 1680 14" preserveAspectRatio="none" class="a-wave"><path d="M0 7 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg></span>
 </main><footer class="band deep close water"><div class="wrap"><div class="close-routes"><a href="https://app.founderscadence.com/start" target="_blank" rel="noopener"><span class="eb">Founders</span><b>Start your free Check <i>→</i></b></a><a href="pulse.html"><span class="eb">Funds</span><b>Start a free Portfolio Pulse <i>→</i></b></a></div><p class="statement" aria-label="The pattern, never the person."><span>The pattern,</span><span>never the person.</span></p><div class="foot"><div><a class="brand" href="index.html"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M28 66 A32 32 0 0 1 92 66 Z" fill="var(--sun)"/><line x1="16" y1="76" x2="104" y2="76" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><line x1="30" y1="90" x2="90" y2="90" stroke="var(--on-deep-3)" stroke-width="6" stroke-linecap="round"/><line x1="46" y1="104" x2="74" y2="104" stroke="var(--on-deep-3)" stroke-width="6" stroke-linecap="round"/></svg>Cadence</a><small>The independent development arm for VC portfolios.</small></div><div><h4>For funds</h4><ul><li><a href="index.html">Home</a></li><li><a href="pulse.html">Free Portfolio Pulse</a></li></ul></div><div><h4>For founders</h4><ul><li><a href="founders.html">Founders</a></li><li><a href="weekend.html">The weekend</a></li></ul></div><div><h4>Both</h4><ul><li><a href="method.html">The method</a></li><li><a href="trust.html">Trust</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="/privacy.html">Privacy policy</a></li><li><a href="/aviso-legal.html">Aviso legal</a></li></ul></div></div></div></footer></div><script src="site.js"></script>
+<script>
+/* Home for funds: the lake scene and the scroll-linked pieces. The page reads fine without any of it. */
+(function(){
+'use strict';
+var d=document,w=window,root=d.documentElement;
+var RM=!!(w.matchMedia&&w.matchMedia('(prefers-reduced-motion: reduce)').matches);
+var clamp=function(v){return v<0?0:v>1?1:v};
+var ease=function(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2};
+var out=function(t){return 1-Math.pow(1-t,3)};
+var jobs=[],tick=false;
+function frame(){tick=false;for(var i=0;i<jobs.length;i++)jobs[i]()}
+function req(){if(!tick){tick=true;requestAnimationFrame(frame)}}
+w.addEventListener('scroll',req,{passive:true});w.addEventListener('resize',req);
+
+/* the lake: ten boats. One rows to the investor's house; as you scroll, the other nine gather where the sun meets the water */
+var svg=d.getElementById('hxScene'),hero=d.querySelector('.hx-hero');
+if(svg&&hero){
+  var W=1600,H=520,HZ=200;
+  var boats=[].slice.call(svg.querySelectorAll('.hx-b')).sort(function(a,b){return a.getAttribute('data-i')-b.getAttribute('data-i')});
+  var sun=svg.querySelector('.hx-sun'),refl=svg.querySelector('.hx-refl'),house=svg.querySelector('.hx-house'),hills=svg.querySelector('.hx-hills'),course=svg.querySelector('.hx-course');
+  var reeds=[].slice.call(svg.querySelectorAll('.hx-reeds'));
+  var t1=d.querySelector('.hx-tagl.t1'),t2=d.querySelector('.hx-tagl.t2');
+  /* home: [share of the visible width, depth 0 far .. 1 near]; ring: [units from the sun, depth] */
+  var HOME=[[.2,.16],[.33,.6],[.45,.14],[.53,.92],[.6,.36],[.74,.72],[.83,.16],[.92,.48],[.975,.9],[.08,.78]];
+  var RING=[null,[-222,.44],[-175,.2],[-6,.94],[-72,.1],[152,.2],[48,.1],[218,.48],[118,.76],[-132,.72]];
+  var G={},mx=.5,t0=0,introDone=RM;
+  function pos(fx,dp){return {x:G.x0+fx*G.vw,y:HZ+26+dp*230,s:(.36+.64*dp)*G.bs}}
+  function measure(){
+    var r=svg.getBoundingClientRect(); if(!r.width) return;
+    G.sc=Math.max(r.width/W,r.height/H); G.vw=r.width/G.sc; G.vh=r.height/G.sc; G.x0=W/2-G.vw/2; G.y0=H-G.vh;
+    G.small=G.vw<1000; G.bs=G.small?.8:1; G.rs=G.small?.5:1; G.m=Math.min(1,G.vw/1150);
+    G.sunX=G.x0+(G.small?.64:.7)*G.vw;
+    G.hs=G.small?.46:.62; G.hx=G.x0+(G.small?-6:G.vw*.025);
+    house.setAttribute('transform','translate('+G.hx.toFixed(1)+' '+(HZ-177*G.hs).toFixed(1)+') scale('+G.hs+')');
+  }
+  function draw(){
+    if(!G.sc) measure(); if(!G.sc) return;
+    var now=performance.now(),k=clamp((w.pageYOffset||0)/(hero.offsetHeight*.5)),px=(mx-.5),busy=false;
+    sun.setAttribute('transform','translate('+(G.sunX-px*10).toFixed(1)+' '+(k*34).toFixed(1)+')');
+    if(reeds[0]){reeds[0].setAttribute('transform','translate('+(G.x0-20-px*80-k*60).toFixed(1)+' '+(k*50+540*(1-G.rs)).toFixed(1)+') scale('+G.rs+')');reeds[1].setAttribute('transform','translate('+(G.x0+G.vw-250*G.rs+30-px*80+k*60).toFixed(1)+' '+(k*50+540*(1-G.rs)).toFixed(1)+') scale('+G.rs+')')}
+    refl.setAttribute('transform','translate('+(G.sunX-px*10).toFixed(1)+' 0)');
+    hills.setAttribute('transform','translate('+(-px*18).toFixed(1)+' 0)');
+    var lone=null;
+    boats.forEach(function(b,i){
+      var h=pos(HOME[i][0],HOME[i][1]),t,e;
+      if(i===0){t={x:G.hx+452*G.hs+78*G.bs,y:HZ+30,s:.4*G.bs};e=ease(clamp(k*1.25))}
+      else{t={x:G.sunX+RING[i][0]*G.m,y:HZ+26+RING[i][1]*230,s:(.36+.64*RING[i][1])*G.bs};e=ease(clamp(k*1.4-i*.035))}
+      var x=h.x+(t.x-h.x)*e,y=h.y+(t.y-h.y)*e,s=h.s+(t.s-h.s)*e,o=1;
+      if(!introDone){
+        var q=clamp((now-t0-200-HOME[i][1]*520)/1500); if(q<1) busy=true;
+        var side=HOME[i][0]<.5?-1:1; x+=side*G.vw*.42*(1-out(q)); o=out(clamp(q*1.6));
+      }
+      x-=px*(12+46*(s/G.bs));
+      b.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+') scale('+s.toFixed(3)+')');
+      b.style.opacity=o.toFixed(2);
+      if(i===0) lone={x:x,y:y,s:s,o:o};
+    });
+    if(!introDone&&!busy) introDone=true;
+    var jx=G.hx+452*G.hs+6;
+    course.setAttribute('x1',(lone.x-66*lone.s).toFixed(1));course.setAttribute('y1',(lone.y-10*lone.s).toFixed(1));
+    course.setAttribute('x2',jx.toFixed(1));course.setAttribute('y2',HZ+8);
+    course.setAttribute('opacity',(lone.o*.9*(lone.x-66*lone.s>jx+12?1:0)).toFixed(2));
+    if(t1){
+      var lx=(lone.x+78*lone.s-G.x0)*G.sc,ly=(lone.y-26*lone.s-G.y0)*G.sc;
+      lx=Math.max(8,Math.min(svg.clientWidth-t1.offsetWidth-8,lx));
+      t1.style.transform='translate('+lx.toFixed(1)+'px,'+ly.toFixed(1)+'px) translate(0,-50%)';
+      t1.classList.toggle('on',introDone);
+    }
+    if(t2){
+      var h2=t2.offsetWidth/2+8,sx=Math.max(h2,Math.min(svg.clientWidth-h2,(G.sunX-G.x0)*G.sc));
+      t2.style.transform='translate('+sx.toFixed(1)+'px,'+(svg.clientHeight-14)+'px) translate(-50%,-100%)';
+      t2.classList.toggle('on',introDone); t2.classList.toggle('sw',k>.55);
+    }
+    if(busy) req();
+  }
+  measure(); t0=performance.now();
+  jobs.push(draw);
+  w.addEventListener('resize',function(){measure()});
+  if(!RM&&w.matchMedia('(hover:hover) and (pointer:fine)').matches){
+    hero.addEventListener('pointermove',function(e){mx=e.clientX/w.innerWidth;req()});
+    hero.addEventListener('pointerleave',function(){mx=.5;req()});
+  }
+  if(d.fonts&&d.fonts.ready) d.fonts.ready.then(function(){measure();req()});
+}
+
+/* the waterline: the screen holds while the three parts light up, from the depths to the surface */
+var mid=d.querySelector('.hx-mid'),pin=mid&&mid.querySelector('.hx-mid-pin');
+if(mid&&!RM){
+  var mq=w.matchMedia('(min-width:901px) and (min-height:600px)');
+  jobs.push(function(){
+    if(!mq.matches){mid.removeAttribute('data-step');return}
+    if(!mid.hasAttribute('data-step')) mid.setAttribute('data-step','1');
+    var r=mid.getBoundingClientRect(),topH=pin.getBoundingClientRect().height,total=r.height-topH;
+    var q=total>0?clamp((w.innerHeight-topH-r.top)/total):1;
+    mid.setAttribute('data-step',q<.3?'1':q<.62?'2':'3');
+  });
+}
+
+/* how it works: the Portfolio Pulse fills in as the steps pass */
+var how=d.querySelector('.hx-how');
+if(how&&!RM){
+  var steps=[].slice.call(how.querySelectorAll('.hx-steps>li')),boxes=[].slice.call(how.querySelectorAll('.panel-box'));
+  how.setAttribute('data-step','0');
+  jobs.push(function(){
+    var line=w.innerHeight*.62,n=0,sticky=w.innerWidth>1000;
+    steps.forEach(function(s,i){if(s.getBoundingClientRect().top<line)n=i+1});
+    if(!sticky){var pr=boxes[0].getBoundingClientRect();n=pr.top<w.innerHeight*.8?3:0}
+    boxes.forEach(function(b){b.classList.toggle('on',n>=+b.getAttribute('data-at'))});
+  });
+}
+
+/* one system: point at a part and its layer stands out */
+var sys=d.querySelector('.hx-sys');
+if(sys){
+  [].slice.call(sys.querySelectorAll('.hx-parts li')).forEach(function(li){
+    li.addEventListener('pointerenter',function(){sys.setAttribute('data-hot',li.getAttribute('data-hot'))});
+    li.addEventListener('pointerleave',function(){sys.removeAttribute('data-hot')});
+  });
+}
+req(); w.addEventListener('load',req);
+})();
+</script>
 </body>
 </html>
