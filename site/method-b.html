@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The method · Cadence</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="description" content="We help founders say the real problem out loud, work on it with someone who has solved it, and measure whether it moved.">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="stylesheet" href="site.css">
+<style>
+/* The method page: the one page that reads as a system. A dark drawing board with a fine grid for the
+   system itself (green for the system, sun for people), then paper for the people and the rules.
+   mz- is shared by both versions, ma- is version A (the loop), mb- is version B (one problem, start to finish). */
+.mz-night{--ground:var(--panel);--ink:var(--on-deep);--body:var(--on-deep-2);--mute:var(--on-deep-3);--line:var(--deep-line);--line-2:rgba(240,244,248,.45);--accent:var(--signal);--card:rgba(255,255,255,.05);color:var(--on-deep-2)}
+.mz-grid{background-color:var(--panel);background-image:linear-gradient(rgba(240,244,248,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(240,244,248,.045) 1px,transparent 1px);background-size:56px 56px;background-position:center top}
+.mz-h2{font-size:clamp(36px,5.2vw,80px);line-height:1;letter-spacing:-.02em}
+.mz-body{font-size:clamp(17px,1.35vw,20px);line-height:1.55;color:var(--body);max-width:34em;text-wrap:pretty}
+.mz-lab{font:500 12px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+
+/* hero */
+.mz-hero{position:relative;overflow:hidden}
+.mz-hero::after{content:"";position:absolute;inset:auto 0 0 0;height:40%;background:linear-gradient(transparent,var(--panel));pointer-events:none}
+.mz-hero-in{position:relative;z-index:1;display:grid;gap:clamp(20px,3vw,40px);padding-block:clamp(40px,7vw,104px) clamp(40px,6vw,88px)}
+.mz-h1{font:400 clamp(40px,7.4vw,124px)/.95 var(--display);letter-spacing:-.028em;color:var(--on-deep);text-wrap:balance;max-width:12em}
+.mz-h1 .ln{display:grid;grid-template-columns:minmax(0,1fr);align-items:center}
+.mz-h1 .ln b{font:500 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--signal);margin-bottom:6px}
+.mz-hero .ld{color:var(--on-deep-2);max-width:38em}
+.mz-pipe{display:flex;flex-wrap:wrap;align-items:center;gap:10px 0;margin-top:clamp(8px,2vw,24px);font:500 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--on-deep-3)}
+.mz-pipe span{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--deep-line);border-radius:999px;background:rgba(14,25,38,.7)}
+.mz-pipe span::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--signal)}
+.mz-pipe i{flex:none;width:clamp(14px,3vw,44px);height:1px;background:var(--signal);opacity:.6;position:relative;overflow:hidden}
+.mo .mz-pipe i::after{content:"";position:absolute;inset:-1px;width:40%;background:#fff;animation:mz-flow 2.4s linear infinite}
+@keyframes mz-flow{from{transform:translateX(-120%)}to{transform:translateX(320%)}}
+.mz-pipe .back{border-style:dashed}.mz-pipe .back::before{display:none}
+@media (min-width:901px){.mz-h1 .ln{grid-template-columns:86px minmax(0,1fr)}.mz-h1 .ln b{margin:0}}
+
+/* the sticky strip on phones: where you are in Find, Solve, Keep */
+.mz-strip{position:sticky;top:calc(var(--top) + env(safe-area-inset-top,0px));z-index:6;display:flex;gap:6px;padding:10px max(var(--gut),20px);margin-inline:calc(max(var(--gut),20px)*-1);background:rgba(14,25,38,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--deep-line)}
+.mz-strip b{flex:1;text-align:center;font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--on-deep-3);padding:9px 0;border-radius:999px;border:1px solid var(--deep-line);transition:background .4s,color .4s,border-color .4s}
+.mz-strip b.on{background:var(--signal);border-color:var(--signal);color:#06231a}
+@media (min-width:1001px){.mz-strip{display:none}}
+
+/* version A: the loop */
+.ma-flow{padding-block:clamp(56px,8vw,128px)}
+.ma-grid{display:grid;gap:28px;margin-top:clamp(24px,4vw,56px)}
+.ma-loop{width:100%;max-width:440px;margin-inline:auto;display:block;overflow:visible;--q:1;--a1:1;--a2:1;--a3:1}
+.ma-loop .ring{fill:none;stroke:var(--deep-line);stroke-width:1.5;stroke-dasharray:2 7}
+.ma-loop .arc{fill:none;stroke:var(--signal);stroke-width:4;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--p))}
+.ma-loop .a1{--p:var(--a1)}.ma-loop .a2{--p:var(--a2)}.ma-loop .a3{--p:var(--a3)}
+.ma-loop .hd{fill:var(--signal);opacity:calc((var(--p) - .9)*10)}
+.ma-loop .nd circle{fill:var(--panel);stroke:var(--on-deep-3);stroke-width:2;transition:fill .5s,stroke .5s}
+.ma-loop .nd text{font:400 21px var(--display);fill:var(--on-deep-3);text-anchor:middle;transition:fill .5s}
+.ma-loop .nd.on circle{fill:var(--signal);stroke:var(--signal)}
+.ma-loop .nd.on text{fill:#06231a}
+.ma-loop .out{font:500 9.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;fill:var(--on-deep-2);text-anchor:middle;opacity:calc((var(--p) - .45)*4);transition:opacity .3s}
+.ma-loop .mid{font:500 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;fill:var(--sun);text-anchor:middle}
+.ma-loop .dot{transform-origin:260px 250px;transform:rotate(calc(var(--q)*360deg))}
+.ma-loop .dot circle{fill:#fff;filter:drop-shadow(0 0 8px var(--signal))}
+.ma-steps{display:grid}
+.ma-steps>li{padding-block:clamp(28px,4vw,0px);border-top:1px solid var(--deep-line)}
+.ma-steps .v{font:400 clamp(56px,7.4vw,120px)/.9 var(--display);letter-spacing:-.03em;color:var(--on-deep);display:flex;align-items:baseline;gap:14px}
+.ma-steps .v small{font:500 12px/1 var(--mono);letter-spacing:.14em;color:var(--signal)}
+.ma-steps p{margin-top:18px}
+.ma-spec{margin-top:22px;display:grid;border:1px solid var(--deep-line);border-radius:14px;overflow:hidden;max-width:34em;background:rgba(14,25,38,.75)}
+.ma-spec div{display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;padding:12px 16px;font-size:15px;line-height:1.4;color:var(--on-deep)}
+.ma-spec div+div{border-top:1px solid var(--deep-line)}
+.ma-spec b{font:500 11px/1.9 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--on-deep-3)}
+.ma-spec .o b{color:var(--signal)}
+.ma-again{margin-top:clamp(28px,4vw,56px);padding-top:clamp(24px,3vw,40px);border-top:1px solid var(--deep-line);font:400 clamp(26px,3.4vw,50px)/1.1 var(--display);letter-spacing:-.012em;color:var(--on-deep);max-width:19em;text-wrap:balance}
+@media (min-width:1001px){
+.ma-grid{grid-template-columns:minmax(0,5.4fr) minmax(0,6.6fr);gap:clamp(40px,6vw,104px);align-items:start}
+.ma-loop-w{position:sticky;top:calc(var(--top) + 3vh);height:calc(100vh - var(--top) - 6vh);display:grid;place-items:center}
+.ma-loop{width:min(100%,600px,74vh);max-width:none}
+.ma-steps>li{min-height:74vh;display:flex;flex-direction:column;justify-content:center;border-top:0;padding:0}
+}
+
+/* version B: one problem card that travels through the system */
+.mb-flow{padding-block:clamp(56px,8vw,128px)}
+.mb-grid{display:grid;gap:24px;margin-top:clamp(24px,4vw,56px)}
+.mb-beats{display:grid}
+.mb-beats>li{padding-block:clamp(26px,4vw,0px);border-top:1px solid var(--deep-line);display:grid;gap:16px}
+.mb-beats .k{font:500 11.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--signal);display:flex;gap:10px;align-items:center}
+.mb-beats .k i{font-style:normal;color:var(--on-deep-3)}
+.mb-beats h3{font:400 clamp(32px,4vw,60px)/1 var(--display);letter-spacing:-.018em;color:var(--on-deep)}
+.mb-eg{font:500 10.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--on-deep-2);border:1px solid var(--line-2);border-radius:999px;padding:7px 10px;display:inline-block}
+.mb-pane{border:1px solid var(--deep-line);border-radius:16px;background:rgba(14,25,38,.8);padding:16px;display:grid;gap:10px;max-width:34em}
+.mb-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;font-size:15px;color:var(--on-deep);padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.045)}
+.mb-row em{font:500 11px/1 var(--mono);font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--on-deep-3)}
+.mb-row.ok em{color:var(--signal)}.mb-row.hot{background:rgba(233,160,127,.14);box-shadow:inset 0 0 0 1px var(--sun)}.mb-row.hot em{color:var(--sun)}
+.mb-row.gone span{text-decoration:line-through;color:var(--on-deep-3)}
+.mb-note{font:400 11.5px/1.5 var(--mono);letter-spacing:.04em;color:var(--on-deep-3)}
+.mb-num{display:flex;align-items:baseline;gap:14px;font:400 clamp(64px,8vw,112px)/.9 var(--display);letter-spacing:-.03em;color:var(--on-deep)}
+.mb-num i{font-style:normal;font-size:.5em;color:var(--signal)}.mb-num small{font:500 11px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--on-deep-3)}
+.mb-wk{display:flex;gap:6px}.mb-wk i{flex:1;height:6px;border-radius:9px;background:var(--panel-line)}.mb-wk i.d{background:var(--signal)}
+.mb-machine{display:none}
+.mb-under{margin-top:clamp(28px,4vw,56px);padding-top:clamp(24px,3vw,40px);border-top:1px solid var(--deep-line);display:grid;gap:22px}
+.mb-under p{font:400 clamp(24px,3vw,44px)/1.12 var(--display);letter-spacing:-.012em;color:var(--on-deep);max-width:22em;text-wrap:balance}
+.mb-verbs{display:flex;align-items:center;gap:0;font:400 clamp(30px,5vw,76px)/1 var(--display);color:var(--signal);letter-spacing:-.02em;flex-wrap:wrap}
+.mb-verbs i{width:clamp(18px,4vw,64px);height:2px;background:var(--signal);opacity:.5;margin-inline:clamp(8px,1.4vw,20px)}
+@media (min-width:1001px){
+.mb-grid{grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:clamp(40px,6vw,104px);align-items:start}
+.mb-pin .mb-beats>li{min-height:70vh;align-content:center;border-top:0;padding:0}
+.mb-flow:not(.mb-pin) .mb-beats>li{padding-block:40px}
+.mb-pin .mb-beats .mb-pane,.mb-pin .mb-egm{display:none}
+.mb-pin .mb-machine{display:grid;gap:18px;position:sticky;top:calc(var(--top) + 5vh);align-content:center;min-height:calc(100vh - var(--top) - 10vh)}
+.mb-pin .mb-beats>li{transition:opacity .5s}
+.mb-pin .mb-beats>li:not(.on){opacity:.3}
+.mb-rail{display:grid;grid-template-columns:1fr 3fr 2fr 1fr;gap:6px;font:500 10.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--on-deep-3)}
+.mb-rail span{display:grid;gap:8px}
+.mb-rail u{display:flex;gap:4px;text-decoration:none}
+.mb-rail u i{flex:1;height:5px;border-radius:9px;background:var(--panel-line);transition:background .4s}
+.mb-rail u i.d{background:var(--signal)}
+.mb-card{position:relative;border-radius:24px;border:1.5px solid var(--deep-line);background:#101f31;padding:clamp(22px,2.2vw,32px);display:grid;gap:18px;box-shadow:0 60px 100px -50px rgba(0,0,0,.8),0 0 0 8px rgba(255,255,255,.02);transition:border-color .5s,box-shadow .5s,transform .7s var(--ease)}
+.mb-card[data-state="1"]{border-style:dashed;transform:rotate(-1.2deg)}
+.mb-card[data-state="5"],.mb-card[data-state="6"]{border-color:var(--signal);box-shadow:0 60px 100px -50px rgba(0,0,0,.8),0 0 60px -20px rgba(95,224,185,.5)}
+.mb-card[data-state="7"]{border-color:var(--deep-line);transform:rotate(.8deg) scale(.97)}
+.mb-card-h{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.mb-status{font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:8px 11px;border-radius:999px;background:var(--signal);color:#06231a}
+.mb-card[data-state="1"] .mb-status{background:transparent;color:var(--on-deep-3);box-shadow:inset 0 0 0 1px var(--deep-line)}
+.mb-card[data-state="7"] .mb-status{background:var(--sun);color:#3a160a}
+.mb-q{font:400 clamp(24px,2.3vw,34px)/1.14 var(--display);color:var(--on-deep);letter-spacing:-.008em;transition:color .5s}
+.mb-card[data-state="1"] .mb-q{color:var(--on-deep-3)}
+.mb-card[data-state="7"] .mb-q{color:var(--on-deep-3);text-decoration:line-through;text-decoration-thickness:1.5px}
+.mb-panes{display:grid}
+.mb-panes .mb-pane{grid-area:1/1;max-width:none;border:0;background:none;padding:0;opacity:0;transform:translateY(14px);transition:opacity .45s,transform .6s var(--ease);pointer-events:none;align-content:start}
+.mb-panes .mb-pane.on{opacity:1;transform:none}
+}
+
+/* two networks that plug into the system */
+.mz-plug{display:none}
+.mz-nets{display:grid;gap:16px;margin-top:clamp(24px,3vw,40px)}
+.mz-net{border-radius:28px;padding:clamp(24px,2.8vw,44px);display:flex;flex-direction:column;gap:20px;position:relative;overflow:hidden}
+.mz-net.sl{background:var(--d3);--ink:var(--on-deep);--body:var(--on-deep-2);--line:var(--deep-line);--accent:var(--signal);color:var(--on-deep-2)}
+.mz-net.fc{background:#f4d9c6;--accent:var(--clay);--line:rgba(19,28,39,.16)}
+.mz-net h3{font:400 clamp(38px,4.4vw,68px)/.96 var(--display);letter-spacing:-.022em;color:var(--ink)}
+.mz-net ul{display:grid;margin-top:4px}
+.mz-net li{display:grid;grid-template-columns:minmax(0,1fr);gap:2px;padding-block:13px;border-top:1px solid var(--line);font-size:16px;color:var(--ink)}
+.mz-net li b{font:400 clamp(21px,1.8vw,26px)/1.15 var(--display)}
+.mz-net.fc li b{font-size:clamp(26px,2.6vw,40px);line-height:1.05}
+.mz-net.fc li{padding-block:18px}
+.mz-plugl{display:none}
+.mz-net li span{font:500 11px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.mz-net .btn{align-self:flex-start;margin-top:auto}
+.mz-net.sl .btn-line{border-color:var(--on-deep);color:var(--on-deep)}
+.mz-net.sl .btn-line:hover{background:var(--on-deep);color:var(--d3)}
+.mz-80{position:absolute;right:-20px;top:-14px;width:230px;opacity:.5;pointer-events:none}
+.mz-two{position:absolute;right:18px;top:18px;width:120px;opacity:.9;pointer-events:none}
+.mz-match{margin-top:clamp(24px,3vw,44px);font:400 clamp(24px,2.8vw,42px)/1.1 var(--display);letter-spacing:-.012em;color:var(--ink);max-width:24em;text-wrap:balance}
+@media (min-width:901px){
+.mz-nets{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:0}
+.mz-net li{grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:16px}
+.mz-plugl{display:block;width:max-content;margin:clamp(24px,3vw,40px) auto 0;font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:999px}
+.mz-plug{display:block;width:100%;height:70px;overflow:visible}
+.mz-plug path{fill:none;stroke:var(--ink);stroke-width:1.5}
+.mz-plug .f{stroke:var(--clay);stroke-width:2.5;stroke-dasharray:6 10}
+.mo .mz-plug .f{animation:mz-dash 1.6s linear infinite}
+@keyframes mz-dash{to{stroke-dashoffset:-32}}
+.mz-plug text{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;fill:var(--paper);text-anchor:middle}
+}
+
+/* four rules */
+.mz-rules{display:grid;gap:0;margin-top:clamp(28px,4vw,56px);counter-reset:r}
+.mz-rules li{counter-increment:r;border-top:1.5px solid var(--ink);padding-block:22px clamp(22px,3vw,40px);display:grid;gap:12px;align-content:start}
+.mz-rules li::before{content:"0" counter(r);font:500 12px/1 var(--mono);letter-spacing:.14em;color:var(--clay)}
+.mz-rules h3{font:400 clamp(28px,2.6vw,40px)/1.02 var(--display);letter-spacing:-.012em;color:var(--ink)}
+.mz-rules p{font-size:16px;line-height:1.5;max-width:22em}
+@media (min-width:1001px){.mz-rules{grid-template-columns:repeat(4,minmax(0,1fr));gap:0 clamp(18px,2.4vw,36px)}}
+@media (min-width:641px) and (max-width:1000px){.mz-rules{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px}}
+
+/* why it works */
+.mz-why{display:grid;gap:26px;margin-top:clamp(28px,4vw,56px)}
+.mz-why .stat p{max-width:24em}
+@media (min-width:901px){.mz-why{grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(24px,5vw,88px)}}
+
+/* closing */
+.mz-doors{display:grid;gap:16px;margin-top:clamp(28px,4vw,56px)}
+.mz-door{border-radius:28px;padding:clamp(24px,2.8vw,44px);display:flex;flex-direction:column;gap:16px;min-height:clamp(240px,24vw,340px);background:var(--raised);border:1px solid var(--line)}
+.mz-door.fu{background:var(--d3);border-color:transparent;--ink:var(--on-deep);--body:var(--on-deep-2);--accent:var(--sun);color:var(--on-deep-2)}
+.mz-door h3{font:400 clamp(30px,3.2vw,50px)/1.02 var(--display);letter-spacing:-.016em;color:var(--ink);max-width:12em}
+.mz-door .btn{align-self:flex-start;margin-top:auto}
+.mz-lake{margin-top:clamp(22px,3vw,36px);font-size:17px;color:var(--body)}
+@media (min-width:901px){.mz-doors{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}}
+.mz-end+.wline{background:var(--paper);color:var(--ink)}
+.mz-end+.wline svg{background:linear-gradient(transparent 50%,var(--d4) 50%)}
+
+@media (max-width:900px){
+.mz-h1 .ln+.ln{margin-top:14px}
+.mz-pipe i{display:none}.mz-pipe{gap:8px}
+.mz-80{display:none}.mz-two{width:64px;right:16px;top:16px;opacity:.6}
+.ma-loop{max-width:340px}
+}
+@media (min-width:901px){.mz-80{opacity:.32}}
+</style>
+</head>
+<body>
+<script>try{if(sessionStorage.getItem('tide'))document.documentElement.classList.add('arrive')}catch(e){}</script><div class="page" data-page="method"><header class="top"><a class="skip" href="#main">Skip to content</a><div class="wrap top-in"><a class="brand" href="index.html" aria-label="Cadence, home"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M28 66 A32 32 0 0 1 92 66 Z" fill="var(--clay)"/><line x1="16" y1="76" x2="104" y2="76" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><line x1="30" y1="90" x2="90" y2="90" stroke="var(--water)" stroke-width="6" stroke-linecap="round"/><line x1="46" y1="104" x2="74" y2="104" stroke="var(--water)" stroke-width="6" stroke-linecap="round"/></svg>Cadence</a><nav class="nav" aria-label="Site"><a href="index.html">For funds</a><a href="founders.html">For founders</a><a href="method.html" aria-current="page">The method</a><a href="weekend.html">The weekend</a><a href="trust.html">Trust</a><a href="about.html">About</a></nav><a class="btn btn-clay btn-sm" href="https://app.founderscadence.com/start" target="_blank" rel="noopener">Start your free Check</a><button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span></button></div><div class="top-prog" aria-hidden="true"><i></i><svg class="top-boat" viewBox="0 0 26 14"><path d="M1 5 H25 L21 13 H5 Z" fill="currentColor"/><circle cx="10" cy="3" r="2.4" fill="currentColor"/><circle cx="16" cy="3" r="2.4" fill="currentColor"/></svg></div></header><div class="sheet"><nav aria-label="Menu"><a href="index.html">For funds</a><a href="founders.html">For founders</a><a href="method.html" aria-current="page">The method</a><a href="weekend.html">The weekend</a><a href="trust.html">Trust</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav><a class="btn btn-clay" href="https://app.founderscadence.com/start" target="_blank" rel="noopener">Start your free Check</a><p>The pattern, never the person.</p></div><main id="main"><section class="mz-hero mz-night mz-grid" id="top">
+  <div class="wrap mz-hero-in">
+    <p class="mz-lab">The Cadence method</p>
+    <h1 class="mz-h1">One problem at a time. From unspoken to solved.</h1>
+    <p class="ld">The method is simple. We help founders say the real problem out loud, work on it with someone who has solved it, and measure whether it moved. Here is what that looks like with one example.</p>
+    <div class="mz-pipe" aria-hidden="true"><span>Unspoken</span><i></i><span>Said</span><i></i><span>Seen together</span><i></i><span>In a Sprint</span><i></i><span>Measured</span><i></i><span>Off the list</span></div>
+  </div>
+</section>
+
+<section class="mz-night mz-grid mb-flow" id="example">
+  <div class="wrap">
+    <h2 class="h2 mz-h2" data-rv>The example, in seven beats</h2>
+    <p class="mb-egm" style="margin-top:18px"><span class="mb-eg">Example</span></p>
+    <div class="mz-strip" aria-hidden="true"><b data-v="find">Find</b><b data-v="solve">Solve</b><b data-v="keep">Keep</b></div>
+    <div class="mb-grid">
+      <ol class="mb-beats">
+<li data-verb="" data-status="Unspoken"><p class="k">Before<i>1 of 7</i></p><h3>The problem.</h3><p class="mz-body">“We have nine months of runway, and we don’t agree: raise or cut?” Two founders, both thinking it, neither saying it. It is not in the board deck.</p><div class="mb-pane" aria-hidden="true"><div class="mb-row"><span>Founder one</span><em>Thinking it</em></div><div class="mb-row"><span>Founder two</span><em>Thinking it</em></div><p class="mb-note">Not in the board deck</p></div></li>
+<li data-verb="find" data-status="Said"><p class="k">Find<i>2 of 7</i></p><h3>It gets said.</h3><p class="mz-body">Each founder does the Check, alone: fifteen minutes with our AI interviewer. Both name runway as their hardest thing. Nobody else reads their words.</p><div class="mb-pane" aria-hidden="true"><div class="mb-row ok"><span>Founder one · hardest right now</span><em>Runway</em></div><div class="mb-row ok"><span>Founder two · hardest right now</span><em>Runway</em></div><p class="mb-note">Nobody else reads their words</p></div></li>
+<li data-verb="find" data-status="Seen together"><p class="k">Find<i>3 of 7</i></p><h3>They see it together.</h3><p class="mz-body">With a yes from both, their answers appear side by side. They agree on hiring and on the product. They differ on runway. It is shown as a question to talk about, not a verdict.</p><div class="mb-pane" aria-hidden="true"><div class="mb-row ok"><span>Hiring</span><em>Agree</em></div><div class="mb-row ok"><span>The product</span><em>Agree</em></div><div class="mb-row hot"><span>Runway</span><em>Differ</em></div><p class="mb-note">A question to talk about, not a verdict</p></div></li>
+<li data-verb="find" data-status="With a person"><p class="k">Find<i>4 of 7</i></p><h3>A person steps in.</h3><p class="mz-body">Thirty minutes, free. They leave with one step for this week, and a straight answer: this is worth a Sprint.</p><div class="mb-pane" aria-hidden="true"><div class="mb-row"><span>A conversation</span><em>30 minutes · free</em></div><div class="mb-row ok"><span>One step for this week</span><em>Agreed</em></div><div class="mb-row hot"><span>A straight answer</span><em>Worth a Sprint</em></div></div></li>
+<li data-verb="solve" data-status="In a Sprint"><p class="k">Solve<i>5 of 7</i></p><h3>They solve it.</h3><p class="mz-body">Six to eight weeks with a fractional CFO who has done this before. One goal: extend the runway. One number: months of runway. Five minutes a week to keep it moving.</p><div class="mb-pane" aria-hidden="true"><div class="mb-row"><span>One goal</span><em>Extend the runway</em></div><div class="mb-row"><span>One number</span><em>Months of runway</em></div><div class="mb-row"><span>With</span><em>A fractional CFO</em></div><div class="mb-wk"><i class="d"></i><i class="d"></i><i class="d"></i><i></i><i></i><i></i><i></i><i></i></div><p class="mb-note">Six to eight weeks · five minutes a week</p></div></li>
+<li data-verb="solve" data-status="Measured"><p class="k">Solve<i>6 of 7</i></p><h3>They measure it.</h3><p class="mz-body">Nine months at the start. Ten in week three. The Sprint ends, and they write down what they keep doing.</p><div class="mb-pane" aria-hidden="true"><div class="mb-num">9<i>→</i>10<small>months<br>of runway</small></div><div class="mb-row"><span>At the start</span><em>9 months</em></div><div class="mb-row ok"><span>In week three</span><em>10 months</em></div></div></li>
+<li data-verb="keep" data-status="Off the list"><p class="k">Keep<i>7 of 7</i></p><h3>And it keeps moving.</h3><p class="mz-body">Three months later, a five-minute check-in. Runway is off the list. Go-to-market is new. That is where the next Sprint starts.</p><div class="mb-pane" aria-hidden="true"><div class="mb-row gone"><span>Runway</span><em>Off the list</em></div><div class="mb-row hot"><span>Go-to-market</span><em>New</em></div><p class="mb-note">Where the next Sprint starts</p></div></li>
+      </ol>
+      <aside class="mb-machine" aria-hidden="true">
+        <div class="mb-rail"><span>Before<u><i></i></u></span><span>Find<u><i></i><i></i><i></i></u></span><span>Solve<u><i></i><i></i></u></span><span>Keep<u><i></i></u></span></div>
+        <div class="mb-card" data-state="1">
+          <div class="mb-card-h"><span class="mb-eg">Example</span><span class="mb-status">Unspoken</span></div>
+          <p class="mb-q">“We have nine months of runway, and we don’t agree: raise or cut?”</p>
+          <div class="mb-panes"></div>
+        </div>
+      </aside>
+    </div>
+    <div class="mb-under" data-rv><p>This is an example. Your problem will be different. The steps are the same every time.</p><div class="mb-verbs" aria-label="Find, Solve, Keep"><span>Find</span><i></i><span>Solve</span><i></i><span>Keep</span></div></div>
+  </div>
+</section>
+
+<section class="band sec" id="networks">
+  <div class="wrap">
+    <header class="hd" style="margin-bottom:0"><h2 class="h2 mz-h2" data-rv>Two networks behind the system.</h2><p class="ld" data-rv>The system finds the problem. These are the people who help solve it.</p></header>
+    <p class="mz-plugl" aria-hidden="true">Solve</p>
+    <svg class="mz-plug" viewBox="0 0 1200 70" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M600 0 V34 H300 V70" vector-effect="non-scaling-stroke"/><path d="M600 0 V34 H900 V70" vector-effect="non-scaling-stroke"/>
+      <path class="f" d="M600 0 V34 H300 V70" vector-effect="non-scaling-stroke"/><path class="f" d="M600 0 V34 H900 V70" vector-effect="non-scaling-stroke"/>
+    </svg>
+    <div class="mz-nets" data-rv-kids>
+      <article class="mz-net sl">
+        <svg class="mz-80" viewBox="0 0 222 178" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="var(--on-deep-3)"/><circle cx="34" cy="12" r="4" fill="var(--on-deep-3)"/><circle cx="56" cy="12" r="4" fill="var(--on-deep-3)"/><circle cx="78" cy="12" r="4" fill="var(--on-deep-3)"/><circle cx="100" cy="12" r="4" fill="var(--on-deep-3)"/><circle cx="122" cy="12" r="4" fill="var(--on-deep-3)"/><circle cx="144" cy="12" r="4" fill="var(--on-deep-3)"/><circle cx="166" cy="12" r="4" fill="var(--on-deep-3)"/><circle cx="188" cy="12" r="4" fill="var(--on-deep-3)"/><circle cx="210" cy="12" r="4" fill="var(--on-deep-3)"/><circle cx="12" cy="34" r="4" fill="var(--on-deep-3)"/><circle cx="34" cy="34" r="4" fill="var(--on-deep-3)"/><circle cx="56" cy="34" r="4" fill="var(--on-deep-3)"/><circle cx="78" cy="34" r="4" fill="var(--on-deep-3)"/><circle cx="100" cy="34" r="4" fill="var(--on-deep-3)"/><circle cx="122" cy="34" r="4" fill="var(--on-deep-3)"/><circle cx="144" cy="34" r="4" fill="var(--on-deep-3)"/><circle cx="166" cy="34" r="4" fill="var(--on-deep-3)"/><circle cx="188" cy="34" r="4" fill="var(--on-deep-3)"/><circle cx="210" cy="34" r="4" fill="var(--on-deep-3)"/><circle cx="12" cy="56" r="4" fill="var(--on-deep-3)"/><circle cx="34" cy="56" r="4" fill="var(--on-deep-3)"/><circle cx="56" cy="56" r="4" fill="var(--on-deep-3)"/><circle cx="78" cy="56" r="4" fill="var(--on-deep-3)"/><circle cx="100" cy="56" r="4" fill="var(--on-deep-3)"/><circle cx="122" cy="56" r="4" fill="var(--on-deep-3)"/><circle cx="144" cy="56" r="4" fill="var(--on-deep-3)"/><circle cx="166" cy="56" r="4" fill="var(--on-deep-3)"/><circle cx="188" cy="56" r="4" fill="var(--on-deep-3)"/><circle cx="210" cy="56" r="4" fill="var(--on-deep-3)"/><circle cx="12" cy="78" r="4" fill="var(--on-deep-3)"/><circle cx="34" cy="78" r="4" fill="var(--on-deep-3)"/><circle cx="56" cy="78" r="4" fill="var(--on-deep-3)"/><circle cx="78" cy="78" r="4" fill="var(--on-deep-3)"/><circle cx="100" cy="78" r="4" fill="var(--on-deep-3)"/><circle cx="122" cy="78" r="4" fill="var(--on-deep-3)"/><circle cx="144" cy="78" r="4" fill="var(--on-deep-3)"/><circle cx="166" cy="78" r="4" fill="var(--on-deep-3)"/><circle cx="188" cy="78" r="4" fill="var(--on-deep-3)"/><circle cx="210" cy="78" r="4" fill="var(--on-deep-3)"/><circle cx="12" cy="100" r="4" fill="var(--on-deep-3)"/><circle cx="34" cy="100" r="4" fill="var(--on-deep-3)"/><circle cx="56" cy="100" r="4" fill="var(--on-deep-3)"/><circle cx="78" cy="100" r="4" fill="var(--on-deep-3)"/><circle cx="100" cy="100" r="4" fill="var(--on-deep-3)"/><circle cx="122" cy="100" r="4" fill="var(--on-deep-3)"/><circle cx="144" cy="100" r="4" fill="var(--on-deep-3)"/><circle cx="166" cy="100" r="4" fill="var(--on-deep-3)"/><circle cx="188" cy="100" r="4" fill="var(--on-deep-3)"/><circle cx="210" cy="100" r="4" fill="var(--on-deep-3)"/><circle cx="12" cy="122" r="4" fill="var(--on-deep-3)"/><circle cx="34" cy="122" r="4" fill="var(--on-deep-3)"/><circle cx="56" cy="122" r="4" fill="var(--on-deep-3)"/><circle cx="78" cy="122" r="4" fill="var(--on-deep-3)"/><circle cx="100" cy="122" r="4" fill="var(--on-deep-3)"/><circle cx="122" cy="122" r="4" fill="var(--on-deep-3)"/><circle cx="144" cy="122" r="4" fill="var(--on-deep-3)"/><circle cx="166" cy="122" r="4" fill="var(--on-deep-3)"/><circle cx="188" cy="122" r="4" fill="var(--on-deep-3)"/><circle cx="210" cy="122" r="4" fill="var(--on-deep-3)"/><circle cx="12" cy="144" r="4" fill="var(--on-deep-3)"/><circle cx="34" cy="144" r="4" fill="var(--on-deep-3)"/><circle cx="56" cy="144" r="4" fill="var(--on-deep-3)"/><circle cx="78" cy="144" r="4" fill="var(--on-deep-3)"/><circle cx="100" cy="144" r="4" fill="var(--on-deep-3)"/><circle cx="122" cy="144" r="4" fill="var(--on-deep-3)"/><circle cx="144" cy="144" r="4" fill="var(--on-deep-3)"/><circle cx="166" cy="144" r="4" fill="var(--on-deep-3)"/><circle cx="188" cy="144" r="4" fill="var(--on-deep-3)"/><circle cx="210" cy="144" r="4" fill="var(--on-deep-3)"/><circle cx="12" cy="166" r="4" fill="var(--on-deep-3)"/><circle cx="34" cy="166" r="4" fill="var(--on-deep-3)"/><circle cx="56" cy="166" r="4" fill="var(--on-deep-3)"/><circle cx="78" cy="166" r="4" fill="var(--on-deep-3)"/><circle cx="100" cy="166" r="4" fill="var(--on-deep-3)"/><circle cx="122" cy="166" r="4" fill="var(--on-deep-3)"/><circle cx="144" cy="166" r="4" fill="var(--on-deep-3)"/><circle cx="166" cy="166" r="4" fill="var(--on-deep-3)"/><circle cx="188" cy="166" r="4" fill="var(--on-deep-3)"/><circle cx="210" cy="166" r="4" fill="var(--on-deep-3)"/></svg>
+        <p class="mz-lab">For the company</p>
+        <h3>Shadow Leaders</h3>
+        <p class="mz-body">About 80 senior experts who have built, scaled and sold companies, led by Stefan van Eerde. They lead the Sprints on company problems:</p>
+        <ul>
+          <li><b>A fractional CFO</b><span>Runway and the next round</span></li>
+          <li><b>A sales lead</b><span>The first sales hire</span></li>
+          <li><b>A hiring lead</b><span>The senior team</span></li>
+          <li><b>An operations lead</b><span>The first managers</span></li>
+        </ul>
+        <a class="btn btn-line" href="about.html">Meet Shadow Leaders <i>→</i></a>
+      </article>
+      <article class="mz-net fc">
+        <svg class="mz-two" viewBox="0 0 120 80" fill="none" stroke="var(--clay)" stroke-width="2.5" aria-hidden="true"><circle cx="44" cy="40" r="30"/><circle cx="76" cy="40" r="30"/></svg>
+        <p class="mz-lab">For the two of you</p>
+        <h3>Founder coaches</h3>
+        <p class="mz-body">Experienced coaches who work with founding teams on what happens between the founders:</p>
+        <ul>
+          <li><b>How you decide</b></li>
+          <li><b>Who does what</b></li>
+          <li><b>Where you want the company to go</b></li>
+        </ul>
+      </article>
+    </div>
+    <p class="mz-match" data-rv>Matched by a person who knows your problem. One session first; more only if it fits.</p>
+  </div>
+</section>
+
+<section class="band tint sec" id="rules">
+  <div class="wrap">
+    <h2 class="h2 mz-h2" data-rv>Four rules hold it together.</h2>
+    <ol class="mz-rules" data-rv-kids>
+      <li><h3>Private by default.</h3><p>Funds see counts across five teams or more. Never a team, a founder or a word.</p></li>
+      <li><h3>AI asks, people judge.</h3><p>Our AI interviewer asks and listens. Every judgement comes from a person, with the founder’s yes.</p></li>
+      <li><h3>One problem at a time.</h3><p>One goal, one number, a start and an end. Then it is done.</p></li>
+      <li><h3>Measured at the start and the end.</h3><p>We promise the work, not the outcome.</p></li>
+    </ol>
+    <p style="margin-top:clamp(20px,3vw,36px)" data-rv><a class="lk" href="trust.html">How we handle data</a></p>
+  </div>
+</section>
+
+<section class="band sec mz-end" id="start">
+  <div class="wrap">
+    <h2 class="h2 mz-h2" style="font-size:clamp(40px,7vw,116px);max-width:11em" data-rv>What is your one problem? Fifteen minutes to find out.</h2>
+    <div class="mz-doors" data-rv-kids>
+      <div class="mz-door"><p class="mz-lab" style="--accent:var(--clay)">For founders</p><h3>Start with your own Check.</h3><p class="mz-body">Fifteen minutes, private, free.</p><a class="btn btn-clay" href="https://app.founderscadence.com/start" target="_blank" rel="noopener">Start your free Check <i>→</i></a></div>
+      <div class="mz-door fu"><p class="mz-lab">For funds</p><h3>See the pattern, never the person.</h3><a class="btn btn-clay" href="pulse.html">Start a free Portfolio Pulse <i>→</i></a></div>
+    </div>
+    <p class="mz-lake" data-rv>Once a year, a few pairs go deeper at the lake. <a class="lk" href="weekend.html">See the weekend</a></p>
+  </div>
+</section>
+<span class="wline" aria-hidden="true"><svg viewBox="0 0 1680 14" preserveAspectRatio="none" class="a-wave"><path d="M0 7 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0 q30 -6 60 0 t60 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg></span>
+</main><footer class="band deep close water"><div class="wrap"><div class="close-routes"><a href="https://app.founderscadence.com/start" target="_blank" rel="noopener"><span class="eb">Founders</span><b>Start your free Check <i>→</i></b></a><a href="pulse.html"><span class="eb">Funds</span><b>Start a free Portfolio Pulse <i>→</i></b></a></div><p class="statement" aria-label="The pattern, never the person."><span>The pattern,</span><span>never the person.</span></p><div class="foot"><div><a class="brand" href="index.html"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M28 66 A32 32 0 0 1 92 66 Z" fill="var(--sun)"/><line x1="16" y1="76" x2="104" y2="76" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><line x1="30" y1="90" x2="90" y2="90" stroke="var(--on-deep-3)" stroke-width="6" stroke-linecap="round"/><line x1="46" y1="104" x2="74" y2="104" stroke="var(--on-deep-3)" stroke-width="6" stroke-linecap="round"/></svg>Cadence</a><small>The independent development arm for VC portfolios.</small></div><div><h4>For funds</h4><ul><li><a href="index.html">Home</a></li><li><a href="pulse.html">Free Portfolio Pulse</a></li></ul></div><div><h4>For founders</h4><ul><li><a href="founders.html">Founders</a></li><li><a href="weekend.html">The weekend</a></li></ul></div><div><h4>Both</h4><ul><li><a href="method.html">The method</a></li><li><a href="trust.html">Trust</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="/privacy.html">Privacy policy</a></li><li><a href="/aviso-legal.html">Aviso legal</a></li></ul></div></div></div></footer></div><script src="site.js"></script>
+<script>
+/* The method page: the loop (version A) and the travelling problem card (version B). Reads fine without it. */
+(function(){
+'use strict';
+var d=document,w=window;
+var RM=!!(w.matchMedia&&w.matchMedia('(prefers-reduced-motion: reduce)').matches);
+var $$=function(s,r){return [].slice.call((r||d).querySelectorAll(s))};
+var clamp=function(v){return v<0?0:v>1?1:v};
+var jobs=[],tick=false;
+function frame(){tick=false;jobs.forEach(function(f){f()})}
+function req(){if(!tick){tick=true;requestAnimationFrame(frame)}}
+w.addEventListener('scroll',req,{passive:true});w.addEventListener('resize',req);
+
+/* the strip on phones: which of the three verbs you are reading */
+var strip=$$('.mz-strip b'),verbed=$$('[data-verb]');
+if(strip.length){jobs.push(function(){
+  var line=w.innerHeight*.5,v='';
+  verbed.forEach(function(el){if(el.getBoundingClientRect().top<line)v=el.getAttribute('data-verb')});
+  strip.forEach(function(b){b.classList.toggle('on',b.getAttribute('data-v')===v)});
+})}
+
+/* version A: the loop fills in as the three steps pass; each arc carries one step's output to the next */
+var loop=d.querySelector('.ma-loop'),steps=$$('.ma-steps>li');
+if(loop&&steps.length){
+  var nds=$$('.nd',loop);
+  if(RM){nds.forEach(function(n){n.classList.add('on')})}
+  else jobs.push(function(){
+    var line=w.innerHeight*.62,q=0;
+    steps.forEach(function(s){var r=s.getBoundingClientRect();q+=clamp((line-r.top)/r.height)});
+    q/=steps.length; if(w.innerWidth<1001) q=1;
+    loop.style.setProperty('--q',q.toFixed(4));
+    for(var i=0;i<3;i++) loop.style.setProperty('--a'+(i+1),clamp(q*3-i).toFixed(4));
+    nds.forEach(function(n,i){n.classList.toggle('on',i===0?true:q>=i/3-.01)});
+  });
+}
+
+/* version B: one card stays in view and changes at each of the seven beats */
+var flow=d.querySelector('.mb-flow');
+if(flow){
+  var beats=$$('.mb-beats>li',flow),card=flow.querySelector('.mb-card'),holder=flow.querySelector('.mb-panes'),status=flow.querySelector('.mb-status'),ticks=$$('.mb-rail u i',flow),cur=-1;
+  beats.forEach(function(b){var p=b.querySelector('.mb-pane');if(p)holder.appendChild(p.cloneNode(true))});
+  var panes=$$('.mb-pane',holder);
+  flow.classList.add('mb-pin');
+  var set=function(n){
+    if(n===cur)return;cur=n;
+    card.setAttribute('data-state',n+1);status.textContent=beats[n].getAttribute('data-status');
+    panes.forEach(function(p,i){p.classList.toggle('on',i===n)});
+    beats.forEach(function(b,i){b.classList.toggle('on',i===n)});
+    ticks.forEach(function(t,i){t.classList.toggle('d',i<=n)});
+  };
+  set(0);
+  jobs.push(function(){var line=w.innerHeight*.58,n=0;beats.forEach(function(b,i){if(b.getBoundingClientRect().top<line)n=i});set(n)});
+}
+req();w.addEventListener('load',req);
+})();
+</script>
+</body>
+</html>
